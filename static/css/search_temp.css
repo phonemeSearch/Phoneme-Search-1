@@ -1,0 +1,187 @@
+body {
+    margin-left: 5em;
+    margin-right: 5em;
+    background-color: rgb(50, 50, 50);
+}
+
+h1 {
+    color: rgb(150, 150, 200);
+}
+
+main {
+    box-sizing: border-box;
+    margin-top: 5em;
+    width: 100%;
+    color: rgb(230, 230, 230);
+}
+
+.search-section {
+    box-sizing: border-box;
+    margin-bottom: 1em;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2em;
+    padding-right: 2em;
+    overflow: auto;
+    background-color: rgb(60, 60, 60);
+    border-radius: 0.5em;
+    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
+}
+
+#expand-key-section {
+    float: left;
+    margin-right: 0.5%;
+    width: 49.5%;
+}
+
+#expand-keyboard-section {
+    float: left;
+    margin-left: 0.5%;
+    width: 49.5%;
+}
+
+.form-part-wrapper {
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+select {
+    width: 6em;
+    background-color: rgb(60, 60, 60);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+    border-radius: 0.2em;
+}
+
+select:hover {
+    background-color: rgb(80, 80, 80);
+    cursor: pointer;
+}
+
+.text-field {
+    width: 45%;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+}
+
+.text-field-wrong {
+    width: 45%;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid rgb(100, 50, 50);
+}
+
+.wrong-message {
+    margin-top: 0.2em;
+    color: rgb(200, 100, 100);
+}
+
+button {
+    overflow: hidden;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+    border-radius: 0.2em;
+}
+
+button:hover {
+    background-color: rgb(100, 100, 100);
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: rgb(60, 60, 60);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;
+}
+
+#start-button {
+    margin-left: 0.2em;
+    width: 5%;
+}
+
+#plus-button {
+    width: 3%;
+    margin-right: 0.2em;
+}
+
+#minus-button {
+    width: 3%;
+    margin-right: 0.2em;
+}
+
+#add-phoneme-container {
+    margin-top: 0.2em;
+}
+
+#add-input-field {
+    width: 42%;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+}
+
+#add-button {
+    margin-left: 0.2em;
+    width: 5%;
+}
+
+.button-wrapper{
+    padding-left: 30%;
+    padding-right: 30%;
+}
+
+.show-button {
+    width: 100%;
+    background-color: rgb(60, 60, 60);
+    border: none;
+}
+
+.show-button:hover{
+    background-color: rgb(60, 60, 60);
+}
+
+.show-button:hover .expand-tooltip {
+    visibility: visible;
+}
+
+svg {
+    transform: rotate(180deg);
+    margin-bottom: 1em;
+}
+
+svg:hover {
+    fill: rgb(100, 100, 100);
+}
+
+.expand-tooltip {
+    visibility: hidden;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+.expand-container {
+    padding-top: 1em;
+}
+
+#key-container {
+    display: flex;
+}
+
+#keyboard-container {
+    margin-left: 5%;
+}
+
+ol {
+    flex-basis: 100%;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+li {
+    list-style-type: none;
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}"/>
+</head>
+<body>
+    <h1>Phoneme Search</h1>
+    <div class="wrapper">
+        <div class="margin"><div><span class="info">search pattern: </span><span>{{pattern}}</span></div><span class="info"> number of lemmas: </span><span>{{num}}</span></div>
+        <div class="result">
+            <div class="resultText">
+                {%for lemma in results%}
+                {{lemma}},
+                {%endfor%}
+            </div>
+        </div>
+        <div class="margin"></div>
+    </div>
+    <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>
+</body>
+</html>

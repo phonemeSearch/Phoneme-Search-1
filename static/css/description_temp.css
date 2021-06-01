@@ -1,0 +1,15 @@
+body {
+    background-color: rgb(50, 50, 50);
+    color: rgb(230, 230, 230);
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+h1 {
+    color: rgb(150, 150, 200);
+    margin-bottom: 3em;
+}
+
+.paragraph {
+    margin-bottom: 1em;
+}

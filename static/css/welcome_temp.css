@@ -1,0 +1,39 @@
+body {
+    background-color: rgb(50, 50, 50);
+    margin-left: 5em;
+    margin-right: 5em;
+}
+
+h1 {
+    color: rgb(150, 150, 200);
+}
+
+p {
+    color: rgb(230, 230, 230);
+    margin-top: 10em;
+    margin-bottom: 5em;
+}
+
+.button {
+    width: 9em;
+    height: 3em;
+    background-color: rgb(60, 60, 60);
+    color: rgb(230, 230, 230);
+    border: 2px solid rgb(230, 230, 230);
+    border-radius: 0.2em;
+}
+
+.button:hover {
+    background-color: rgb(80, 80, 80);
+    cursor: pointer;
+}
+
+a {
+    color: rgb(150, 150, 200);
+    text-decoration: none;
+}
+
+a:hover{
+    color: rgb(200, 200, 250);
+    text-decoration: underline;
+}

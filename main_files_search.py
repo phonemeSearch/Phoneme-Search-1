@@ -140,22 +140,6 @@ digraphs = {}
 ambiguous = {}
 
 
-def mark_pattern(pattern, found):
-    print(pattern)
-    mark = []
-    x = 0
-    pattern = re.compile(pattern, re.UNICODE)
-    for lemma in found:
-        x += 1
-        if x < 100:
-            matches = pattern.finditer(lemma)
-            for match in matches:
-                print(match.groups(), lemma)
-    
-    #mark.sort(key=len)
-    return(mark)
-
-
 # function for sqlite3 to use regex
 def regexp(expr, item):
     find = re.match(expr, item)
@@ -530,7 +514,6 @@ def main_menu():
             user_input_check = False
 
     res_pat = connect_search_related_fcts(search_string=user_string)
-    testMark = mark_pattern(pattern=res_pat[2], found=res_pat[0])
     print("result: ", res_pat[0])
     print("number of lemmata found: ", len(res_pat[0]))
     save_input = input("Do you want to save your search in a txt-File?\n"

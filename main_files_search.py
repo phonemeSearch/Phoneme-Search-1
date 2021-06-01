@@ -368,8 +368,9 @@ def convert_key_to_grapheme(connected) -> list:
                         plus_true = False
                     select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
                                             f"WHERE key = '{char}'"
+                    # unclear section, write more comprehensible
                     value_kind = sql_fetch_entries(command=select_value_kind_cmd)
-                    value_kind = value_kind[0]  # verbessern! unverständlich
+                    value_kind = value_kind[0]
                     current_value = value_kind[0]
                     current_kind = value_kind[1]
                     select_phonemes_cmd += f"{current_kind} = '{current_value}'"

@@ -67,18 +67,18 @@ function wrongInputHandle(e, pressed, fieldId) {
         document.getElementById("wrong-message-id").remove();
         document.getElementById(fieldId).setAttribute("class", "text-field");
     }
-    var greekForbidden = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    var greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'ē', 'y', 'o', 'ō', 'i', 'a', 'e', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
                           'ps'];
-    var vedicForbidden = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    var vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
                           'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
     var language = document.getElementById("choose-language-id").value;
     console.log(language);
     if (language == "1") {
-        if (greekForbidden.includes(pressed)) {
+        if (greekAllowed.includes(pressed)) {
             console.log("pass")
         } else {
             var message = "character '" + pressed + "' is no allowed input for Greek";
@@ -86,7 +86,7 @@ function wrongInputHandle(e, pressed, fieldId) {
             wrongInput(errorMessage=message, fieldId=fieldId);
         }
     } else if (language == "2") {
-        if (vedicForbidden.includes(pressed)) {
+        if (vedicAllowed.includes(pressed)) {
             console.log("pass")
         } else {
             var message = "character '" + pressed + "' is no allowed input for Vedic";
@@ -129,14 +129,20 @@ const phonemesGreek = {
     "i": " ί", "o": " ό", "ō": " ώ", "y": " ύ", "u": " όυ", "ē": " ή", "i": " ι", "p": " π", "b": " β", "ph": "φ",
     "t": " τ", "d": " δ", "th": "θ", "k": " κ", "g": " γ", "kh": "χ", "z": " ζ", "m": " μ", "n": " ν", "l": " λ",
     "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
-    "k": " κ", "g": " γ", "ks": "ξ"};
-
-const featuresGreek = {"A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "G": "laryngeal",
-           "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
-           "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"};
+    "k": " κ", "g": " γ", "ks": "ξ"
+};
+const featuresGreek = {
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "G": "laryngeal",
+    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+};
 
 const phonemesVedic = {"a": "b"};
-const featuresVedic = {"A": "B"};
+const featuresVedic = {
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "G": "laryngeal",
+    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "X": "laryngeal", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+};
 
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
@@ -202,8 +208,11 @@ showKeyboard.addEventListener("click", () => {
         keyboardContainer.setAttribute("id", "keyboard-container");
         keyboardContainer.setAttribute("class", "expand-container");
         var language = document.getElementById("choose-language-id").value;
-        var specialCharsGreek = {"á": "1", "é": "2", "í": "3"};
-        var specialCharsVedic = {"á": "1", "é": "2", "í": "3"};
+        var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6"};
+        var specialCharsVedic = {
+            'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
+            'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṇ': "13", 'ṣ': "14", 'ś': "15"
+        };
         greek = [featuresGreek, specialCharsGreek];
         vedic = [featuresVedic, specialCharsVedic];
 
@@ -223,8 +232,13 @@ showKeyboard.addEventListener("click", () => {
                 var btnKey = document.createElement("button");
                 btnKey.innerText = e;
                 btnKey.setAttribute("class", "key");
+                btnKey.setAttribute("id", `key${e}`);
                 spanKey.append(btnKey);
                 keyboardContainer.append(spanKey);
+                btnKey.addEventListener("click", (e) => {
+                    userInputField = document.getElementById("user-input");
+                    userInputField.addInput(e);
+                });
             };
             keyboardContainer.append(innerContainer);
         }

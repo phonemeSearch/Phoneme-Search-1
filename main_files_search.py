@@ -448,7 +448,6 @@ def save_result(results, pattern) -> str:
         try:
             file_name = input("Please set a file name.\n"
                               "input: ")
-            open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", "r", encoding="utf-8")
             overwrite = input("File already exists. Do you want to overwrite it?\n"
                               "1) yes\n"
                               "any key) no\n")

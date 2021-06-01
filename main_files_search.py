@@ -441,26 +441,28 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
 
 def save_result(results, pattern) -> str:
     file_name = ""
-    already_exists = True
+    exists = True
     global path
     save_path = path.removesuffix("\\database\\PhonemeSearch.db")
-    while already_exists:
+    while exists:
         try:
-            file_name = input("Please set a file name.\n"
-                              "input: ")
+            file_name = input("Please set a file name.\n""input: ")
+            file_exists = open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", encoding="utf-8")
             overwrite = input("File already exists. Do you want to overwrite it?\n"
                               "1) yes\n"
                               "any key) no\n")
             if overwrite == "1":
-                already_exists = False
+                exists = False
+            file_exists.close()
         except FileNotFoundError:
-            already_exists = False
+            exists = False
 
     file = open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", "w", encoding="utf-8")
     file.write("\n".join(results))
     file.write("\n\nnumber of results: " + str(len(results)))
     file.write("\nsearch pattern: " + pattern)
     print(f"Search saved as {file_name}.txt.")
+    file.close()
     return f"Search saved as {file_name}.txt."
 
 

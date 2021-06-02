@@ -196,6 +196,11 @@ showKey.addEventListener("click", () => {
 });
 
 //show keyboard expand
+function printValue (val) {
+    document.getElementById('user-input').value += val;
+};
+
+var keyIds = []
 var showKeyboard = document.getElementById("expand-keyboard-button")
 showKeyboard.addEventListener("click", () => {
     var existing = document.getElementsByClassName("key");
@@ -211,7 +216,7 @@ showKeyboard.addEventListener("click", () => {
         var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6"};
         var specialCharsVedic = {
             'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
-            'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṇ': "13", 'ṣ': "14", 'ś': "15"
+            'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
         };
         greek = [featuresGreek, specialCharsGreek];
         vedic = [featuresVedic, specialCharsVedic];
@@ -225,21 +230,23 @@ showKeyboard.addEventListener("click", () => {
             }
             innerContainer = document.createElement("div");
             innerContainer.setAttribute("class", "inner-key-container");
-            console.log(kind);
+            //console.log(kind);
             for (var [e, value] of Object.entries(kind)) {
-                var spanKey = document.createElement("span");
-                spanKey.setAttribute("class", "key-span");
+                //var spanKey = document.createElement("span");
+                //spanKey.setAttribute("class", "key-span");
                 var btnKey = document.createElement("button");
                 btnKey.innerText = e;
                 btnKey.setAttribute("class", "key");
+                btnKey.setAttribute("value", e);
+                btnKey.setAttribute("onclick", "printValue(this.value);");
+                keyIds.push(`key${e}`);
                 btnKey.setAttribute("id", `key${e}`);
-                spanKey.append(btnKey);
-                keyboardContainer.append(spanKey);
-                btnKey.addEventListener("click", (e) => {
-                    userInputField = document.getElementById("user-input");
-                    userInputField.addInput(e);
-                });
-            };
+                //spanKey.append(btnKey);
+                innerContainer.append(btnKey);
+                //innerContainer.append(spanKey);
+                //keyboardContainer.append(spanKey);
+                //btnKey.addEventListener("click" try with EventListener
+            }
             keyboardContainer.append(innerContainer);
         }
         document.getElementById("expand-keyboard-section").append(keyboardContainer);

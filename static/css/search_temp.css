@@ -183,10 +183,19 @@ li {
 }
 
 #keyboard-container {
-    width: 100%;
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .inner-key-container {
-    width: 100%;
     display: flex;
+    flex-wrap: wrap;
+}
+
+.key {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    width: 40px;
 }

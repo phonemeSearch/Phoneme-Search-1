@@ -1,8 +1,9 @@
 body {
-    background-color: rgb(50, 50, 50);
-    color: rgb(230, 230, 230);
+    font-size: 20px;
     margin-left: 5em;
     margin-right: 5em;
+    background-color: rgb(50, 50, 50);
+    color: rgb(230, 230, 230);
 }
 
 h1 {

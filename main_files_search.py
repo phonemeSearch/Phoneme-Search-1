@@ -130,7 +130,7 @@ vedic_search_info = \
      "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
 current_search_info = ""
 
-# !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both single phonemes
+# !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both individual phonemes
 # lists containing language specific information
 path = ""
 language = ""
@@ -140,7 +140,7 @@ digraphs = {}
 ambiguous = {}
 
 
-# function for sqlite3 to use regex
+# function for sqlite3 REGEXP
 def regexp(expr, item):
     find = re.match(expr, item)
     return find is not None

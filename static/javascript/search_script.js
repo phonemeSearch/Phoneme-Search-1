@@ -13,7 +13,7 @@ function addToSearch(inputContent) {
     removeDisabled(id="plus-button");
 }
 
-document.getElementById("plus-button").addEventListener("click", e => {
+document.getElementById("plus-button").addEventListener("click", key => {
     var addContainer = document.createElement("div");
     var addInput = document.createElement("input");
     var addBtn = document.createElement("button");
@@ -33,8 +33,8 @@ document.getElementById("plus-button").addEventListener("click", e => {
     addContainer.append(delBtn, addInput, addBtn);
     document.getElementById("search-form").append(addContainer);
 
-    document.getElementById("add-input-field").addEventListener ("keypress", e => {
-        wrongInputHandle(e=e, pressed=e.key, fieldId="add-input-field");
+    document.getElementById("add-input-field").addEventListener ("keypress", key => {
+        wrongInputHandle(key=key, pressed=key.key, fieldId="add-input-field");
     });
 
     document.getElementById("add-button").addEventListener("click", () => {
@@ -62,17 +62,17 @@ function wrongInput(errorMessage, fieldId) {
     inputContainer.append(infoContainer);
 }
 
-function wrongInputHandle(e, pressed, fieldId) {
+function wrongInputHandle(key, pressed, fieldId) {
     if (document.getElementById("wrong-message-id")) {
         document.getElementById("wrong-message-id").remove();
         document.getElementById(fieldId).setAttribute("class", "text-field");
     }
     var greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'ē', 'y', 'o', 'ō', 'i', 'a', 'e', 'o', 'ō', 'i', 'u',
+                          'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
                           'ps'];
     var vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
+                          'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
                           'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
     var language = document.getElementById("choose-language-id").value;
@@ -82,7 +82,7 @@ function wrongInputHandle(e, pressed, fieldId) {
             console.log("pass")
         } else {
             var message = "character '" + pressed + "' is no allowed input for Greek";
-            e.preventDefault();
+            key.preventDefault();
             wrongInput(errorMessage=message, fieldId=fieldId);
         }
     } else if (language == "2") {
@@ -90,18 +90,18 @@ function wrongInputHandle(e, pressed, fieldId) {
             console.log("pass")
         } else {
             var message = "character '" + pressed + "' is no allowed input for Vedic";
-            e.preventDefault();
+            key.preventDefault();
             wrongInput(errorMessage=message, fieldId=fieldId);
         }
     }
 }
 
-document.getElementById("user-input").addEventListener("keypress", e => {
+document.getElementById("user-input").addEventListener("keypress", key => {
     var existing = document.getElementById("add-input-field");
     if (existing != null) {
         document.getElementById("add-input-field").setAttribute("class", "text-field");
     }
-    wrongInputHandle(e=e, pressed=e.key, fieldId="user-input");
+    wrongInputHandle(key=key, pressed=key.key, fieldId="user-input");
 });
 
 //show key expand
@@ -125,7 +125,7 @@ chooseDropdown.addEventListener("change", () => {
     });
 
 const phonemesGreek = {
-    "a": " α", "e": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "e": " έ",
+    "a": " α", "key": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "key": " έ",
     "i": " ί", "o": " ό", "ō": " ώ", "y": " ύ", "u": " όυ", "ē": " ή", "i": " ι", "p": " π", "b": " β", "ph": "φ",
     "t": " τ", "d": " δ", "th": "θ", "k": " κ", "g": " γ", "kh": "χ", "z": " ζ", "m": " μ", "n": " ν", "l": " λ",
     "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
@@ -167,15 +167,15 @@ showKey.addEventListener("click", () => {
             var keyKind;
             const greek = [phonemesGreek, featuresGreek, wildcards];
             const vedic = [phonemesVedic, featuresVedic, wildcards];
-            const header = ["phonemes", "features", "wildcards"];
+            const head = ["phonemes", "features", "wildcards"];
             language = document.getElementById("choose-language-id").value;
             if (language === "1") {
                 keyKind = greek[count];
-                kindHeader = header[count];
+                kindHeader = head[count];
 
             } else if (language === "2") {
                 keyKind = vedic[count];
-                kindHeader = header[count];
+                kindHeader = head[count];
             }
             var list = document.createElement("ol");
             var headerLine = document.createElement("li");
@@ -231,16 +231,16 @@ showKeyboard.addEventListener("click", () => {
             innerContainer = document.createElement("div");
             innerContainer.setAttribute("class", "inner-key-container");
             //console.log(kind);
-            for (var [e, value] of Object.entries(kind)) {
+            for (var [key, value] of Object.entries(kind)) {
                 //var spanKey = document.createElement("span");
                 //spanKey.setAttribute("class", "key-span");
                 var btnKey = document.createElement("button");
-                btnKey.innerText = e;
+                btnKey.innerText = key;
                 btnKey.setAttribute("class", "key");
-                btnKey.setAttribute("value", e);
+                btnKey.setAttribute("value", key);
                 btnKey.setAttribute("onclick", "printValue(this.value);");
-                keyIds.push(`key${e}`);
-                btnKey.setAttribute("id", `key${e}`);
+                keyIds.push(`key${key}`);
+                btnKey.setAttribute("id", `key${key}`);
                 //spanKey.append(btnKey);
                 innerContainer.append(btnKey);
                 //innerContainer.append(spanKey);

@@ -188,7 +188,7 @@ def prepare_language_characteristics(language_index) -> list:
     greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
                        "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
     vedic_ambiguous = {}
-    language_list = ["greek", "vedic", "latin"]
+    language_list = ["greek", "vedic"]
     language = language_list[language_index - 1]
     allowed = ["(", ")", "+"]
 

@@ -449,7 +449,7 @@ def save_result(results, pattern) -> str:
         if os.path.exists(save_path) == False:
             print(save_path)
             os.makedirs(save_path)
-        
+            
         try:
             file_name = input("Please set a file name.\n""input: ")
             file_exists = open(save_path + f"\\{file_name}.txt", encoding="utf-8")

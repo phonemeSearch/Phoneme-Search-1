@@ -67,3 +67,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+# save directories
+saved searches/

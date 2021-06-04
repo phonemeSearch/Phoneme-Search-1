@@ -51,6 +51,45 @@ document.getElementById("plus-button").addEventListener("click", key => {
 
 
 //wrong input handling
+
+/* new version
+textFields = document.getElementsByClassName("text-field")
+lengthFields = textFields.length
+for (var index=0; index <= length; index+=1) {
+    field = textFields[index];
+document.getElementById("user-input").addEventListener("input", e => {
+    console.log(e.data);
+    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'ē', 'y', 'o', 'ō', 'i', 'a', 'e', 'o', 'ō', 'i', 'u',
+    'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
+    'ps'];
+    const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
+    'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
+    'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
+    var language = document.getElementById("choose-language-id").value;
+    console.log(language);
+    if (language == "1") {
+        if (greekAllowed.includes(e.data)) {
+            console.log("pass")
+        } else {
+            var message = "character '" + pressed + "' is no allowed input for Greek";
+            //e.preventDefault();
+            wrongInput(errorMessage=message, fieldId=fieldId);
+        }
+    } else if (language == "2") {
+        if (vedicAllowed.includes(e.data)) {
+            console.log("pass")
+        } else {
+            e.preventDefault();
+            //wrongInput(errorMessage=message, fieldId=fieldId);
+        }
+    }
+});
+}
+
+old version
+*/ 
 function wrongInput(errorMessage, fieldId) {
     var inputField = document.getElementById(fieldId);
     inputField.setAttribute("class", "text-field-wrong");

@@ -444,20 +444,25 @@ def save_result(results, pattern) -> str:
     exists = True
     global path
     save_path = path.removesuffix("\\database\\PhonemeSearch.db")
+    save_path = save_path + f"\\saved searches\\{language}"
     while exists:
+        if os.path.exists(save_path) == False:
+            print(save_path)
+            os.makedirs(save_path)
+        
         try:
             file_name = input("Please set a file name.\n""input: ")
-            file_exists = open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", encoding="utf-8")
+            file_exists = open(save_path + f"\\{file_name}.txt", encoding="utf-8")
             overwrite = input("File already exists. Do you want to overwrite it?\n"
-                              "1) yes\n"
-                              "any key) no\n")
+                                "1) yes\n"
+                                "any key) no\n")
             if overwrite == "1":
                 exists = False
             file_exists.close()
         except FileNotFoundError:
             exists = False
 
-    file = open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", "w", encoding="utf-8")
+    file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
     file.write("\n".join(results))
     file.write("\n\nnumber of results: " + str(len(results)))
     file.write("\nsearch pattern: " + pattern)

@@ -1,6 +1,8 @@
 body {
     margin-left: 5em;
     margin-right: 5em;
+    font-size: 20px;
+    font-family: sans-serif;
     background-color: rgb(50, 50, 50);
 }
 
@@ -47,6 +49,7 @@ main {
 
 select {
     width: 6em;
+    font-size: 20px;
     background-color: rgb(60, 60, 60);
     color: rgb(230, 230, 230);
     border: 2px solid;
@@ -60,6 +63,7 @@ select:hover {
 
 .text-field {
     width: 45%;
+    font-size: 20px;
     background-color: rgb(80, 80, 80);
     color: rgb(230, 230, 230);
     border: 2px solid;
@@ -79,6 +83,7 @@ select:hover {
 
 button {
     overflow: hidden;
+    font-size: 20px;
     background-color: rgb(80, 80, 80);
     color: rgb(230, 230, 230);
     border: 2px solid;
@@ -171,10 +176,6 @@ svg:hover {
     display: flex;
 }
 
-#keyboard-container {
-    margin-left: 5%;
-}
-
 ol {
     flex-basis: 100%;
     margin: 0;
@@ -184,4 +185,22 @@ ol {
 
 li {
     list-style-type: none;
+}
+
+#keyboard-container {
+    width: 50%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.inner-key-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.key {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    width: 40px;
 }

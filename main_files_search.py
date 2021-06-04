@@ -530,6 +530,8 @@ def main_menu():
         save_result(results=res_pat[0], pattern=res_pat[1])
 
 
+print("\u1e6d")
+
 if __name__ == "__main__":
     new_search = True
     while new_search:

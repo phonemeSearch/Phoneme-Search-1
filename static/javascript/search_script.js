@@ -50,7 +50,7 @@ document.getElementById("plus-button").addEventListener("click", key => {
 });
 
 
-//code for wrong input handling
+//wrong input handling
 function wrongInput(errorMessage, fieldId) {
     var inputField = document.getElementById(fieldId);
     inputField.setAttribute("class", "text-field-wrong");

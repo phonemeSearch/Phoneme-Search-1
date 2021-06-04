@@ -130,7 +130,7 @@ vedic_search_info = \
      "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
 current_search_info = ""
 
-# !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both single phonemes
+# !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both individual phonemes
 # lists containing language specific information
 path = ""
 language = ""
@@ -140,7 +140,7 @@ digraphs = {}
 ambiguous = {}
 
 
-# function for sqlite3 to use regex
+# function for sqlite3 REGEXP
 def regexp(expr, item):
     find = re.match(expr, item)
     return find is not None
@@ -188,7 +188,7 @@ def prepare_language_characteristics(language_index) -> list:
     greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
                        "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
     vedic_ambiguous = {}
-    language_list = ["greek", "vedic", "latin"]
+    language_list = ["greek", "vedic"]
     language = language_list[language_index - 1]
     allowed = ["(", ")", "+"]
 
@@ -441,27 +441,33 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
 
 def save_result(results, pattern) -> str:
     file_name = ""
-    already_exists = True
+    exists = True
     global path
     save_path = path.removesuffix("\\database\\PhonemeSearch.db")
-    while already_exists:
+    save_path = save_path + f"\\saved searches\\{language}"
+    while exists:
+        if os.path.exists(save_path) == False:
+            print(save_path)
+            os.makedirs(save_path)
+            
         try:
-            file_name = input("Please set a file name.\n"
-                              "input: ")
-            open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", "r", encoding="utf-8")
+            file_name = input("Please set a file name.\n""input: ")
+            file_exists = open(save_path + f"\\{file_name}.txt", encoding="utf-8")
             overwrite = input("File already exists. Do you want to overwrite it?\n"
-                              "1) yes\n"
-                              "any key) no\n")
+                                "1) yes\n"
+                                "any key) no\n")
             if overwrite == "1":
-                already_exists = False
+                exists = False
+            file_exists.close()
         except FileNotFoundError:
-            already_exists = False
+            exists = False
 
-    file = open(save_path + f"\\saved searches\\{language}\\{file_name}.txt", "w", encoding="utf-8")
+    file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
     file.write("\n".join(results))
     file.write("\n\nnumber of results: " + str(len(results)))
     file.write("\nsearch pattern: " + pattern)
     print(f"Search saved as {file_name}.txt.")
+    file.close()
     return f"Search saved as {file_name}.txt."
 
 
@@ -523,6 +529,8 @@ def main_menu():
     if save_input == "1":
         save_result(results=res_pat[0], pattern=res_pat[1])
 
+
+print("\u1e6d")
 
 if __name__ == "__main__":
     new_search = True

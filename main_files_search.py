@@ -142,7 +142,7 @@ ambiguous = {}
 
 # function for sqlite3 REGEXP
 def regexp(expr, item):
-    find = re.match(expr, item)
+    find = re.search(expr, item)
     return find is not None
 
 

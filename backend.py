@@ -37,4 +37,4 @@ def result_page():
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=1337, debug=True)

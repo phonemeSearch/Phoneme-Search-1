@@ -148,7 +148,7 @@ function wrongInputHandling(key, pressed, fieldId) {
         } else {
             var message = "character '" + pressed + "' is no allowed input for Vedic";
             key.preventDefault();
-            wrongInput(errorMessage=message, fieldId=fieldId);
+            wrongInput(message, fieldId);
         }
     }
 }

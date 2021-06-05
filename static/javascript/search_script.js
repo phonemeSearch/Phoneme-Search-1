@@ -33,12 +33,13 @@ document.getElementById("plus-button").addEventListener("click", key => {
     addContainer.append(delBtn, addInput, addBtn);
     document.getElementById("search-form").append(addContainer);
 
-    document.getElementById("add-input-field").addEventListener ("input", e => {
+   /* document.getElementById("add-input-field").addEventListener ("input", e => {
 
-    });
-    /*document.getElementById("add-input-field").addEventListener ("keypress", key => {
-        wrongInputHandle(key=key, pressed=key.key, fieldId="add-input-field");
     });*/
+
+    document.getElementById("add-input-field").addEventListener ("keypress", key => {
+        wrongInputHandling(key=key, pressed=key.key, fieldId="add-input-field");
+    });
 
     document.getElementById("add-button").addEventListener("click", () => {
        addToSearch(inputContent=document.getElementById("add-input-field").value);
@@ -53,6 +54,8 @@ document.getElementById("plus-button").addEventListener("click", key => {
 });
 
 //new version
+
+/*
 userInput = document.getElementById("user-input")
 userInput.addEventListener("input", e => {
     wrongInputHandling("user-input", e)
@@ -102,7 +105,7 @@ function wrongInputHandling(id, e) {
         }
     }
 }
-
+*/
 function wrongInput(errorMessage, fieldId) {
     var inputField = document.getElementById(fieldId);
     inputField.setAttribute("class", "text-field-wrong");
@@ -115,8 +118,8 @@ function wrongInput(errorMessage, fieldId) {
 }
 
 //old version
-/*
-function wrongInputHandle(key, pressed, fieldId) {
+
+function wrongInputHandling(key, pressed, fieldId) {
     if (document.getElementById("wrong-message-id")) {
         document.getElementById("wrong-message-id").remove();
         document.getElementById(fieldId).setAttribute("class", "text-field");
@@ -155,9 +158,8 @@ document.getElementById("user-input").addEventListener("keypress", key => {
     if (existing != null) {
         document.getElementById("add-input-field").setAttribute("class", "text-field");
     }
-    wrongInputHandle(key=key, pressed=key.key, fieldId="user-input");
+    wrongInputHandling(key, key.key, "user-input");
 });
-*/
 
 //show key expand
 var chooseDropdown = document.getElementById("choose-language-id");

@@ -186,8 +186,9 @@ def prepare_language_characteristics(language_index) -> list:
 
     greek_digraphs = {"p": "hs", "k": "h", "t": "h"}
     vedic_digraphs = {"p": "h", "b": "h", "k": "h", "t": "h", "d": "h", "g": "h", "ṭ": "h", "ḍ": "h"}
-    greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
-                       "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
+    greek_ambiguous = {"σ": "ς", "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"}
+    #greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
+     #                  "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
     vedic_ambiguous = {}
     language_list = ["greek", "vedic"]
     language = language_list[language_index - 1]
@@ -538,7 +539,7 @@ def main_menu():
 
     res_pat = connect_search_related_fcts(search_string=user_string)
     print(res_pat[1], res_pat[2])
-    print("result: ", res_pat[0])
+    #print("result: ", res_pat[0])
     print("number of lemmata found: ", len(res_pat[0]))
     save_input = input("Do you want to save your search in a txt-File?\n"
                        "1) yes\n"

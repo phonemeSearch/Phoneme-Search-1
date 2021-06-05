@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from sqlite3.dbapi2 import connect
 import sys
 import re
 
@@ -131,7 +132,7 @@ vedic_search_info = \
 current_search_info = ""
 
 # !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both individual phonemes
-# lists containing language specific information
+# language specific information
 path = ""
 language = ""
 consonants = []
@@ -239,7 +240,14 @@ def check_validity(search_string, allowed) -> bool:
                     false_input.append("No allowed usage of 'h'!")
         elif char not in allowed:
             false_input.append(char)
-
+        elif char == "|":
+            if (search_string.index(char) == 0) or (search_string.index(char) == len(search_string)-1):
+                pass
+            #elif search_string.index(char) == len(search_string)-1:
+             #   print("| am Ende")
+            else:
+                false_input.append(char)
+                print("no allowed usage of '|'!")
     if len(false_input) > 0:
         return False
     else:
@@ -328,7 +336,9 @@ def convert_key_to_grapheme(connected) -> list:
     group = []
     select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
     is_digraph = False
+    connected_index = -1
     for phoneme in connected:
+        connected_index += 1
         phoneme_index = -1
         length = len(phoneme) - 1
         for char in phoneme:
@@ -357,7 +367,10 @@ def convert_key_to_grapheme(connected) -> list:
                 elif char == "*":
                     group.append("\\w*")
                 elif char == "|":
-                    group.append("$")
+                    if connected_index == 0:
+                        group.append("^")
+                    else:
+                        group.append("$")
                 else:
                     try:
                         if phoneme[phoneme_index + 1] == "+":
@@ -387,6 +400,7 @@ def convert_key_to_grapheme(connected) -> list:
 
     if language in ["greek"]:
         search = convert_to_non_latin_alphabet(search=search)
+    print(search)
     return search
 
 
@@ -411,6 +425,7 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                     pattern += "|"
             pattern += ")"
         else:
+            print(grapheme)
             if grapheme[0] in ambiguous:
                 amb_grapheme = "("
                 amb_grapheme += handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
@@ -420,7 +435,9 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                 grapheme = "(ου|όυ|ού)"
             pattern += "".join(grapheme)
 
-    user_pattern = re.sub("\\\w\*", "*", pattern)
+    user_pattern = re.sub(r"\\w\*", "*", pattern)
+    user_pattern = re.sub(r"\^", "|", user_pattern)
+    user_pattern = re.sub(r"\$", "|", user_pattern)
     #print("search pattern:", user_pattern)
     # print("regex pattern:", pattern)
     search_command = f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}'"
@@ -521,6 +538,7 @@ def main_menu():
             user_input_check = False
 
     res_pat = connect_search_related_fcts(search_string=user_string)
+    print(res_pat[1], res_pat[2])
     print("result: ", res_pat[0])
     print("number of lemmata found: ", len(res_pat[0]))
     save_input = input("Do you want to save your search in a txt-File?\n"

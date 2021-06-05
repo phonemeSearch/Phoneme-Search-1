@@ -1,4 +1,57 @@
-//wrong input handling
+// code for add phoneme expand
+// with click on plus-button new text input appears along with
+// minus-button and add button
+function removeDisabled(id) {
+    console.log(id);
+    document.getElementById(id).removeAttribute("disabled");
+}
+
+function addToSearch(inputContent) {
+    const searchInput = document.getElementById("user-input");
+    searchInput.value += inputContent;
+    document.getElementById("add-phoneme-container").remove();
+    removeDisabled("plus-button");
+}
+
+document.getElementById("plus-button").addEventListener("click", key => {
+    var addContainer = document.createElement("div");
+    var addInput = document.createElement("input");
+    var addBtn = document.createElement("button");
+    var delBtn = document.createElement("button");
+
+    addContainer.setAttribute("id", "add-phoneme-container");
+    addContainer.setAttribute("class", "form-part-wrapper");
+    addInput.setAttribute("class", "text-field");
+    addInput.setAttribute("id", "add-input-field");
+    addBtn.setAttribute("type", "button");
+    addBtn.setAttribute("id", "add-button");
+    addBtn.textContent = "add";
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("id", "minus-button");
+    delBtn.textContent = "-";
+
+    addContainer.append(delBtn, addInput, addBtn);
+    document.getElementById("search-form").append(addContainer);
+
+    document.getElementById("add-input-field").addEventListener ("input", e => {
+
+    });
+    /*document.getElementById("add-input-field").addEventListener ("keypress", key => {
+        wrongInputHandle(key=key, pressed=key.key, fieldId="add-input-field");
+    });*/
+
+    document.getElementById("add-button").addEventListener("click", () => {
+       addToSearch(inputContent=document.getElementById("add-input-field").value);
+    });
+
+    document.getElementById("minus-button").addEventListener("click", () =>{
+        document.getElementById("add-phoneme-container").remove();
+        document.getElementById("plus-button").removeAttribute("disabled");
+    });
+
+    document.getElementById("plus-button").setAttribute("disabled", "disabled");
+});
+
 //new version
 userInput = document.getElementById("user-input")
 userInput.addEventListener("input", e => {
@@ -60,60 +113,6 @@ function wrongInput(errorMessage, fieldId) {
     const inputContainer = document.getElementById("user-input-container");
     inputContainer.append(infoContainer);
 }
-
-// code for add phoneme expand
-// with click on plus-button new text input appears along with
-// minus-button and add button
-function removeDisabled(id) {
-    console.log(id);
-    document.getElementById(id).removeAttribute("disabled");
-}
-
-function addToSearch(inputContent) {
-    const searchInput = document.getElementById("user-input");
-    searchInput.value += inputContent;
-    document.getElementById("add-phoneme-container").remove();
-    removeDisabled("plus-button");
-}
-
-document.getElementById("plus-button").addEventListener("click", key => {
-    var addContainer = document.createElement("div");
-    var addInput = document.createElement("input");
-    var addBtn = document.createElement("button");
-    var delBtn = document.createElement("button");
-
-    addContainer.setAttribute("id", "add-phoneme-container");
-    addContainer.setAttribute("class", "form-part-wrapper");
-    addInput.setAttribute("class", "text-field");
-    addInput.setAttribute("id", "add-input-field");
-    addBtn.setAttribute("type", "button");
-    addBtn.setAttribute("id", "add-button");
-    addBtn.textContent = "add";
-    delBtn.setAttribute("type", "button");
-    delBtn.setAttribute("id", "minus-button");
-    delBtn.textContent = "-";
-
-    addContainer.append(delBtn, addInput, addBtn);
-    document.getElementById("search-form").append(addContainer);
-
-    document.getElementById("add-input-field").addEventListener ("input", e => {
-
-    });
-    /*document.getElementById("add-input-field").addEventListener ("keypress", key => {
-        wrongInputHandle(key=key, pressed=key.key, fieldId="add-input-field");
-    });*/
-
-    document.getElementById("add-button").addEventListener("click", () => {
-       addToSearch(inputContent=document.getElementById("add-input-field").value);
-    });
-
-    document.getElementById("minus-button").addEventListener("click", () =>{
-        document.getElementById("add-phoneme-container").remove();
-        document.getElementById("plus-button").removeAttribute("disabled");
-    });
-
-    document.getElementById("plus-button").setAttribute("disabled", "disabled");
-});
 
 //old version
 /*

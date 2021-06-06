@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request
 import main_files_search as mf
 import re
 
 app = Flask(__name__)
 
 
+# wraps searched pattern of lemmas in span elements to mark them with css
 def mark_pattern (pattern, results):
     marked_list = []
     for result in results:
@@ -54,9 +55,7 @@ def description():
 def result_page():
     if request.method == "POST":
         user_search = request.form['search-input']
-        # user_search = request.args.get['search-input']
         language = request.form['choose-language']
-        # language = request.args.get['choose-language']
         user_allowed = mf.prepare_language_characteristics(language_index=int(language))
         check = mf.check_validity(search_string=user_search, allowed=user_allowed)
         if check:

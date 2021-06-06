@@ -7,34 +7,29 @@ app = Flask(__name__)
 
 def mark_pattern (pattern, results):
     marked_list = []
-    count = 0
     for result in results:
+        count = 0
         matches = re.finditer(pattern, result)
         marked = result
-        former_match = ""
-        print("-----------------------------------")
+        #print("-----------------------------------")
         for match in matches:
-            print(match)
-            print(match.groups())
-            count = 0
-            for group in match.groups():
-                count += 1
-                #print(group)
-                marked = marked.replace(group, f"%{group}/%", 1)
-                #marked = re.sub(group, f"%{group}/%", marked)   
-                #if former_match != match.group(0):
-                #marked = re.sub(match.group(0), f"%{match.group(i_group)}/%", marked)
-            former_match = match.group(0)
-
-        #marked = re.sub("§", "<span class=mark-odd>", marked)
-        marked = re.sub("(?<!\/)%", "<span class=mark-even>", marked)
+            count += 1
+            #print(result)
+            #print(match)
+            #print(match.groups())
+            group = match.group(0)
+            if count % 2 == 0:
+                marked = re.sub(f"{group}(?!\w?\/%)", f"%{group}/%", marked, 1)
+            elif count % 2 != 0:
+                marked = re.sub(f"{group}(?!\w?\/%)", f"§{group}/%", marked, 1)
+        
+        marked = re.sub("(?<!\/)%", "<span class='mark-even'>", marked)
         marked = re.sub("\/%", "</span>", marked)
-        #marked = re.sub("(?<!\/)$", "<span class=odd>", marked)
-        #marked = re.sub("\/$", "</span>", marked)
+        marked = re.sub("§", "<span class='mark-odd'>", marked)
 
         marked = "<div class=lemma>" + marked + "</div>"
         marked_list.append(marked)
-    marked_list.sort()
+    marked_list = sorted(marked_list)
     print(pattern)
     return marked_list
             

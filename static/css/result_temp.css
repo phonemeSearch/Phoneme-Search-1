@@ -31,8 +31,9 @@ section {
 .result-section {
     float: left;
     margin-right: 0.5%;
-    height: auto;
     width: 49.5%;
+    height: 35em;
+    overflow: auto;
 }
 
 .order-section {

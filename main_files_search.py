@@ -312,7 +312,7 @@ def convert_to_non_latin_alphabet(search) -> list:
     for grapheme in search:
         inner_group = []
         for latin_graph in grapheme:
-            if latin_graph in ["^", "\\w*", "$"]:
+            if latin_graph in ["^", "\\w*?", "$"]:
                 inner_group.append(latin_graph)
                 continue
 
@@ -365,7 +365,7 @@ def convert_key_to_grapheme(connected) -> list:
                     for con in consonants:
                         group.append(con)
                 elif char == "*":
-                    group.append("\\w*")
+                    group.append("(\\w*?)")
                 elif char == "|":
                     if connected_index == 0:
                         group.append("^")
@@ -435,11 +435,11 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                 grapheme = "(ου|όυ|ού)"
             pattern += "".join(grapheme)
 
-    user_pattern = re.sub(r"\\w\*", "*", pattern)
+    user_pattern = re.sub(r"\\w\*\?", "*", pattern)
     user_pattern = re.sub(r"\^", "|", user_pattern)
     user_pattern = re.sub(r"\$", "|", user_pattern)
     #print("search pattern:", user_pattern)
-    # print("regex pattern:", pattern)
+    print("regex pattern:", pattern)
     search_command = f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}'"
     connection = sqlite3.connect(path)
     cursor = connection.cursor()

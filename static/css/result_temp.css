@@ -62,6 +62,10 @@ section {
     border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
 
-.mark {
+.mark-even {
     color: rgb(150, 150, 200);
+}
+
+.mark-odd {
+    color: rgb(200, 150, 150)
 }

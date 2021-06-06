@@ -1,8 +1,28 @@
 from flask import Flask, render_template, request, url_for
 import main_files_search as mf
+import re
 
 app = Flask(__name__)
 
+
+def mark_pattern (pattern, results):
+    marked_list = []
+    for result in results:
+        matches = re.finditer(pattern, result)
+        marked = result
+        former_match = ""
+        for match in matches:
+            if former_match != match.group(0):
+                marked = re.sub(match.group(0), f"%{match.group(0)}/%", marked)
+                former_match = match.group(0)
+        marked = re.sub("(?<!\/)%", "<span class=mark>", marked)
+        marked = re.sub("\/%", "</span>", marked)
+        marked = "<div class=lemma>" + marked + "</div>"
+        marked_list.append(marked)
+        marked_list.sort()
+    return marked_list
+            
+        
 
 @app.route('/')
 def route_page():
@@ -30,7 +50,9 @@ def result_page():
         check = mf.check_validity(search_string=user_search, allowed=user_allowed)
         if check:
             user_results = mf.connect_search_related_fcts(search_string=user_search)
-            return render_template('result.html', results=user_results[0], pattern=user_results[1],
+            pattern = user_results[2]
+            marked_results = mark_pattern(pattern=pattern, results=user_results[0])
+            return render_template('result.html', results=marked_results, user_pattern=user_results[1],
                                    num=len(user_results[0]))
         else:
             pass

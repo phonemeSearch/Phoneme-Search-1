@@ -7,17 +7,25 @@
 </head>
 <body>
     <h1>Phoneme Search</h1>
-    <div class="wrapper">
-        <div class="margin"><div><span class="info">search pattern: </span><span>{{pattern}}</span></div><span class="info"> number of lemmas: </span><span>{{num}}</span></div>
-        <div class="result">
-            <div class="resultText">
+    <main>
+        <section class="info-section">
+            <div class="info-container">
+                <div class="info">search pattern: <span class="info-content">{{user_pattern}}</span></div><div class="info"> number of lemmas: <span class="info-content">{{num}}</span></div>
+            </div>
+        </section>
+        <section class="result-section">
+            <div class="result-text">
                 {%for lemma in results%}
-                {{lemma}},
+                {{lemma|safe}}
                 {%endfor%}
             </div>
-        </div>
-        <div class="margin"></div>
-    </div>
+        </section>
+        <section class="order-section">
+            <div class="order-container">
+                order section
+            </div>
+        </section>
+    </main>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>
 </body>
 </html>

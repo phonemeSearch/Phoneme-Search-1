@@ -5,42 +5,63 @@ body {
     margin-left: 5em;
     margin-right: 5em;
     background-color: rgb(50, 50, 50);
+    color:rgb(230, 230, 230);
 }
 
 h1 {
     color: rgb(150, 150, 200);
 }
 
+main {
+    margin-top: 5em;
+}
+
+section {
+    margin-bottom: 1em;
+    overflow: auto;
+    background-color: rgb(60, 60, 60);
+    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+}
+
+.info-section {
+    width: 49.5%;
+}
+
+.result-section {
+    float: left;
+    margin-right: 0.5%;
+    height: auto;
+    width: 49.5%;
+}
+
+.order-section {
+    float: left;
+    margin-left: 0.5%;
+    width: 49.5%;
+}
+
+.order-container {
+    padding: 1em 0 0 2em;
+}
+
+.info-container {
+    padding: 1em 0 0 2em;
+}
+
 .info {
     color: rgb(150, 150, 150);
     }
 
-.wrapper {
-    margin-top: 7em;
-    margin-bottom: 5em;
-    border: auto;
-    height: auto;
-    background-color: rgb(60, 60, 60);
+.info-content {
     color: rgb(230, 230, 230);
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
-    border-radius: 0.5em 0.5em 0.5em 0.5em
 }
 
-.margin {
-    padding-top: 2em;
-    margin-left: 2em;
-    margin-right: 2em;
-    margin-bottom: 2em;
+.result-text {
+    padding: 1em 0 0 2em;
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
 
-.result {
-    margin-left: 2em;
-    margin-right: 2em;
-    height: 50em;
-    overflow: auto;
-    border: 1px solid;
-}
-
-.resultText {
-    padding: 0.5em 0.5em 0.5em 0.5em;
+.mark {
+    color: rgb(150, 150, 200);
 }

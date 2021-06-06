@@ -7,16 +7,23 @@ app = Flask(__name__)
 
 def mark_pattern (pattern, results):
     marked_list = []
+    count = 0
     for result in results:
         matches = re.finditer(pattern, result)
         marked = result
         former_match = ""
         for match in matches:
+            count += 1
             if former_match != match.group(0):
                 marked = re.sub(match.group(0), f"%{match.group(0)}/%", marked)
                 former_match = match.group(0)
-        marked = re.sub("(?<!\/)%", "<span class=mark>", marked)
-        marked = re.sub("\/%", "</span>", marked)
+            print(count)
+            print(count % 2)
+            if count % 2 == 0:
+                marked = re.sub("(?<!\/)%", "<span class=mark-even>", marked)
+            else:
+                marked = re.sub("(?<!\/)%", "<span class=mark-odd>", marked)
+            marked = re.sub("\/%", "</span>", marked)
         marked = "<div class=lemma>" + marked + "</div>"
         marked_list.append(marked)
         marked_list.sort()

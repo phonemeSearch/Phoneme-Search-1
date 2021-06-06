@@ -13,7 +13,7 @@ function addToSearch(inputContent) {
     removeDisabled("plus-button");
 }
 
-document.getElementById("plus-button").addEventListener("click", key => {
+document.getElementById("plus-button").addEventListener("click", () => {
     var addContainer = document.createElement("div");
     var addInput = document.createElement("input");
     var addBtn = document.createElement("button");
@@ -140,7 +140,7 @@ function wrongInputHandling(key, pressed, fieldId) {
         } else {
             var message = "character '" + pressed + "' is no allowed input for Greek";
             key.preventDefault();
-            wrongInput(errorMessage=message, fieldId=fieldId);
+            wrongInput(message, fieldId);
         }
     } else if (language == "2") {
         if (vedicAllowed.includes(pressed)) {
@@ -180,6 +180,13 @@ chooseDropdown.addEventListener("change", () => {
         existing.remove();
     }
     });
+
+chooseDropdown.addEventListener("change", () => {
+    const userInput = document.getElementById("user-input");
+    const addInput = document.getElementById("add-input-field");
+    userInput.value = "";
+    addInput.value = "";
+});
 
 const phonemesGreek = {
     "a": " α", "e": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "é": " έ",

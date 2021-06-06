@@ -177,7 +177,7 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
 
 
 # prepares check list for
-def prepare_language_characteristics(language_index) -> list:
+def prepare_language_characteristics(language_index, accent) -> list:
     global path
     global language
     global digraphs
@@ -186,10 +186,14 @@ def prepare_language_characteristics(language_index) -> list:
 
     greek_digraphs = {"p": "hs", "k": "h", "t": "h"}
     vedic_digraphs = {"p": "h", "b": "h", "k": "h", "t": "h", "d": "h", "g": "h", "ṭ": "h", "ḍ": "h"}
-    greek_ambiguous = {"σ": "ς", "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"}
-    #greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
-     #                  "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
-    vedic_ambiguous = {}
+    if accent == "on":   
+        greek_ambiguous = {"σ": "ς", "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"}
+        vedic_ambiguous = {}
+    else:
+        greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
+                           "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
+        vedic_ambiguous = {'a': 'áàā', 'e': 'éè', 'i': 'ìíī', 'o': 'ò', 'u': 'ùú'}
+
     language_list = ["greek", "vedic"]
     language = language_list[language_index - 1]
     allowed = ["(", ")", "+"]
@@ -515,7 +519,7 @@ def main_menu():
         if user_language in ["1", "2"]:
             user_language = int(user_language)
             user_input_check = True
-            allowed = prepare_language_characteristics(language_index=user_language)
+            allowed = prepare_language_characteristics(language_index=user_language, accent="on")
         else:
             print("\nFalse input. Please try again.\n")
 

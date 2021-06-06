@@ -41,7 +41,7 @@ def route_page():
     return render_template('welcome.html')
 
 
-@app.route('/search', methods=["POST", "GET"])
+@app.route('/search', methods=['POST', 'GET'])
 def search():
     return render_template('search.html')
 
@@ -51,12 +51,13 @@ def description():
     return render_template('description.html')
 
 
-@app.route('/search_result', methods=["POST", "GET"])
+@app.route('/search_result', methods=['POST', 'GET'])
 def result_page():
-    if request.method == "POST":
+    if request.method == 'POST':
         user_search = request.form['search-input']
         language = request.form['choose-language']
-        user_allowed = mf.prepare_language_characteristics(language_index=int(language))
+        accent_sensitive = request.form.get('accent-sensitive')
+        user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
         check = mf.check_validity(search_string=user_search, allowed=user_allowed)
         if check:
             user_results = mf.connect_search_related_fcts(search_string=user_search)

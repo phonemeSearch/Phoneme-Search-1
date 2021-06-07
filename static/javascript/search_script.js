@@ -124,32 +124,42 @@ function wrongInputHandling(key, pressed, fieldId) {
         document.getElementById("wrong-message-id").remove();
         document.getElementById(fieldId).setAttribute("class", "text-field");
     }
-    var greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    var allowed;
+
+    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
-                          'ps'];
-    var vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+                          'ps', 'h'];
+    const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
                           'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
     var language = document.getElementById("choose-language-id").value;
     console.log(language);
     if (language == "1") {
-        if (greekAllowed.includes(pressed)) {
-            console.log("pass")
-        } else {
-            var message = "character '" + pressed + "' is no allowed input for Greek";
-            key.preventDefault();
-            wrongInput(message, fieldId);
-        }
+        allowed = greekAllowed;
+        lang = "Greek"
     } else if (language == "2") {
-        if (vedicAllowed.includes(pressed)) {
-            console.log("pass")
-        } else {
-            var message = "character '" + pressed + "' is no allowed input for Vedic";
-            key.preventDefault();
-            wrongInput(message, fieldId);
+        allowed = vedicAllowed;
+        lang = "Vedic"
+    }
+    
+    if (allowed.includes(pressed)) {
+        if (language == "1") {
+            if (pressed == "h") {
+                fieldValue = document.getElementById(fieldId).value;
+                lastChar = fieldValue.slice(-1);
+                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t")) {
+                    var message = `character 'h' only allowed after 'p', 'k', 't'`;
+                    key.preventDefault();
+                    wrongInput(message, fieldId);
+                }
+            }
         }
+    } else {
+        var message = `character '${pressed}' is no allowed input for ${lang}`;
+        key.preventDefault();
+        wrongInput(message, fieldId);
     }
 }
 

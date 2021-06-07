@@ -17,6 +17,8 @@ def mark_pattern (pattern):
     global results
     marked_list = []
     for index in range(begin, end):
+        if index >= len(results):
+            break
         count = 0
         matches = re.finditer(pattern, results[index])
         marked = results[index]
@@ -64,7 +66,7 @@ def submit_start (user_search, language, accent_sensitive):
         num = len(user_results[0])
 
         marked_results = mark_pattern(pattern=pattern)
-        first_results = [marked_results[index] for index in range(begin, end)]
+        first_results = [marked_results[index] for index in range(begin, end) if index < len(marked_results)]
         return first_results
     else:
         return "an unexpected error occurred"

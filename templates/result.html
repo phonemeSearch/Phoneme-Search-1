@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}"/>
 </head>
 <body>
-    <h1>Phoneme Search</h1>
     <main>
         <section class="info-section">
             <div class="info-container">
@@ -17,13 +16,17 @@
         <section class="result-section">
             <div class="result-text">
                 {%for lemma in results%}
-                {{lemma|safe}}
+                    {{lemma|safe}}
                 {%endfor%}
+                <form action="http://127.0.0.1:1337/search_result" method="post">
+                    <button class="next-results" type="button">&lt; last 25 results</button>
+                    <button class="next-results" type="submit" name="submit-button" value="next">next 25 results &gt;</button>
+                </form>
             </div>
         </section>
         <section class="order-section">
             <div class="order-container">
-                order section
+                section
             </div>
         </section>
     </main>

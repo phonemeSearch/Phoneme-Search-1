@@ -313,10 +313,11 @@ def connect_phoneme_groups(grouped_list) -> list:
 
 def convert_to_non_latin_alphabet(search) -> list:
     outer_group = []
+    print("search in convert non l:", search)
     for grapheme in search:
         inner_group = []
         for latin_graph in grapheme:
-            if latin_graph in ["^", "\\w*?", "$"]:
+            if latin_graph in ["^", "(\\w*?)", "$"]:
                 inner_group.append(latin_graph)
                 continue
 
@@ -328,6 +329,7 @@ def convert_to_non_latin_alphabet(search) -> list:
                 translit_sql_cmd = \
                     f"SELECT grapheme_{language} FROM {language}_vowel WHERE grapheme = '{latin_graph}'"
                 greek_graph = sql_fetch_entries(command=translit_sql_cmd)
+                print("greek graph", greek_graph)
             greek_graph = greek_graph[0]
             inner_group.append(greek_graph[0])
         outer_group.append(inner_group)

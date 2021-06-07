@@ -67,7 +67,7 @@ def submit_start (user_search, language, accent_sensitive):
         first_results = [marked_results[index] for index in range(begin, end)]
         return first_results
     else:
-        pass
+        return "an unexpected error occurred"
 
 
 # gets the next search results if click on next button

@@ -73,14 +73,18 @@ def submit_start (user_search, language, accent_sensitive):
 
 
 # gets the next search results if click on next button
-def submit_next ():
+def submit_next (direction):
     global begin
     global end
     global user_pattern
     global num
 
-    begin += 25
-    end += 25
+    if direction == "last":
+        begin -= 25
+        end -= 25
+    elif direction == "next":
+        begin += 25
+        end += 25
     next_results = mark_pattern(pattern=user_pattern)
     #print(next_results)
     return next_results
@@ -113,8 +117,9 @@ def result_page():
             return render_template('result.html', results=first_results, user_pattern=user_pattern,
                             num=num)
 
-        elif submit == "next":
-            next_results = submit_next()
+        elif submit == ("next" or "last"):
+            print("submit", submit)
+            next_results = submit_next(direction=submit)
             return render_template('result.html', results=next_results, user_pattern=user_pattern,
                             num=num)
 

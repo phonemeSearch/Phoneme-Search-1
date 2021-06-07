@@ -19,7 +19,7 @@
                     {{lemma|safe}}
                 {%endfor%}
                 <form action="http://127.0.0.1:1337/search_result" method="post">
-                    <button class="next-results" type="button">&lt; last 25 results</button>
+                    <button class="next-results" type="button" name="submit-button" value="last">&lt; last 25 results</button>
                     <button class="next-results" type="submit" name="submit-button" value="next">next 25 results &gt;</button>
                 </form>
             </div>

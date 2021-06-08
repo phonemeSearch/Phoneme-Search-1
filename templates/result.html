@@ -18,18 +18,24 @@
                 {%for lemma in results%}
                     {{lemma|safe}}
                 {%endfor%}
-                <form action="http://127.0.0.1:1337/search_result" method="post">
-                    <button class="next-results" type="button" name="submit-button" value="last">&lt; last 25 results</button>
-                    <button class="next-results" type="submit" name="submit-button" value="next">next 25 results &gt;</button>
+                <form action="http://127.0.0.1:1337/search_result" method="POST">
+                    <button id="last-btn" class="next-results-btn" type="submit" name="submit-button" value="last">&lt; last</button>
+                    <div id="page-container" class="page">page {{page_num|safe}} of {{pages|safe}}</div>
+                    <button id="next-btn" class="next-results-btn" type="submit" name="submit-button" value="next">next &gt;</button>
                 </form>
             </div>
         </section>
         <section class="order-section">
             <div class="order-container">
-                section
+                <form action="http://127.0.0.1:1337/search_result" method="GET">
+                    <label for="reversed-alpha">order reversed alphabetical:</label>
+                    <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
+                    <label for="alpha">order alphabetical:</label>
+                    <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
+                </form>
             </div>
         </section>
     </main>
-    <!--<script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>-->
+    <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>
 </body>
 </html>

@@ -441,7 +441,7 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                 grapheme = "(ου|όυ|ού)"
             pattern += "".join(grapheme)
 
-    user_pattern = re.sub(r"\\w\*\?", "*", pattern)
+    user_pattern = re.sub(r"(\\w\*\?)", "*", pattern)
     user_pattern = re.sub(r"\^", "|", user_pattern)
     user_pattern = re.sub(r"\$", "|", user_pattern)
     #print("search pattern:", user_pattern)
@@ -458,7 +458,7 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
     for result in results:
         index += 1
         results[index] = result[0]
-    connection.close()
+    results.sort()
     return results, user_pattern, pattern
 
 

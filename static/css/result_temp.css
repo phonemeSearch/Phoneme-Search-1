@@ -19,7 +19,7 @@ section {
     box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
     border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
-
+/*
 button {
     overflow: hidden;
     font-size: 20px;
@@ -33,7 +33,7 @@ button:hover {
     background-color: rgb(100, 100, 100);
     cursor: pointer;
 }
-
+*/
 .info-section {
     width: 49.5%;
 }
@@ -79,8 +79,16 @@ form {
     padding: 2em 2em 0 0;
 }
 
-.next-results {
-    
+.next-results-btn {
+    font-size: 20px;
+    background-color: rgb(60, 60, 60);
+    color: rgb(230, 230, 230);
+    border: none;
+}
+
+.next-results-btn:hover {
+    color: white;
+    cursor: pointer;
 }
 
 .mark-even {

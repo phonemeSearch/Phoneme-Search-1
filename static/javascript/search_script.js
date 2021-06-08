@@ -126,7 +126,7 @@ function wrongInputHandling(key, pressed, fieldId) {
     }
     var allowed;
 
-    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
                           'ps', 'h'];
@@ -134,6 +134,7 @@ function wrongInputHandling(key, pressed, fieldId) {
                           'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
                           'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
+                          
     var language = document.getElementById("choose-language-id").value;
     console.log(language);
     if (language == "1") {
@@ -206,15 +207,15 @@ const phonemesGreek = {
     "k": " κ", "g": " γ", "ks": "ξ"
 };
 const featuresGreek = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "G": "laryngeal",
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
 const phonemesVedic = {"a": "b"};
 const featuresVedic = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "G": "laryngeal",
-    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "X": "laryngeal", ">": "voiced",
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
+    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 

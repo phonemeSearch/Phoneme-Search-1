@@ -1,6 +1,6 @@
 import sqlite3
-import os
 from sqlite3.dbapi2 import connect
+import os
 import sys
 import re
 
@@ -131,7 +131,6 @@ vedic_search_info = \
      "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
 current_search_info = ""
 
-# !!! Pay Attention: Program can't recognize the difference between 'ph', aspirated p and 'p''h', both individual phonemes
 # language specific information
 path = ""
 language = ""
@@ -209,7 +208,10 @@ def prepare_language_characteristics(language_index, accent) -> list:
 
     path = os.path.dirname(os.path.abspath(sys.argv[0]))  # muss angepasst werden an jeweilige Pfad-Gegebenheiten
     # path = os.path.dirname(os.path.dirname(path))
-    path = os.path.join(path, r"database\PhonemeSearch.db")
+    if os.name == "nt":
+        path = os.path.join(path, r"database\PhonemeSearch.db")
+    else:
+        path = os.path.join(path, r"database/PhonemeSearch.db")
 
     for kind in ["vowel", "consonant"]:
         kind_entries = sql_fetch_entries(command=f"SELECT grapheme FROM {language}_{kind}")

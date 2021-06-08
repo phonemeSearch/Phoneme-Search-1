@@ -58,7 +58,6 @@ def mark_pattern (pattern):
         #print(marked)
         marked = "<div class=lemma>" + marked + "</div>"
         marked_list.append(marked)
-    print(pattern)
     return marked_list
 
 

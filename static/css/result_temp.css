@@ -79,6 +79,15 @@ form {
     padding: 2em 2em 0 0;
 }
 
+
+.mark-even {
+    color: rgb(150, 150, 200);
+}
+
+.mark-odd {
+    color: rgb(200, 150, 150)
+}
+
 .next-results-btn {
     font-size: 20px;
     background-color: rgb(60, 60, 60);
@@ -91,10 +100,6 @@ form {
     cursor: pointer;
 }
 
-.mark-even {
-    color: rgb(150, 150, 200);
-}
-
-.mark-odd {
-    color: rgb(200, 150, 150)
+.next-results-btn:disabled {
+    color: rgb(100, 100, 100);
 }

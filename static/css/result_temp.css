@@ -12,6 +12,20 @@ main {
     margin-top: 5em;
 }
 
+a {
+    color:rgb(230, 230, 230);
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+}
+
+#back-link {
+    display: inline-block;
+    margin-bottom: 1em;
+}
+
 section {
     margin-bottom: 1em;
     overflow: auto;
@@ -19,7 +33,7 @@ section {
     box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
     border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
-/*
+
 button {
     overflow: hidden;
     font-size: 20px;
@@ -33,7 +47,14 @@ button:hover {
     background-color: rgb(100, 100, 100);
     cursor: pointer;
 }
-*/
+
+button:disabled {
+    background-color: rgb(60, 60, 60);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;   
+}
+
 .info-section {
     width: 49.5%;
 }
@@ -97,9 +118,11 @@ form {
 
 .next-results-btn:hover {
     color: white;
+    background-color: rgb(60, 60, 60);
     cursor: pointer;
 }
 
 .next-results-btn:disabled {
     color: rgb(100, 100, 100);
+    border: none;
 }

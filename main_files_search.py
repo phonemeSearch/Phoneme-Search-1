@@ -235,7 +235,7 @@ def check_validity(search_string, allowed) -> bool:
     # check whether user str contains not allowed chars
     # check if there are probably misspelled blanks
     false_input = []
-    aspirated_greek = ["k", "p", "t"]
+    aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
     allowed_aspirated = []
     index = -1
     for char in search_string:

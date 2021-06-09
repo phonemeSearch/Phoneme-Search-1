@@ -27,6 +27,13 @@ def sort_alphabetical():
     alphabetical.sort()
     results = [lemma for lemma in alphabetical]
 
+
+def sort_descending():
+    print("descending")
+    global results
+    results.sort(reverse=True)
+
+
 # wraps searched pattern of lemmas in span elements to mark them with css
 def mark_pattern (pattern):
     global begin
@@ -151,6 +158,8 @@ def result_page():
             sort_reverse()
         elif reverse_button == "alphabetical":
             sort_alphabetical()
+        #elif reverse_button == "descendent":
+         #   sort_descending()
         page_num = 2
         begin = 25
         end = 50

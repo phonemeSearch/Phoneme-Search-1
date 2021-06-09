@@ -9,29 +9,23 @@ body {
 }
 
 main {
-    margin-top: 5em;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 4fr;
+    column-gap: 0.7em;
+    row-gap: 0.7em;
 }
 
 a {
+    display: inline-block;
+    margin-top: 2em;
+    margin-bottom: 1em;
     color:rgb(230, 230, 230);
     text-decoration: none;
 }
 
 a:hover {
     color: white;
-}
-
-#back-link {
-    display: inline-block;
-    margin-bottom: 1em;
-}
-
-section {
-    margin-bottom: 1em;
-    overflow: auto;
-    background-color: rgb(60, 60, 60);
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
-    border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
 
 button {
@@ -55,30 +49,21 @@ button:disabled {
     cursor: auto;   
 }
 
+section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1em 2em 1em 2em;
+    background-color: rgb(60, 60, 60);
+    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
+    border-radius: 0.5em 0.5em 0.5em 0.5em;
+}
+
 .info-section {
-    width: 49.5%;
-}
-
-.result-section {
-    float: left;
-    margin-right: 0.5%;
-    width: 49.5%;
-    height: 35em;
-    overflow: auto;
-}
-
-.order-section {
-    float: left;
-    margin-left: 0.5%;
-    width: 49.5%;
-}
-
-.order-container {
-    padding: 1em 0 0 2em;
-}
-
-.info-container {
-    padding: 1em 0 0 2em;
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 2;
 }
 
 .info {
@@ -89,17 +74,52 @@ button:disabled {
     color: rgb(230, 230, 230);
 }
 
+.result-section {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    padding: 1em 0 1em 0;
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+    min-height: 33em;
+    height: auto;
+}
+
+.navigation-form {
+    width: 8%;
+}
+
+#left-arrow {
+    transform: rotate(270deg);
+}
+
 .result-text {
-    padding: 1em 0 0 2em;
-    border-radius: 0.5em 0.5em 0.5em 0.5em;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+#page-container {
+    margin-bottom: 1em;
+}
+
+#right-arrow {
+    transform: rotate(90deg);
+}
+
+.order-section {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: 2;
+    grid-row-end: 3;
 }
 
 form {
     display: flex;
     justify-content: space-between;
-    padding: 2em 2em 0 0;
 }
-
 
 .mark-even {
     color: rgb(150, 150, 200);
@@ -110,9 +130,8 @@ form {
 }
 
 .next-results-btn {
-    font-size: 20px;
+    display: flex;
     background-color: rgb(60, 60, 60);
-    color: rgb(230, 230, 230);
     border: none;
 }
 
@@ -123,6 +142,5 @@ form {
 }
 
 .next-results-btn:disabled {
-    color: rgb(100, 100, 100);
-    border: none;
+    visibility: hidden;
 }

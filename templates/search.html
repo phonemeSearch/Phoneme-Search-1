@@ -11,13 +11,13 @@
         <section class="search-section" id="input-section">
             <form id="search-form" action="http://127.0.0.1:1337/search_result" method="post">
                 <div class="form-part-wrapper">
-                    <label for="choose-language">language</label>
+                    <label for="choose-language-id">language</label>
                     <select id="choose-language-id" name="choose-language" required="required">
                         <option value="1" selected="selected">Greek</option>
                         <option value="2">Vedic</option>
                     </select>
-                    <label for='accent-sensitive'>accent-sensitive</label>
-                    <input class="sensitive-check" type="checkbox" name='accent-sensitive'>
+                    <label for='accent-check'>accent-sensitive</label>
+                    <input id = "accent-check" class="sensitive-check" type="checkbox" name='accent-sensitive'>
                 </div>
                 <div id="user-input-container" class="form-part-wrapper">
                     <input id="user-input" class="text-field" type="text" name="search-input"/><button id="start-button" type="submit" name="submit-button" value="start">start</button>

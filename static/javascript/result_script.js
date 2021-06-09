@@ -16,3 +16,14 @@ if (parseInt(pageNum) <= 1) {
 };
 
 
+
+orderForm = document.getElementById("order-form");
+document.getElementById("order-check-reverse").addEventListener("change", () => {
+    
+    orderForm.submit();
+});
+
+document.getElementById("order-check-descending").addEventListener("change", () => {
+    orderForm.submit();
+});
+

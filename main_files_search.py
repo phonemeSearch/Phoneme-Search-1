@@ -505,7 +505,6 @@ def connect_search_related_fcts(search_string) -> tuple[list, str]:
 
 
 # user gives search, decides whether to save it or not
-# has to be strictly separated from other functions to make further work (server) easier -> only simple
 # use of functions
 # only used in local version
 def main_menu():

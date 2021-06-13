@@ -237,7 +237,6 @@ showKey.addEventListener("click", () => {
         var keyContainer = document.createElement("div");
         keyContainer.setAttribute("id", "key-container");
         keyContainer.setAttribute("class", "expand-container");
-
         for (var count=0; count<=2; count++) {
             var keyKind;
             const greek = [phonemesGreek, featuresGreek, wildcards];
@@ -293,8 +292,8 @@ showKeyboard.addEventListener("click", () => {
             'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
             'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
         };
-        greek = [featuresGreek, specialCharsGreek];
-        vedic = [featuresVedic, specialCharsVedic];
+        greek = [featuresGreek, specialCharsGreek, wildcards];
+        vedic = [featuresVedic, specialCharsVedic, wildcards];
 
         for (var count=0; count<=1; count++) {
             var kind;

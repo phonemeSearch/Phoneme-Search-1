@@ -159,8 +159,8 @@ def handle_digraphs(digraph, current_list, count) -> tuple[str, bool]:
     digraph_out = ""
     digraph_out += digraph
     is_digraph = False
-    second = digraphs.get(digraph)
-    for char in second:
+    following = digraphs.get(digraph)
+    for char in following:
         if current_list[count + 1] == char:
             is_digraph = True
             digraph_out += char
@@ -173,6 +173,12 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
     for char in ambiguous.get(ambiguous_char):
         ambiguous_out += "|" + char
     return ambiguous_out
+
+
+def digraphs_to_begin(group):
+    sorted_group = [phoneme for phoneme in group if len(phoneme) > 1]
+    sorted_group.extend([phoneme for phoneme in group if phoneme not in sorted_group])
+    return sorted_group
 
 
 # prepares check list for
@@ -261,7 +267,6 @@ def check_validity(search_string, allowed) -> bool:
         return True
 
 
-# simple search
 def convert_string_to_list(search) -> list:
     group = ""
     grouped_list = []
@@ -354,14 +359,14 @@ def convert_key_to_grapheme(connected) -> list:
             if is_digraph is True:
                 is_digraph = False
             elif char in consonants or char in vowels:
+                print(char)
                 if phoneme_index == length:
                     pass
                 elif char in digraphs:
                     digraph_return = \
                         handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
-
                     char = digraph_return[0]
-                    is_digraph = digraph_return[1]
+                    is_digraph = digraph_return[1]  #bool
                 group.append(char)
             else:
                 if char == "+":
@@ -403,6 +408,7 @@ def convert_key_to_grapheme(connected) -> list:
                         select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
 
         group = list(set(group))
+        group = digraphs_to_begin(group)
         search.append(group)
         group = []
 
@@ -425,6 +431,13 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                 count += 1
                 if char in ambiguous:
                     pattern += handle_ambiguous_phonemes(ambiguous_char=char)
+                elif char in digraphs:
+                    if count == len(grapheme):
+                        pattern += char + f"(?![{digraphs.get(char)}])" 
+                    elif grapheme[count] in digraphs.get(char):
+                        pass
+                    else:
+                        pattern += char + f"(?![{digraphs.get(char)}])"
                 elif char == "ου":
                     pattern += "ου|όυ|ού"  # verallgemeinern
                 else:
@@ -439,6 +452,9 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
                 amb_grapheme += handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
                 amb_grapheme += ")"
                 grapheme = amb_grapheme
+            elif grapheme[0] in digraphs:
+                following = digraphs.get(grapheme[0])
+                grapheme[0] += f"(?![{following}])"
             elif grapheme[0] == "ου":
                 grapheme = "(ου|όυ|ού)"
             pattern += "".join(grapheme)

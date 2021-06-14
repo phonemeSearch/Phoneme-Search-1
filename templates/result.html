@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}"/>
 </head>
 <body>
-    <a id="back-link" href="http://127.0.0.1:1337/search">&lt;&lt; back to search</a>
+    <a id="back-link" href="/search">&lt;&lt; back to search</a>
     <main>
         
         <section class="info-section">
@@ -14,7 +14,7 @@
             <div class="info"> number of lemmas: <span class="info-content">{{num}}</span></div>
         </section>
         <section class="result-section">
-            <form class="navigation-form" action="http://127.0.0.1:1337/search_result" method="POST">
+            <form class="navigation-form" action="/search_result" method="POST">
                 <button id="last-btn" class="next-results-btn" type="submit" name="submit-button" value="last">
                     <svg id="left-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
                         <defs>
@@ -35,7 +35,7 @@
                     {{lemma|safe}}
                 {%endfor%}
             </div>
-            <form class="navigation-form" action="http://127.0.0.1:1337/search_result" method="POST">
+            <form class="navigation-form" action="/search_result" method="POST">
                 <button id="next-btn" class="next-results-btn" type="submit" name="submit-button" value="next">
                     <svg id="right-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
                         <defs>
@@ -52,7 +52,7 @@
             </form>
         </section>
         <section class="order-section">
-            <form id="order-form" action="http://127.0.0.1:1337/search_result" method="GET">
+            <form id="order-form" action="/search_result" method="GET">
                 <span class="switch-description">reverse order</span>
                 <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
                 <span class="switch-description">alphabetical</span>

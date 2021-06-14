@@ -140,21 +140,23 @@ button:disabled {
 .key-table {
     font-size: 16px;
     width: 100%;
-    /*border: 1px solid;*/
+    border-collapse: collapse;
+    border: 1px solid;
 }
 
 th {
     font-weight: normal;
     text-align: left;
+    border: 1px solid;
 }
 
 td:first-child {
     width: 35%;
 }
 
-/*td {
+td {
     border: 1px solid;
-}*/
+}
 
 .head-roll {
     text-align: left;

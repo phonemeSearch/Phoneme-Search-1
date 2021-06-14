@@ -1,6 +1,186 @@
 // code for add phoneme expand
 // with click on plus-button new text input appears along with
 // minus-button and add button
+
+renderKey();
+// renders HTML for key tables
+function renderKey () {
+    var language = document.getElementById("choose-language-id").value;
+    const oldContainer = document.getElementById("key-container");
+    if (oldContainer) {
+        console.log("key container exists")
+        oldContainer.remove();
+    };
+    const section = document.getElementById("expand-key-section");
+    const keyContainer = document.createElement("div");
+    keyContainer.setAttribute("id", "key-container");
+    section.append(keyContainer);
+    console.log(language);
+    if (language === "1") {
+        keyContainer.innerHTML =
+            `<table class="key-table">
+                <tr>
+                    <th class="head-roll">Greek</th>
+                    <th>labial</th>
+                    <th>alveolar</th>
+                    <th>velar</th>
+                </tr>
+                <tr><td class="phoneme-category">stops</td></tr>
+                <tr>
+                    <td>-voice <span class="user-key">key:</span> P</td>
+                    <td>p</td>
+                    <td>t</td>
+                    <td>k</td>
+                </tr>
+                <tr>
+                    <td>+voice <span class="user-key">key:</span> P+#</td>
+                    <td>b</td>
+                    <td>d</td>
+                    <td>g</td>
+                </tr>
+                <tr>
+                    <td>+aspirate</td>
+                    <td>ph</td>
+                    <td>th</td>
+                    <td>kh</td>
+                </tr>
+                <tr>
+                    <td>affricate</td>
+                    <td></td>
+                    <td>z</td>
+                    <td></td>
+                </tr>
+                <tr><td class="phoneme-category">non stops</td></tr>
+                <tr>
+                    <td>nasal</td>
+                    <td>m</td>
+                    <!--<td></td>-->
+                    <td>n</td>
+                </tr>
+                <tr>
+                    <td>approximant</td>
+                    <td></td>
+                    <!--<td></td>-->
+                    <td>l r</td>
+                </tr>
+                <tr>
+                    <td>fricative</td>
+                    <td></td>
+                    <!--<td></td>-->
+                    <td>s</td>
+                </tr>
+            </table>`;
+    } else if (language === "2") {
+        keyContainer.innerHTML = 
+        `<table class="key-table">
+        <tr>
+            <th>Vedic</th>
+            <th>labial</th>
+            <th>alveolar</th>
+            <th>retroflex</th>
+            <th>palatal</th>
+            <th>velar</th>
+        </tr>
+        <tr><td class="phoneme-category">stops</td></tr>
+        <tr>
+            <td>-voice -aspirate<span class="user-key">key:</span> P</td>
+            <td>p</td>
+            <td>t</td>
+            <td>ṭ</td>
+            <td></td>
+            <td>k</td>
+        </tr>
+        <tr>
+            <td>-voice +aspirate <span class="user-key">key:</span> P+#</td>
+            <td>ph</td>
+            <td>th</td>
+            <td>ṭh</td>
+            <td></td>
+            <td>kh</td>
+        </tr>
+        <tr>
+            <td>+voice -aspirate</td>
+            <td>b</td>
+            <td>d</td>
+            <td>ḍ</td>
+            <td></td>
+            <td>g</td>
+        </tr>
+        <tr>
+            <td>+voice +aspirate</td>
+            <td>bh</td>
+            <td>dh</td>
+            <td>ḍh</td>
+            <td></td>
+            <td>gh</td>
+        </tr>
+        <tr>
+            <td class="phoneme-category">affricates</td>
+        </tr>
+        <tr>
+            <td>-voice -aspirate</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>c</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>-voice +aspirate</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>ch</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>+voice -aspirate</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>j</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="phoneme-category">non stops</td>
+        </tr>
+        <tr>
+            <td>glide</td>
+            <td>v</td>
+            <td></td>
+            <td></td>
+            <td>y</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>nasal</td>
+            <td>m</td>
+            <td>n</td>
+            <td>ṇ</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>approximant</td>
+            <td></td>
+            <td>l r</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>fricative</td>
+            <td></td>
+            <td>s</td>
+            <td>ṣ</td>
+            <td>ś</td>
+            <td></td>
+        </tr>
+    </table>`
+    }
+}
+
+
 function removeDisabled(id) {
     console.log(id);
     document.getElementById(id).removeAttribute("disabled");
@@ -175,12 +355,8 @@ document.getElementById("user-input").addEventListener("keypress", key => {
 //show key expand
 var chooseDropdown = document.getElementById("choose-language-id");
 chooseDropdown.addEventListener("change", () => {
-    var existing = document.getElementById("key-container");
-    if (existing != null) {
-        var indicationVector = document.getElementById("key-vector");
-        indicationVector.style.transform = "rotate(180deg)";
-        existing.remove();
-    }
+    console.log("change key")
+    renderKey();
 });
 
 chooseDropdown.addEventListener("change", () => {
@@ -199,75 +375,27 @@ chooseDropdown.addEventListener("change", () => {
     addInput.value = "";
 });
 
-const phonemesGreek = {
+
+/*const phonemesGreek = {
     "a": " α", "e": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "é": " έ",
     "i": " ί", "o": " ό", "ō": " ώ", "y": " ύ", "u": " όυ", "ē": " ή", "i": " ι", "p": " π", "b": " β", "ph": "φ",
     "t": " τ", "d": " δ", "th": "θ", "k": " κ", "g": " γ", "kh": "χ", "z": " ζ", "m": " μ", "n": " ν", "l": " λ",
     "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
     "k": " κ", "g": " γ", "ks": "ξ"
-};
+}; */
 const featuresGreek = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
-const phonemesVedic = {"a": "b"};
+//const phonemesVedic = {"a": "b"};
 const featuresVedic = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
-
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
-
-var showKey = document.getElementById("expand-key-button");
-showKey.addEventListener("click", () => {    
-    var indicationVector = document.getElementById("key-vector");
-    var existing = document.getElementById("key-container");
-    if (existing != null) {
-        console.log(existing);
-        indicationVector.style.transform = "rotate(180deg)";
-        existing.remove();
-
-    } else {
-        //var line = document.createElement("li");
-        //var entry = document.createTextNode(node);
-        indicationVector.style.transform = "none";
-        var keyContainer = document.createElement("div");
-        keyContainer.setAttribute("id", "key-container");
-        keyContainer.setAttribute("class", "expand-container");
-        for (var count=0; count<=2; count++) {
-            var keyKind;
-            const greek = [phonemesGreek, featuresGreek, wildcards];
-            const vedic = [phonemesVedic, featuresVedic, wildcards];
-            const head = ["phonemes", "features", "wildcards"];
-            language = document.getElementById("choose-language-id").value;
-            if (language === "1") {
-                keyKind = greek[count];
-                kindHeader = head[count];
-
-            } else if (language === "2") {
-                keyKind = vedic[count];
-                kindHeader = head[count];
-            }
-            var list = document.createElement("ol");
-            var headerLine = document.createElement("li");
-            headerLine.innerText = kindHeader;
-            list.append(headerLine);
-            console.log(keyKind);
-            for (var [key, value] of Object.entries(keyKind)) {
-                var node = (key + ": " + value);
-                var line = document.createElement("li");
-                line.innerText = node;
-                list.append(line);
-            }
-            keyContainer.append(list);
-        }
-        var expandContainer = document.getElementById("expand-key-section");
-        expandContainer.append(keyContainer);
-    }
-});
 
 //show keyboard expand
 function printValue (val) {

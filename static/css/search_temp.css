@@ -137,6 +137,30 @@ button:disabled {
     width: 5%;
 }
 
+.key-table {
+    font-size: 16px;
+    width: 100%;
+    /*border: 1px solid;*/
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+}
+
+td:first-child {
+    width: 35%;
+}
+
+/*td {
+    border: 1px solid;
+}*/
+
+.head-roll {
+    text-align: left;
+    
+}
+
 .button-wrapper{
     padding-left: 30%;
     padding-right: 30%;
@@ -174,22 +198,6 @@ svg:hover {
 
 .expand-container {
     padding-top: 1em;
-}
-
-#key-container {
-    display: flex;
-}
-
-ol {
-    font-size: 18px;
-    flex-basis: 100%;
-    margin: 0;
-    padding: 0;
-    float: left;
-}
-
-li {
-    list-style-type: none;
 }
 
 #keyboard-container {

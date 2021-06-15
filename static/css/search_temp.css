@@ -8,8 +8,9 @@ body {
     font-family: sans-serif;
 }
 
-h1 {
-    color: rgb(150, 150, 200);
+a {
+    color: rgb(230, 230, 230);
+    text-decoration: none;
 }
 
 main {
@@ -140,27 +141,39 @@ button:disabled {
 .key-table {
     font-size: 16px;
     width: 100%;
-    border-collapse: collapse;
-    border: 1px solid;
+    border: 0.5px solid rgb(80, 80, 80);
+    border-radius: 0.2em;
 }
 
 th {
     font-weight: normal;
     text-align: left;
-    border: 1px solid;
+}
+
+tr:nth-child(even){
+    background-color: rgb(60, 60, 60);
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(80, 80, 80);
 }
 
 td:first-child {
-    width: 35%;
+    text-align: left;
 }
 
 td {
-    border: 1px solid;
+    text-align: center;
 }
 
-.head-roll {
+.phoneme-category {
+    border: none;
+}
+
+.user-key {
     text-align: left;
-    
+    color: rgb(150, 150, 200);
+    border: none;
 }
 
 .button-wrapper{

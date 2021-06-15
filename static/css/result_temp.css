@@ -93,6 +93,7 @@ section {
 
 #left-arrow {
     transform: rotate(270deg);
+    min-width: 50px;
 }
 
 .result-text {
@@ -107,6 +108,7 @@ section {
 
 #right-arrow {
     transform: rotate(90deg);
+    min-width: 50px;
 }
 
 .order-section {
@@ -130,7 +132,6 @@ form {
 }
 
 .next-results-btn {
-    display: flex;
     background-color: rgb(60, 60, 60);
     border: none;
 }

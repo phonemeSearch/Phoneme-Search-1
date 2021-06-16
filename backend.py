@@ -155,12 +155,13 @@ def result_page():
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
     elif request.method == 'GET':
         reverse_button = request.args.get("reverse-button")
+        descending_button = request.args.get("descendant-button")
         if reverse_button == "reverse":
             sort_reverse()
         elif reverse_button == "alphabetical":
             sort_alphabetical()
-        #elif reverse_button == "descendent":
-         #   sort_descending()
+        #if descending_button == "":
+        #elif descending_button == "":
         page_num = 2
         begin = 25
         end = 50
@@ -169,7 +170,6 @@ def result_page():
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
 
 if __name__ == '__main__':
-    print(os.environ)
-    app.run(host='127.0.0.1', port=int(os.environ.get("PORT", 1337)), debug=True)
+    app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True)    
 #host='0.0.0.0'
 #host='127.0.0.1'

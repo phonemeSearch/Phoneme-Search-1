@@ -10,4 +10,4 @@ RUN useradd py
 
 USER py
 
-CMD python3 backend.py
+CMD HOST=0.0.0.0 python3 backend.py

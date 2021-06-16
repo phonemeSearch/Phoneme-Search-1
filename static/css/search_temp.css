@@ -161,6 +161,7 @@ tr:nth-child(odd) {
 
 td:first-child {
     text-align: left;
+    width: 35%;
 }
 
 td {

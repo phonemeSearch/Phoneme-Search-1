@@ -129,6 +129,11 @@ function renderKey () {
         </tr>
         <tr>
             <td class="phoneme-category">affricates</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>-voice -aspirate <span class="user-key">key: P+&lt;+%</span></td>
@@ -156,6 +161,11 @@ function renderKey () {
         </tr>
         <tr>
             <td class="phoneme-category">non stops</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
             <td>glide</td>

@@ -8,7 +8,6 @@
 <body>
     <a id="back-link" href="/search">&lt;&lt; back</a>
     <main>
-        
         <section class="info-section">
             <div class="info">search pattern: <span class="info-content">{{user_pattern}}</span></div>
             <div class="info"> number of lemmas: <span class="info-content">{{num}}</span></div>
@@ -53,12 +52,28 @@
         </section>
         <section class="order-section">
             <form id="order-form" action="/search_result" method="GET">
-                <span class="switch-description">reverse order</span>
-                <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
-                <span class="switch-description">alphabetical</span>
-                <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
-                <span class="switch-description">descendent</span>
-                <button id="descendent-button" name="reverse-button" type="submit" value="descendent">descendent</button>
+                <h2>sort by alphabetical categories</h2>
+                <div>
+                    <label for="reversed-alpha" class="switch-description">reverse order</label>
+                    <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
+                </div>
+                <div>
+                    <label for="alpha" class="switch-description">alphabetical</label>
+                    <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
+                </div>
+                <div>
+                    <label for="descendent-button" class="switch-description">descending</label>
+                    <button id="descendent-button" name="reverse-button" type="submit" value="descendent">descending</button>
+                </div>
+                <h2>sort by lemma length</h2>
+                <div>
+                    <label>length descending</label>
+                    <button type="submit"></button>
+                </div>
+                <div>
+                    <label>length ascending</label>
+                    <button type="submit"></button>
+                </div>
             </form>
         </section>
     </main>

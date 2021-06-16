@@ -119,8 +119,15 @@ section {
 }
 
 form {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    grid-column: 1 / 5;
 }
 
 .mark-even {

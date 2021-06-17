@@ -16,7 +16,7 @@ if (parseInt(pageNum) <= 1) {
 };
 
 
-
+//sort by alphabetical categories
 orderForm = document.getElementById("order-form");
 document.getElementById("order-check-reverse").addEventListener("change", () => {
     
@@ -27,3 +27,4 @@ document.getElementById("order-check-descending").addEventListener("change", () 
     orderForm.submit();
 });
 
+//sort by lemma length

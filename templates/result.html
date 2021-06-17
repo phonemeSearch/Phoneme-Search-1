@@ -53,27 +53,12 @@
         <section class="order-section">
             <form id="order-form" action="/search_result" method="GET">
                 <h2>sort by alphabetical categories</h2>
-                <div>
-                    <label for="reversed-alpha" class="switch-description">reverse order</label>
-                    <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
-                </div>
-                <div>
-                    <label for="alpha" class="switch-description">alphabetical</label>
-                    <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
-                </div>
-                <div>
-                    <label for="descendent-button" class="switch-description">descending</label>
-                    <button id="descendent-button" name="reverse-button" type="submit" value="descendent">descending</button>
-                </div>
+                <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
+                <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
+                <button id="descendant-button" name="reverse-button" type="submit" value="descendent">descending</button>
                 <h2>sort by lemma length</h2>
-                <div>
-                    <label>length descending</label>
-                    <button type="submit"></button>
-                </div>
-                <div>
-                    <label>length ascending</label>
-                    <button type="submit"></button>
-                </div>
+                <button type="submit">length descending</button>
+                <button type="submit">length ascending</button>
             </form>
         </section>
     </main>

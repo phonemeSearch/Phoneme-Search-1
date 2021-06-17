@@ -88,6 +88,7 @@ section {
 }
 
 .navigation-form {
+    display: inline-flex;
     width: 8%;
 }
 
@@ -122,6 +123,7 @@ form {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
+    column-gap: 0.5em;
 }
 
 h2 {

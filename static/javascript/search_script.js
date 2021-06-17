@@ -75,7 +75,29 @@ function renderKey () {
                     <td>s</td>
                     <td></td>
                 </tr>
-            </table>`;
+            </table>
+            <div class="key-info">
+                <span class=vowel>a</span>    
+                <span class=vowel>á</span>
+                <span class=vowel>e</span>
+                <span class=vowel>é</span>
+                <span class=vowel>i</span>
+                <span class=vowel>í</span>
+                <span class=vowel>o</span>
+                <span class=vowel>ó</span>
+                <span class=vowel>u</span>
+                <span class=vowel>ú</span>
+                <span class=vowel>y</span>
+                <span class=vowel>ý</span>
+                <span class=vowel>ē</span>
+                <span class=vowel>ḗ</span>
+                <span class=vowel>ō</span>
+                <span class=vowel>ṓ</span>
+            </div>
+            <div class="key-info">
+            <span class=wildcard>end/begin marker: |</span>
+            <span class=wildcard>any character: *</span>
+            </div>`;
     } else if (language === "2") {
         keyContainer.innerHTML = 
         `<table class="key-table">
@@ -438,7 +460,7 @@ showKeyboard.addEventListener("click", () => {
         keyboardContainer.setAttribute("id", "keyboard-container");
         keyboardContainer.setAttribute("class", "expand-container");
         var language = document.getElementById("choose-language-id").value;
-        var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6"};
+        var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"};
         var specialCharsVedic = {
             'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
             'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"

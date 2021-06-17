@@ -148,6 +148,10 @@ button:disabled {
 
 th {
     font-weight: normal;
+    text-align: center;
+}
+
+th:first-child {
     text-align: left;
 }
 
@@ -173,7 +177,7 @@ td {
 }
 
 .user-key {
-    text-align: left;
+    text-align: center;
     color: rgb(150, 150, 200);
     border: none;
 }

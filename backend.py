@@ -35,6 +35,21 @@ def sort_descending():
     results.sort(reverse=True)
 
 
+def sort_ascending():
+    global results
+    results.sort()
+
+
+def sort_length_ascending():
+    global results
+    results.sort(key=len)
+
+
+def sort_length_descending():
+    global results
+    results.sort(key=len, reverse=True)
+
+
 # wraps searched pattern of lemmas in span elements to mark them with css
 def mark_pattern (pattern):
     global begin
@@ -106,13 +121,19 @@ def submit_next (direction):
     global user_pattern
 
     if direction == "last":
-        page_num -= 1
-        begin -= 25
-        end -= 25
+        if page_num == 1:
+            pass
+        else:
+            page_num -= 1
+            begin -= 25
+            end -= 25
     elif direction == "next":
-        page_num += 1
-        begin += 25
-        end += 25
+        if page_num == ceil(num / 25):
+            pass
+        else:
+            page_num += 1
+            begin += 25
+            end += 25
     next_results = mark_pattern(pattern=pattern)
     #print(next_results)
     return next_results
@@ -138,8 +159,10 @@ def result_page():
     global page_num
     global begin
     global end
+    submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
+        print(submit)
         if submit == "start":
             page_num = 1
             user_search = request.form['search-input']
@@ -151,20 +174,28 @@ def result_page():
 
         elif submit == "next" or submit == "last":
             next_results = submit_next(direction=submit)
+            submit = ""
             return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
     elif request.method == 'GET':
         reverse_button = request.args.get("reverse-button")
-        descending_button = request.args.get("descendant-button")
+        descending_button = request.args.get("descending-button")
+        length_button = request.args.get("length-button")
         if reverse_button == "reverse":
             sort_reverse()
         elif reverse_button == "alphabetical":
             sort_alphabetical()
-        #if descending_button == "":
-        #elif descending_button == "":
-        page_num = 2
-        begin = 25
-        end = 50
+        if descending_button == "descending":
+            sort_descending()
+        elif descending_button == "ascending":
+            sort_ascending()
+        elif length_button == "length-ascending":
+            sort_length_ascending()
+        elif length_button == "length-descending":
+            sort_length_descending()
+        page_num = 1
+        begin = 0
+        end = 25
         reversed_results = submit_next(direction="last")
         return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num,
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")

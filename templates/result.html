@@ -55,11 +55,15 @@
                 <h2>sort by alphabetical categories</h2>
                 <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
                 <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
-                <button id="descendant-button" name="reverse-button" type="submit" value="descendent">descending</button>
+                <button id="descending-button-id" name="descending-button" type="submit" value="descending">descending</button>
+                <button id="ascending-button-id" name="descending-button" type="submit" value="ascending">ascending</button>
                 <h2>sort by lemma length</h2>
-                <button type="submit">length descending</button>
-                <button type="submit">length ascending</button>
+                <button type="submit" name="length-button" value="length-ascending">length ascending</button>
+                <button type="submit" name="length-button" value="length-descending">length descending</button>
             </form>
+            <!--<form id="download-form" action="result.txt">
+                <button type="submit">download results as txt-file</button>
+            </form>-->
         </section>
     </main>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>

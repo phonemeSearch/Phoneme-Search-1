@@ -8,8 +8,13 @@ body {
     font-family: sans-serif;
 }
 
-a {
+a.back {
     color: rgb(230, 230, 230);
+    text-decoration: none;
+}
+
+a.help-link {
+    color: rgb(150, 150, 150);
     text-decoration: none;
 }
 

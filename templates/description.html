@@ -7,21 +7,55 @@
 </head>
 <body>
   <h1>How it works</h1>
+  <main>
+    <section class="search-description">
+    <div>Search Page</div>
+    <h2>Input Methods</h2>
+    <p>
+      Phoneme search is quite easy to use. Basically you define a search pattern which can contain three possible input methods. These options work as follows:
+    </p>
+    <p>
+      1) Your input is merely an individual grapheme, like 'a'. For example the 'a' mentioned before means 'a' in the languages. The input patterns resemble the Latin transcription (if there is),
+      so there are some digraphs like ph, kh, th in Greek. A complete list of the individual signs can be found right below the search bar.
+    </p>
+    <p>
+      2) Another method is to use simple key words which represent certain groups of phonemes, ordered by phonemic features. These keys are mostly capital letters.
+      For example 'P' stands for plosive therefore all plosive phonemes are allowed at the place where you put it into your pattern. These abbreviations can be combined with
+      the '+'-character. If you write 'P+L' all plosive labials are allowed. There are four categories: manner, place, aspiration and voice. Each of these can be combined to a single cluster.
+    </p>
+    <p>
+      3) If you may allow an individual set of graphemes at a certain place in your pattern you can use parenthesis to wrap these graphemes. You can give this pattern for example: P(ae)L
+      which means that lemmas with a plosive followed by a or e followed by labials are matched. You may also enter the keywords into parenthesis, following the same rules as described in 2).
+      If you wrap a '*' in parenthesis it means all characters are allowed at this position, so additional characters at this place will have no effect.
+    </p>
+    <h2>Accent-Sensitive Checkbox</h2>
+    <p>
+      If the checkbox is not ticked vowels without accent match all variants of itself with accent. This may be a good shortcut if you just want an a in your pattern and the accent doesn’t matter.
+      Keep in mind that if give vowels with accent in your pattern it will search only for these no matter whether the accent checkbox is ticked or not.
+    </p>
+    <h2>Key</h2>
+    <!--example picture of table/search input-->
+    <p>The key for every language is provided as a table below the search input field. The phonemes are ordered by linguistic categories. All graphemes which are given in these tables can
+      be entered. The key words for consonant clusters are given next to the categories. Like described in 2 you can combine them with '+'.
+    </p>
+  </section>
+  <section class="result-description">
+    <div>Result Page</div>
+  <h2>Match</h2>
   <p>
-    Phoneme search is quite easy to use. Basically you define a search pattern which can contain three possible input methods.
-    These options work as follows:
+    A lemma is matched if the given pattern is found at least once in the lemma. This means if you want a lemma to match the same pattern twice (or more) you must specify that explicitly:
+    to*to matches lemmas which contain to at least two times.
+    At the moment there is no way to exclude lemmas containing multiple matches.
   </p>
+  <h2>Results</h2>
   <p>
-    1: Your input is merely an individual grapheme, like 'a'. For example the 'a' mentioned before means 'a' in the languages.
-    The input patterns resemble the Latin transcription (if there is), so there are some digraphs like ph, kh, th in Greek.
-    A complete list of the individual signs can be found right below the search bar.
-  </p>
-  <p>
-    2: Another method is to use simple key words which represent certain groups of phonemes, ordered by phonemic
-    features. These keys are mostly capital letters. For example 'P' stands for plosive therefore all plosive phonemes are allowed at
-    the place where you put it into your pattern. These abbreviations can be combined with the '+'-character. If you write
-    'P+L' all plosive labials are allowed. There are four categories: manner, place, aspiration and voice. Each of these can be
-      combined to a single cluster.
-  </p>
+    <!--example picture of result page-->
+    The search results are presented as pages with a maximum of 25 matches per page. There are arrow symbols to navigate through the result pages. On the right side is some basic information about the results,
+    at first the pattern you gave and below the number of matches. Below that are some buttons to modify the result order. Currently you can order the results alphabetical ascending and descending,
+    reverse alphabetical ascending (seen from the end of the lemmas) and by length ascending and descending. Default is alphabetical ascending. Other possibilities to order the results are in progress.
+    The given pattern is marked in the resulting lemmas. If the pattern is found more than once the marking colors alternate from red to blue to provide a better overview. They have no further meaning.
+</p>
+</section>
+</main>
 </body>
 </html>

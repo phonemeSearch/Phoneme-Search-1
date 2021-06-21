@@ -7,7 +7,7 @@
     <script></script>
 </head>
 <body>
-    <a id="back-link" href="/">&lt;&lt; back</a>
+    <a id="back-link" class="back" href="/">&lt;&lt; back</a>
     <main>
         <section class="search-section" id="input-section">
             <form id="search-form" action="/search_result" method="post">
@@ -22,6 +22,7 @@
                 </div>
                 <div id="user-input-container" class="form-part-wrapper">
                     <input id="user-input" class="text-field" type="text" name="search-input"/><button id="start-button" type="submit" name="submit-button" value="start">start</button>
+                    <a class="help-link" href="/search/description">?</a>
                 </div>
                 <button id="plus-button" class="plus-minus-button" type="button">+</button><span>add phoneme</span>
             </form>

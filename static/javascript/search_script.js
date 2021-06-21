@@ -1,7 +1,3 @@
-// code for add phoneme expand
-// with click on plus-button new text input appears along with
-// minus-button and add button
-
 renderKey();
 // renders HTML for key tables
 function renderKey () {
@@ -227,10 +223,11 @@ function renderKey () {
 
 
 function removeDisabled(id) {
-    console.log(id);
     document.getElementById(id).removeAttribute("disabled");
 }
 
+
+// adds content of add phoneme input field to main input field
 function addToSearch(inputContent) {
     const searchInput = document.getElementById("user-input");
     searchInput.value += inputContent;
@@ -238,6 +235,10 @@ function addToSearch(inputContent) {
     removeDisabled("plus-button");
 }
 
+
+
+//event listener for add phoneme button
+//adds secondary input field remove button and add button and their event listeners
 document.getElementById("plus-button").addEventListener("click", () => {
     var addContainer = document.createElement("div");
     var addInput = document.createElement("input");
@@ -258,9 +259,6 @@ document.getElementById("plus-button").addEventListener("click", () => {
     addContainer.append(delBtn, addInput, addBtn);
     document.getElementById("search-form").append(addContainer);
 
-   /* document.getElementById("add-input-field").addEventListener ("input", e => {
-
-    });*/
 
     document.getElementById("add-input-field").addEventListener ("keypress", key => {
         wrongInputHandling(key=key, pressed=key.key, fieldId="add-input-field");
@@ -278,59 +276,8 @@ document.getElementById("plus-button").addEventListener("click", () => {
     document.getElementById("plus-button").setAttribute("disabled", "disabled");
 });
 
-//new version
 
-/*
-userInput = document.getElementById("user-input")
-userInput.addEventListener("input", e => {
-    wrongInputHandling("user-input", e)
-});
-
-function wrongInputHandling(id, e) {
-    console.log(e.data);
-    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
-    'R', 'V', 'W', '|', 'y', 'a', 'e', 'ē', 'ē', 'y', 'o', 'ō', 'i', 'a', 'e', 'o', 'ō', 'i', 'u',
-    'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'dz', 'm', 'n', 'l', 'r', 's', 's',
-    'ps'];
-    const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
-    'R', 'V', 'W', 'X', '|', 'a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
-    'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
-    'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h'];
-    var language = document.getElementById("choose-language-id").value;
-    //console.log(language);
-    if (language == "1") {
-        var textField = document.getElementById(id).value;
-        console.log("text 0 ", textField[0]);
-        var char;
-        for (var i=0; i<textField.length; i++) {
-            console.log("index: ", i);
-            //console.log("current field", textField.value);
-            console.log("in loop", textField[i]);
-            char = textField[i];
-            console.log("char", char);
-            if (greekAllowed.includes(char)) {
-                console.log("pass");
-            } else {
-                console.log("not in allowed!")
-            }
-        }
-        if (greekAllowed.includes(e.data)) {
-            console.log("pass")
-        } else {
-            var message = "character '" + e.data + "' is no allowed input for Greek";
-            e.preventDefault();
-            wrongInput(message, id);
-        }
-    } else if (language == "2") {
-        if (vedicAllowed.includes(e.data)) {
-            console.log("pass")
-        } else {
-            e.preventDefault();
-            wrongInput(message, id);
-        }
-    }
-}
-*/
+// adds a message for user if input is not allowed
 function wrongInput(errorMessage, fieldId) {
     var inputField = document.getElementById(fieldId);
     inputField.setAttribute("class", "text-field-wrong");
@@ -342,8 +289,10 @@ function wrongInput(errorMessage, fieldId) {
     inputContainer.append(infoContainer);
 }
 
-//old version
 
+// handles the input in the main and secondary input field
+// checks whether given char is in list of allowed inputs of the respective language
+// special treatment for h in Greek which is only allowed after certain characters
 function wrongInputHandling(key, pressed, fieldId) {
     if (document.getElementById("wrong-message-id")) {
         document.getElementById("wrong-message-id").remove();
@@ -388,6 +337,7 @@ function wrongInputHandling(key, pressed, fieldId) {
         wrongInput(message, fieldId);
     }
 }
+
 
 document.getElementById("user-input").addEventListener("keypress", key => {
     var existing = document.getElementById("add-input-field");
@@ -447,6 +397,8 @@ function printValue (val) {
     document.getElementById('user-input').value += val;
 };
 
+
+// adds a keyboard containing keys for key-characters and special characters in the respective language
 var keyIds = []
 var showKeyboard = document.getElementById("expand-keyboard-button")
 showKeyboard.addEventListener("click", () => {

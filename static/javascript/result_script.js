@@ -15,16 +15,3 @@ if (parseInt(pageNum) <= 1) {
     lastButton.removeAttribute("disabled");
 };
 
-
-//sort by alphabetical categories
-orderForm = document.getElementById("order-form");
-document.getElementById("order-check-reverse").addEventListener("change", () => {
-    
-    orderForm.submit();
-});
-
-document.getElementById("order-check-descending").addEventListener("change", () => {
-    orderForm.submit();
-});
-
-//sort by lemma length

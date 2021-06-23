@@ -480,6 +480,14 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
     return results, user_pattern, pattern
 
 
+def save(save_path, file_name, results, pattern):
+    file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
+    file.write("\nnumber of results: " + str(len(results)))
+    file.write("\nsearch pattern: " + pattern + "\n\n")
+    file.write("\n".join(results))
+    file.close() 
+
+
 def save_result(results, pattern) -> str:
     file_name = ""
     exists = True
@@ -503,12 +511,7 @@ def save_result(results, pattern) -> str:
         except FileNotFoundError:
             exists = False
 
-    file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
-    file.write("\n".join(results))
-    file.write("\n\nnumber of results: " + str(len(results)))
-    file.write("\nsearch pattern: " + pattern)
-    print(f"Search saved as {file_name}.txt.")
-    file.close()
+    save(save_path=save_path, file_name=file_name, results=results, pattern=pattern)
     return f"Search saved as {file_name}.txt."
 
 

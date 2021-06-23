@@ -133,12 +133,20 @@ h2 {
     margin-top: 2em;
 }
 
-.mark-even {
+/*.mark-even {
     color: rgb(150, 150, 200);
 }
 
 .mark-odd {
     color: rgb(200, 150, 150)
+}*/
+
+.mark:nth-child(odd) {
+    color: rgb(200, 150, 150)
+}
+
+.mark:nth-child(even) {
+    color: rgb(150, 150, 200);
 }
 
 .next-results-btn {

@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import main_files_search as mf
 import re
 import os
+import sys
 from math import ceil
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 
 begin = 0
 end = 0
@@ -13,7 +14,8 @@ page_num = 0
 pattern = ""
 user_pattern = ""
 results = []
-
+first_results = []
+next_results = []
 
 def sort_reverse():
     global results
@@ -63,21 +65,17 @@ def mark_pattern (pattern):
         count = 0
         matches = re.finditer(pattern, results[index])
         marked = results[index]
-        #print("-----------------------------------")
         for match in matches:
             count += 1
-            #print(result)
-            #print(match)
-            #print(match.groups())
             group = match.group(0)
             if count % 2 == 0:
                 marked = re.sub(f"{group}(?!\w?\/%)", f"%{group}/%", marked, 1)
             elif count % 2 != 0:
                 marked = re.sub(f"{group}(?!\w?\/%)", f"§{group}/%", marked, 1)
         
-        marked = re.sub("(?<!\/)%", "<span class='mark-even'>", marked)
+        marked = re.sub("(?<!\/)%", "<span class='mark'>", marked)  #even
         marked = re.sub("\/%", "</span>", marked)
-        marked = re.sub("§", "<span class='mark-odd'>", marked)
+        marked = re.sub("§", "<span class='mark'>", marked)  #odd
         #print(marked)
         marked = "<div class=lemma>" + marked + "</div>"
         marked_list.append(marked)
@@ -159,6 +157,8 @@ def result_page():
     global page_num
     global begin
     global end
+    global next_results
+    global first_results
     submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
@@ -169,6 +169,10 @@ def result_page():
             language = request.form['choose-language']
             accent_sensitive = request.form.get('accent-sensitive')
             first_results = submit_start(user_search=user_search, language=language, accent_sensitive=accent_sensitive)
+            
+            path = os.path.dirname(os.path.abspath(sys.argv[0]))
+            mf.save(save_path=path + "\\static\\download\\", file_name="search_results", results=results, pattern=user_pattern)
+            
             return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
 
@@ -177,6 +181,7 @@ def result_page():
             submit = ""
             return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
+
     elif request.method == 'GET':
         reverse_button = request.args.get("reverse-button")
         descending_button = request.args.get("descending-button")

@@ -21,6 +21,7 @@
             </form>
             <div class="result-text">
                 <div id="page-container" class="page">page {{page_num|safe}} of {{pages|safe}}</div>
+                <hr>
                 {%for lemma in results%}
                     {{lemma|safe}}
                 {%endfor%}

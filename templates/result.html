@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <title>Results</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <a id="back-link" href="/search">&lt;&lt; back</a>
+    <a id="back-link" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
     <main>
         <section class="info-section">
             <div class="info">search pattern: <span class="info-content">{{user_pattern}}</span></div>
@@ -15,7 +16,7 @@
         <section class="result-section">
             <form class="navigation-form" action="/search_result" method="POST">
                 <button id="last-btn" class="next-results-btn" type="submit" name="submit-button" value="last">
-                    <svg id="left-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
+                    <!--<svg id="left-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
                         <defs>
                             <path d="M447.68 226.15L573.57 270.79L321.78 270.79L70 270.79L195.88 226.15L321.78 181.51L447.68 226.15Z" id="aad80725as"></path>
                         </defs>
@@ -25,7 +26,8 @@
                                 </use>
                             </g>
                         </g>
-                    </svg>
+                    </svg>-->
+                    <i class="fa fa-chevron-left"></i>
                 </button>
             </form>
             <div class="result-text">
@@ -36,7 +38,7 @@
             </div>
             <form class="navigation-form" action="/search_result" method="POST">
                 <button id="next-btn" class="next-results-btn" type="submit" name="submit-button" value="next">
-                    <svg id="right-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
+                    <!--<svg id="right-arrow" class="arrow" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet" viewBox="68.99999999999999 180.50792439778644 507.57142857142867 93.28571428571428" width="50">
                         <defs>
                             <path d="M447.68 226.15L573.57 270.79L321.78 270.79L70 270.79L195.88 226.15L321.78 181.51L447.68 226.15Z" id="aad80725as"></path>
                         </defs>
@@ -46,7 +48,8 @@
                                 </use>
                             </g>
                         </g>
-                    </svg>
+                    </svg>-->
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </form>
         </section>
@@ -61,9 +64,10 @@
                 <button type="submit" name="length-button" value="length-ascending">length ascending</button>
                 <button type="submit" name="length-button" value="length-descending">length descending</button>
             </form>
-            <!--<form id="download-form" action="result.txt">
-                <button type="submit">download results as txt-file</button>
-            </form>-->
+            <div id="download-container">
+                Downloads
+                <a class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download>download results as txt-file  <i class="fa fa-download"></i></a>
+            </div>
         </section>
     </main>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>

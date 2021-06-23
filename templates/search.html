@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>Phoneme Search</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search_temp.css') }}"/>
-    <script></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <a id="back-link" class="back" href="/">&lt;&lt; back</a>
+    <a id="back-link" class="back" href="/"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
     <main>
         <section class="search-section" id="input-section">
             <form id="search-form" action="/search_result" method="post">

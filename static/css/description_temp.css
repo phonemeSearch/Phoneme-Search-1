@@ -7,17 +7,41 @@ body {
     color: rgb(230, 230, 230);
 }
 
+a {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    color:rgb(230, 230, 230);
+    text-decoration: none;
+}
+
+a:hover {
+    color: white;
+}
+
+.link-container {
+    width: 100%;
+}
+
+a.search-link {
+    clear:right;
+    margin: 0;
+    display: inline;
+    font-weight: bolder;
+    text-align: right;
+}
+
+h1 {
+    color: rgb(150, 150, 200);
+    margin-bottom: 1em;
+}
+
 section {
     margin-bottom: 1em;
     padding: 1em 2em 1em 2em;
     background-color: rgb(60, 60, 60);
     box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
     border-radius: 0.5em 0.5em 0.5em 0.5em;
-}
-
-h1 {
-    color: rgb(150, 150, 200);
-    margin-bottom: 1em;
 }
 
 h2 {

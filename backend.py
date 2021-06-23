@@ -62,21 +62,14 @@ def mark_pattern (pattern):
     for index in range(begin, end):
         if index >= len(results):
             break
-        count = 0
         matches = re.finditer(pattern, results[index])
         marked = results[index]
         for match in matches:
-            count += 1
             group = match.group(0)
-            if count % 2 == 0:
-                marked = re.sub(f"{group}(?!\w?\/%)", f"%{group}/%", marked, 1)
-            elif count % 2 != 0:
-                marked = re.sub(f"{group}(?!\w?\/%)", f"§{group}/%", marked, 1)
+            marked = re.sub(f"{group}(?!\w?%)", f"§{group}%", marked, 1)
         
-        marked = re.sub("(?<!\/)%", "<span class='mark'>", marked)  #even
-        marked = re.sub("\/%", "</span>", marked)
-        marked = re.sub("§", "<span class='mark'>", marked)  #odd
-        #print(marked)
+        marked = re.sub("%", "</span>", marked)
+        marked = re.sub("§", "<span class='pattern'>", marked)
         marked = "<div class=lemma>" + marked + "</div>"
         marked_list.append(marked)
     return marked_list

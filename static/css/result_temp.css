@@ -17,10 +17,6 @@ main {
 }
 
 a {
-    display: block;
-    margin-top: 2em;
-    margin-bottom: 1em;
-    width: 2em;
     color:rgb(230, 230, 230);
     text-decoration: none;
 }
@@ -29,7 +25,23 @@ a:hover {
     color: white;
 }
 
+a:hover .pattern:nth-child(odd) {
+    color: rgb(250, 200, 200);
+}
+
+a:hover .pattern:nth-child(even) {
+    color: rgb(200, 200, 250);
+}
+
+#back-link {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    width: 2em;
+}
+
 a.download-link {
+    display: block;
     margin-top: 1em;
 }
 
@@ -97,6 +109,10 @@ section {
     width: 8%;
 }
 
+hr {
+    width: 100%;
+}
+
 /*#left-arrow {
     transform: rotate(270deg);
     min-width: 50px;
@@ -108,8 +124,23 @@ section {
     flex-direction: column;
 }
 
+.result {
+    font-size: 10px;
+    margin-bottom: 0.5em;
+}
+
+.lemma {
+    font-size: 18px;
+}
+
+.fa-external-link {
+    position: relative;
+    bottom: 1ex;
+    left: 0.5em;
+}
+
 #page-container {
-    margin-bottom: 1em;
+    text-align: center;
 }
 
 /*#right-arrow {

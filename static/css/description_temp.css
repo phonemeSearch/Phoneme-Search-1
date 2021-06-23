@@ -20,13 +20,19 @@ a:hover {
 }
 
 .link-container {
+    display: flex;
+    justify-content: end;
     margin-bottom: 1em;
     width: 100%;
 }
 
+a.back {
+    width: 2em;
+}
+
 a.search-link {
     margin: 0;
-    display: block;
+    display: inline-block;
     font-weight: bolder;
     text-align: right;
 }

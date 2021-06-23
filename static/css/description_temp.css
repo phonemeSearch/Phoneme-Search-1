@@ -20,13 +20,13 @@ a:hover {
 }
 
 .link-container {
+    margin-bottom: 1em;
     width: 100%;
 }
 
 a.search-link {
-    clear:right;
     margin: 0;
-    display: inline;
+    display: block;
     font-weight: bolder;
     text-align: right;
 }

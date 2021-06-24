@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request
-import main_files_search as mf
+import main_functions_search as mf
+import help_functions as hf
 import re
 import os
 import sys
 from math import ceil
+
 
 app = Flask(__name__)
 
@@ -17,40 +19,6 @@ results = []
 first_results = []
 next_results = []
 language = ""
-
-def sort_reverse():
-    global results
-    reversed = [lemma[::-1] for lemma in results]
-    reversed.sort()
-    results = [lemma[::-1] for lemma in reversed]
-
-
-def sort_alphabetical():
-    global results
-    alphabetical = [lemma for lemma in results]
-    alphabetical.sort()
-    results = [lemma for lemma in alphabetical]
-
-
-def sort_descending():
-    print("descending")
-    global results
-    results.sort(reverse=True)
-
-
-def sort_ascending():
-    global results
-    results.sort()
-
-
-def sort_length_ascending():
-    global results
-    results.sort(key=len)
-
-
-def sort_length_descending():
-    global results
-    results.sort(key=len, reverse=True)
 
 
 # wraps searched pattern of lemmas in span elements to mark them with css
@@ -101,9 +69,12 @@ def submit_start (user_search, accent_sensitive):
     begin = 0
     end = 25
     user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
+    print(user_allowed)
     check = mf.check_validity(search_string=user_search, allowed=user_allowed)
     if check:
+        print("check")
         user_results = mf.connect_search_related_fcts(search_string=user_search)
+        print(user_results[0][0:500])
         results = user_results[0]
         pattern = user_results[2]
         user_pattern = user_results[1]
@@ -167,6 +138,7 @@ def result_page():
     global next_results
     global first_results
     global language
+    global results
 
     submit = ""
     if request.method == 'POST':
@@ -191,22 +163,23 @@ def result_page():
             return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
 
+
     elif request.method == 'GET':
         reverse_button = request.args.get("reverse-button")
         descending_button = request.args.get("descending-button")
         length_button = request.args.get("length-button")
         if reverse_button == "reverse":
-            sort_reverse()
+            results = hf.sort_reverse(results = results)
         elif reverse_button == "alphabetical":
-            sort_alphabetical()
+            results = hf.sort_alphabetical(results = results)
         if descending_button == "descending":
-            sort_descending()
+            hf.sort_descending(results)
         elif descending_button == "ascending":
-            sort_ascending()
+            hf.sort_ascending(results)
         elif length_button == "length-ascending":
-            sort_length_ascending()
+            hf.sort_length_ascending(results)
         elif length_button == "length-descending":
-            sort_length_descending()
+            hf.sort_length_descending(results)
 
         page_num = 1
         begin = 0

@@ -16,6 +16,7 @@ user_pattern = ""
 results = []
 first_results = []
 next_results = []
+language = ""
 
 def sort_reverse():
     global results
@@ -57,6 +58,7 @@ def mark_pattern (pattern):
     global begin
     global end
     global results
+    global language
 
     marked_list = []
     for index in range(begin, end):
@@ -72,10 +74,14 @@ def mark_pattern (pattern):
         marked = re.sub("§", "<span class='pattern'>", marked)
         marked = f"<span class='lemma'>{marked}</span>"
 
-        #get_link = f"https://lsj.gr/wiki/{results[index]}"
-        get_link = f"https://logeion.uchicago.edu/{results[index]}"
+        if language == "1":
+            #get_link = f"https://lsj.gr/wiki/{results[index]}"
+            get_link = f"https://logeion.uchicago.edu/{results[index]}"
+            marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
+        elif language == "2":
+            pass
 
-        marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
+        #marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
         
         marked = f"<div class=result>{marked}</div>"
         marked_list.append(marked)
@@ -83,13 +89,14 @@ def mark_pattern (pattern):
 
 
 # uses mf to get search results
-def submit_start (user_search, language, accent_sensitive):
+def submit_start (user_search, accent_sensitive):
     global begin
     global end
     global pattern
     global user_pattern
     global num
     global results
+    global language
     
     begin = 0
     end = 25
@@ -159,6 +166,8 @@ def result_page():
     global end
     global next_results
     global first_results
+    global language
+
     submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
@@ -168,7 +177,7 @@ def result_page():
             user_search = request.form['search-input']
             language = request.form['choose-language']
             accent_sensitive = request.form.get('accent-sensitive')
-            first_results = submit_start(user_search=user_search, language=language, accent_sensitive=accent_sensitive)
+            first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
             
             path = os.path.dirname(os.path.abspath(sys.argv[0]))
             mf.save(save_path=path + "\\static\\download\\", file_name="search_results", results=results, pattern=user_pattern)

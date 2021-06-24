@@ -164,6 +164,7 @@ def handle_digraphs(digraph, current_list, count) -> tuple[str, bool]:
         if current_list[count + 1] == char:
             is_digraph = True
             digraph_out += char
+    print("digraph: ", digraph_out)
     return digraph_out, is_digraph
 
 
@@ -172,6 +173,7 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
     ambiguous_out += ambiguous_char
     for char in ambiguous.get(ambiguous_char):
         ambiguous_out += "|" + char
+        print("ambig: ", ambiguous_out)
     return ambiguous_out
 
 
@@ -189,15 +191,24 @@ def prepare_language_characteristics(language_index, accent) -> list:
     global ambiguous
     global current_search_info
 
-    greek_digraphs = {"p": "hs", "k": "h", "t": "h"}
-    vedic_digraphs = {"p": "h", "b": "h", "k": "h", "t": "h", "d": "h", "g": "h", "ṭ": "h", "ḍ": "h"}
+    # ks with Stigma fix in database 
+    greek_digraphs = {"p": ["h", "s"], "k": ["h","s"], "t": ["h"]}
+    #greek_dipthongs = {ου: ["ου", "ού", "όυ", "οῦ"]}
+    vedic_digraphs = {"p": ["h"], "b": ["h"], "k": ["h"], "t": ["h"], "d": ["h"], "g": ["h"], "ṭ": ["h"],
+                        "ḍ": ["h"]}
     if accent == "on":   
-        greek_ambiguous = {"σ": "ς", "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"}
+        greek_ambiguous = {"σ": ["ς"], "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"} # Vokale noch herausnehmen
         vedic_ambiguous = {}
     else:
-        greek_ambiguous = {"σ": "ς", "α": "άᾶ", "ο": "ό", "ε": "έ", "η": "ή", "ι": "ῖί",
-                           "ω": "ώῶ"}  # "ου": "όυ", "όυ": "ου"
-        vedic_ambiguous = {'a': 'áàā', 'e': 'éè', 'i': 'ìíī', 'o': 'ò', 'u': 'ùú'}
+        greek_ambiguous = {"σ": ["ς"], "α": ["ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ"],
+                            "ο": ["ό", "ὀ", "ὁ", "ὂ", "ὃ"], "ε": ["έ", "ἐ", "ἑ", "ἒ", "ἓ"],
+                            "η": ["ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ"],
+                            "ι": ["ῖ", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ"],
+                           "ω": ["ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ"],
+                           "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ"]}  # database transskript of 'hou'
+
+        vedic_ambiguous = {'a': ['á', 'à', 'ā'], 'e': ['é', 'è'], 'i': ['ì', 'í', 'ī'], 'o': ['ò'],
+                            'u': ['ù', 'ú']}
 
     language_list = ["greek", "vedic"]
     language = language_list[language_index - 1]
@@ -230,7 +241,6 @@ def prepare_language_characteristics(language_index, accent) -> list:
     allowed.extend([key[0] for key in key_entries])
 
     allowed.extend(vowels + consonants)
-    print(allowed)
     return allowed
 
 
@@ -256,8 +266,6 @@ def check_validity(search_string, allowed) -> bool:
         elif char == "|":
             if (search_string.index(char) == 0) or (search_string.index(char) == len(search_string)-1):
                 pass
-            #elif search_string.index(char) == len(search_string)-1:
-             #   print("| am Ende")
             else:
                 false_input.append(char)
                 print("no allowed usage of '|'!")
@@ -331,23 +339,59 @@ def convert_to_non_latin_alphabet(search) -> list:
             translit_sql_cmd = \
                 f"SELECT grapheme_{language} FROM {language}_consonant WHERE grapheme = '{latin_graph}'"
 
-            greek_graph = sql_fetch_entries(command=translit_sql_cmd)
-            if len(greek_graph) == 0:
+            graph = sql_fetch_entries(command=translit_sql_cmd)
+            if len(graph) == 0:
                 translit_sql_cmd = \
                     f"SELECT grapheme_{language} FROM {language}_vowel WHERE grapheme = '{latin_graph}'"
-                greek_graph = sql_fetch_entries(command=translit_sql_cmd)
-                print("greek graph", greek_graph)
-            greek_graph = greek_graph[0]
-            inner_group.append(greek_graph[0])
+                graph = sql_fetch_entries(command=translit_sql_cmd)
+                print("graph", graph)
+            graph = graph[0]
+            inner_group.append(graph[0])
         outer_group.append(inner_group)
     search = outer_group
     return search
 
 
+# as long as plus_true is True or cluster key is given sql-cmd is built
+# captures list index out of range error to examine end of list
+# if plus_true is False and there's no key or end of list sql-cmd is executed
+def cluster_key_cmd(char, index, phoneme) -> tuple:
+    # set select phonemes command
+    select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+    
+    if char == "+":
+        select_phonemes_cmd += " AND "
+    
+    else:
+        try:
+            follow_char = phoneme[index + 1]
+            if follow_char == "+":
+                plus_true = True
+            else:
+                plus_true = False
+        except IndexError:
+            plus_true = False
+
+        select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
+                                f"WHERE key = '{char}'"
+        # unclear section, write more comprehensible
+        value_kind = sql_fetch_entries(command=select_value_kind_cmd)
+        value_kind = value_kind[0]
+        current_value = value_kind[0]
+        current_kind = value_kind[1]
+        select_phonemes_cmd += f"{current_kind} = '{current_value}'"
+
+        if plus_true is False:
+            print(select_phonemes_cmd)
+            phonemes = sql_fetch_entries(command=select_phonemes_cmd)
+            select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+            
+            return phonemes
+        
+
 def convert_key_to_grapheme(connected) -> list:
     search = []
     group = []
-    select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
     is_digraph = False
     connected_index = -1
     for phoneme in connected:
@@ -359,7 +403,6 @@ def convert_key_to_grapheme(connected) -> list:
             if is_digraph is True:
                 is_digraph = False
             elif char in consonants or char in vowels:
-                print(char)
                 if phoneme_index == length:
                     pass
                 elif char in digraphs:
@@ -368,10 +411,10 @@ def convert_key_to_grapheme(connected) -> list:
                     char = digraph_return[0]
                     is_digraph = digraph_return[1]  #bool
                 group.append(char)
+            
+            # special characters
             else:
-                if char == "+":
-                    select_phonemes_cmd += " AND "
-                elif char == "V":
+                if char == "V":
                     for vow in vowels:
                         group.append(vow)
                 elif char == "C":
@@ -384,29 +427,14 @@ def convert_key_to_grapheme(connected) -> list:
                         group.append("^")
                     else:
                         group.append("$")
+
                 else:
-                    try:
-                        if phoneme[phoneme_index + 1] == "+":
-                            plus_true = True
-                        else:
-                            plus_true = False
-                    except IndexError:
-                        plus_true = False
-                    select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
-                                            f"WHERE key = '{char}'"
-                    # unclear section, write more comprehensible
-                    value_kind = sql_fetch_entries(command=select_value_kind_cmd)
-                    value_kind = value_kind[0]
-                    current_value = value_kind[0]
-                    current_kind = value_kind[1]
-                    select_phonemes_cmd += f"{current_kind} = '{current_value}'"
-
-                    if plus_true is False:
-                        phonemes = sql_fetch_entries(command=select_phonemes_cmd)
-                        for x in phonemes:
-                            group.append(x[0])
-                        select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
-
+                    
+                    phoneme_cluster = cluster_key_cmd(char, phoneme_index, phoneme)
+                    if phoneme_cluster:
+                        for phoneme in phoneme_cluster:
+                            group.append(phoneme[0])
+                    
         group = list(set(group))
         group = digraphs_to_begin(group)
         search.append(group)
@@ -414,56 +442,81 @@ def convert_key_to_grapheme(connected) -> list:
 
     if language in ["greek"]:
         search = convert_to_non_latin_alphabet(search=search)
-    print(search)
     return search
 
 
+def join_digraph(char):
+    following = "".join(digraphs.get(char))    
+    return following
+
+
 # uses regex
-def phoneme_search(grapheme_string) -> tuple[list, str, str]:
+def build_regex(grapheme_string) -> str:
     pattern = ""
+    # iterate over list with grapheme groups single and multi
     for grapheme in grapheme_string:
+        # pick regex escape characters
         if "\\" in grapheme:
             pattern += grapheme
+        
+        # handling of multigraphemes
         elif len(grapheme) > 1:
-            count = 0
+            index = 0
             pattern += "("
+
+            # iterate over grapheme
             for char in grapheme:
-                count += 1
+                index += 1
+
                 if char in ambiguous:
                     pattern += handle_ambiguous_phonemes(ambiguous_char=char)
+
                 elif char in digraphs:
-                    if count == len(grapheme):
-                        pattern += char + f"(?![{digraphs.get(char)}])" 
-                    elif grapheme[count] in digraphs.get(char):
+                    if index == len(grapheme):
+                        pattern += char + f"(?![{join_digraph(char)}])" 
+                    elif grapheme[index] in digraphs.get(char):
                         pass
                     else:
-                        pattern += char + f"(?![{digraphs.get(char)}])"
-                elif char == "ου":
-                    pattern += "ου|όυ|ού"  # verallgemeinern
+                        pattern += char + f"(?![{join_digraph(char)}])"
+                #elif char == "ου":
+                 #   pattern += "ου|όυ|ού|οῦ"  # verallgemeinern
                 else:
                     pattern += char
-                if len(grapheme) > count:
+                if index < len(grapheme):
                     pattern += "|"
+
             pattern += ")"
+        
+        # handling of single graphemes
         else:
-            print(grapheme)
             if grapheme[0] in ambiguous:
                 amb_grapheme = "("
                 amb_grapheme += handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
                 amb_grapheme += ")"
                 grapheme = amb_grapheme
+
             elif grapheme[0] in digraphs:
-                following = digraphs.get(grapheme[0])
-                grapheme[0] += f"(?![{following}])"
+                grapheme[0] += f"(?![{join_digraph(grapheme[0])}])"
+            
+            # to specific, own category like non search language digraph
             elif grapheme[0] == "ου":
                 grapheme = "(ου|όυ|ού)"
-            pattern += "".join(grapheme)
 
+            pattern += "".join(grapheme)
+    
+    return pattern
+
+
+# sql regex search
+def phoneme_search(grapheme_list) -> tuple[list, str, str]:
+    pattern = build_regex(grapheme_list)
     user_pattern = re.sub(r"(\\w\*\?)", "*", pattern)
     user_pattern = re.sub(r"\^", "|", user_pattern)
     user_pattern = re.sub(r"\$", "|", user_pattern)
-    #print("search pattern:", user_pattern)
+    
     print("regex pattern:", pattern)
+    
+    # sql access
     search_command = f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}'"
     connection = sqlite3.connect(path)
     cursor = connection.cursor()
@@ -472,11 +525,9 @@ def phoneme_search(grapheme_string) -> tuple[list, str, str]:
     results = cursor.fetchall()
     connection.close()
 
-    index = -1
-    for result in results:
-        index += 1
-        results[index] = result[0]
+    results = [result[0] for result in results]
     results.sort()
+
     return results, user_pattern, pattern
 
 
@@ -519,7 +570,7 @@ def connect_search_related_fcts(search_string) -> tuple[list, str]:
     in_list = (convert_string_to_list(search=search_string))
     connected_list = connect_phoneme_groups(in_list)
     grapheme_list = convert_key_to_grapheme(connected=connected_list)
-    results = phoneme_search(grapheme_string=grapheme_list)
+    results = phoneme_search(grapheme_list=grapheme_list)
     return results
 
 
@@ -541,7 +592,7 @@ def main_menu():
         if user_language in ["1", "2"]:
             user_language = int(user_language)
             user_input_check = True
-            allowed = prepare_language_characteristics(language_index=user_language, accent="on")
+            allowed = prepare_language_characteristics(language_index=user_language, accent="off")
         else:
             print("\nFalse input. Please try again.\n")
 

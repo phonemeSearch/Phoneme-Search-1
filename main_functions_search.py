@@ -36,8 +36,8 @@ def prepare_language_characteristics(language_index, accent) -> list:
 
     key_entries = hf.sql_fetch_entries(command=f"SELECT key FROM search_key_{language}")
     allowed.extend([key[0] for key in key_entries])
-
     allowed.extend(vowels + consonants)
+    
     return allowed
 
 
@@ -271,8 +271,7 @@ def build_regex(grapheme_string) -> str:
                         pass
                     else:
                         pattern += char + f"(?![{hf.join_digraph(char)}])"
-                #elif char == "ου":
-                 #   pattern += "ου|όυ|ού|οῦ"  # verallgemeinern
+                        
                 else:
                     pattern += char
                 if index < len(grapheme):
@@ -290,10 +289,6 @@ def build_regex(grapheme_string) -> str:
 
             elif grapheme[0] in hf.digraphs:
                 grapheme[0] += f"(?![{hf.join_digraph(grapheme[0])}])"
-            
-            # to specific, own category like non search language digraph
-            elif grapheme[0] == "ου":
-                grapheme = "(ου|όυ|ού)"
 
             pattern += "".join(grapheme)
     

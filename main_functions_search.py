@@ -27,9 +27,6 @@ def prepare_language_characteristics(language_index, accent) -> list:
 
     allowed = ["(", ")", "+"]
 
-      # muss angepasst werden an jeweilige Pfad-Gegebenheiten
-    # path = os.path.dirname(os.path.dirname(path))
-
     for kind in ["vowel", "consonant"]:
         kind_entries = hf.sql_fetch_entries(command=f"SELECT grapheme FROM {language}_{kind}")
         if kind == "vowel":
@@ -245,13 +242,9 @@ def convert_key_to_grapheme(connected) -> list:
     return search
 
 
-def join_digraph(char):
-    following = "".join(hf.digraphs.get(char))    
-    return following
-
-
 # uses regex
 def build_regex(grapheme_string) -> str:
+    print("amb", hf.ambiguous)
     pattern = ""
     # iterate over list with grapheme groups single and multi
     for grapheme in grapheme_string:
@@ -273,11 +266,11 @@ def build_regex(grapheme_string) -> str:
 
                 elif char in hf.digraphs:
                     if index == len(grapheme):
-                        pattern += char + f"(?![{join_digraph(char)}])" 
+                        pattern += char + f"(?![{hf.join_digraph(char)}])" 
                     elif grapheme[index] in hf.digraphs.get(char):
                         pass
                     else:
-                        pattern += char + f"(?![{join_digraph(char)}])"
+                        pattern += char + f"(?![{hf.join_digraph(char)}])"
                 #elif char == "ου":
                  #   pattern += "ου|όυ|ού|οῦ"  # verallgemeinern
                 else:
@@ -296,7 +289,7 @@ def build_regex(grapheme_string) -> str:
                 grapheme = amb_grapheme
 
             elif grapheme[0] in hf.digraphs:
-                grapheme[0] += f"(?![{join_digraph(grapheme[0])}])"
+                grapheme[0] += f"(?![{hf.join_digraph(grapheme[0])}])"
             
             # to specific, own category like non search language digraph
             elif grapheme[0] == "ου":

@@ -149,7 +149,13 @@ def get_language_info(language, accent):
                         "ḍ": ["h"]}
 
     if accent == "on":   
-        greek_ambiguous = {"σ": ["ς"], "ά": "ᾶ", "ί": "ῖ", "ώ": "ῶ"} # Vokale noch herausnehmen
+        greek_ambiguous = {"σ": ["ς"], "α": ["ἀ", "ἁ"],
+                            "ο": ["ὀ", "ὁ"], "ε": ["ἐ", "ἑ"],
+                            "η": ["ἠ", "ἡ"],
+                            "ι": ["ἰ", "ἱ",],
+                           "ω": ["ὠ", "ὡ"],
+                           "ου": ["οὐ","οὑ"],  
+                           "υ": ["ὐ", "ὑ"]}
         vedic_ambiguous = {}
     else:
         greek_ambiguous = {"σ": ["ς"], "α": ["ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ"],
@@ -157,7 +163,8 @@ def get_language_info(language, accent):
                             "η": ["ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ"],
                             "ι": ["ῖ", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ"],
                            "ω": ["ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ"],
-                           "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ"]}  # database transskript of 'hou'
+                           "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ"],  # partly not yet in database, database transskript of 'hou'
+                           "υ": ["ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ"]}  
 
         vedic_ambiguous = {'a': ['á', 'à', 'ā'], 'e': ['é', 'è'], 'i': ['ì', 'í', 'ī'], 'o': ['ò'],
                             'u': ['ù', 'ú']}
@@ -166,6 +173,9 @@ def get_language_info(language, accent):
         digraphs = greek_digraphs
         ambiguous = greek_ambiguous
         current_search_info = greek_search_info
+
+        greek_asper = {"h":["ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ὀ", "ὁ", "ὂ", "ὃ", "ἐ", "ἑ", "ἒ", "ἓ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ", "οὐ","οὑ","οὖ", "οὗ"]}
+
     elif language == "vedic":
         digraphs = vedic_digraphs
         ambiguous = vedic_ambiguous
@@ -183,38 +193,6 @@ def prepare_path():
     else:
         path = os.path.join(path, r"database/PhonemeSearch.db")
         path_main = os.path.join(path_main, r"database/PhonemeSearch.db")
-
-
-# order functions for results
-
-def sort_reverse(results):
-    reversed = [lemma[::-1] for lemma in results]
-    reversed.sort()
-    results = [lemma[::-1] for lemma in reversed]
-    return results
-
-
-def sort_alphabetical(results):
-    alphabetical = [lemma for lemma in results]
-    alphabetical.sort()
-    results = [lemma for lemma in alphabetical]
-    return results
-
-
-def sort_descending(results):
-    results.sort(reverse=True)
-
-
-def sort_ascending(results):
-    results.sort()
-
-
-def sort_length_ascending(results):
-    results.sort(key=len)
-
-
-def sort_length_descending(results):
-    results.sort(key=len, reverse=True)
 
 
 # functions for main_functions_search
@@ -256,7 +234,44 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
     return ambiguous_out
 
 
+def join_digraph(char):
+    following = "".join(digraphs.get(char))    
+    return following
+
+
 def digraphs_to_begin(group):
     sorted_group = [phoneme for phoneme in group if len(phoneme) > 1]
     sorted_group.extend([phoneme for phoneme in group if phoneme not in sorted_group])
     return sorted_group
+
+
+# order functions for results
+
+def sort_reverse(results):
+    reversed = [lemma[::-1] for lemma in results]
+    reversed.sort()
+    results = [lemma[::-1] for lemma in reversed]
+    return results
+
+
+def sort_alphabetical(results):
+    alphabetical = [lemma for lemma in results]
+    alphabetical.sort()
+    results = [lemma for lemma in alphabetical]
+    return results
+
+
+def sort_descending(results):
+    results.sort(reverse=True)
+
+
+def sort_ascending(results):
+    results.sort()
+
+
+def sort_length_ascending(results):
+    results.sort(key=len)
+
+
+def sort_length_descending(results):
+    results.sort(key=len, reverse=True)

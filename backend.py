@@ -5,6 +5,8 @@ import re
 import os
 import sys
 from math import ceil
+import json
+import base64
 
 
 app = Flask(__name__)
@@ -43,14 +45,30 @@ def mark_pattern (pattern):
         marked = f"<span class='lemma'>{marked}</span>"
 
         if language == "1":
-            #get_link = f"https://lsj.gr/wiki/{results[index]}"
-            get_link = f"https://logeion.uchicago.edu/{results[index]}"
-            marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
+            #url = f"https://lsj.gr/wiki/{results[index]}"
+            url = f"https://logeion.uchicago.edu/{results[index]}"
         elif language == "2":
-            pass
+            lemma = results[index]
 
-        #marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
-        
+            json_obj = {
+                "input": f"{lemma}",
+                "field": "version_",
+                "regex": False,
+                "sortBy": None,
+                "sortOrder": None,
+                "size": 10,
+                "from": 0,
+                "mode": "quick",
+                "accents": False
+            }
+
+            json_str = json.dumps(json_obj)
+            bytes_json = bytes(json_str, "utf-8")
+            encoded_jsn = base64.b64encode(bytes_json)
+            str_code = encoded_jsn.decode("utf-8")
+            url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
+
+        marked = f"<a class='lsj-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
         marked = f"<div class=result>{marked}</div>"
         marked_list.append(marked)
     return marked_list
@@ -69,12 +87,9 @@ def submit_start (user_search, accent_sensitive):
     begin = 0
     end = 25
     user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
-    print(user_allowed)
     check = mf.check_validity(search_string=user_search, allowed=user_allowed)
     if check:
-        print("check")
         user_results = mf.connect_search_related_fcts(search_string=user_search)
-        print(user_results[0][0:500])
         results = user_results[0]
         pattern = user_results[2]
         user_pattern = user_results[1]
@@ -111,7 +126,7 @@ def submit_next (direction):
             begin += 25
             end += 25
     next_results = mark_pattern(pattern=pattern)
-    #print(next_results)
+
     return next_results
 
 

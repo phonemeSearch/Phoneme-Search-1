@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request
 import main_files_search as mf
 import re
 import os
 import sys
 from math import ceil
 
-app = Flask(__name__, static_folder="static")
+app = Flask(__name__)
 
 begin = 0
 end = 0
@@ -70,7 +70,14 @@ def mark_pattern (pattern):
         
         marked = re.sub("%", "</span>", marked)
         marked = re.sub("§", "<span class='pattern'>", marked)
-        marked = "<div class=lemma>" + marked + "</div>"
+        marked = f"<span class='lemma'>{marked}</span>"
+
+        #get_link = f"https://lsj.gr/wiki/{results[index]}"
+        get_link = f"https://logeion.uchicago.edu/{results[index]}"
+
+        marked = f"<a class='lsj-link' href='{get_link}'>{marked}<i class='fa fa-external-link'></i></a>"
+        
+        marked = f"<div class=result>{marked}</div>"
         marked_list.append(marked)
     return marked_list
 
@@ -191,12 +198,14 @@ def result_page():
             sort_length_ascending()
         elif length_button == "length-descending":
             sort_length_descending()
+
         page_num = 1
         begin = 0
         end = 25
         reversed_results = submit_next(direction="last")
         return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num,
-                                page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
+                                page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>",
+                                reverse="true")
 
 if __name__ == '__main__':
     app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True)

@@ -56,7 +56,7 @@ def check_validity(search_string, allowed) -> bool:
         if char == "h":
             if language == "greek":
                 allowed_aspirated = aspirated_greek
-                if search_string[index - 1] not in allowed_aspirated:
+                if search_string[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("No allowed usage of 'h'!")
         elif char not in allowed:
             false_input.append(char)
@@ -125,11 +125,10 @@ def connect_phoneme_groups(grouped_list) -> list:
 
 def convert_to_non_latin_alphabet(search) -> list:
     outer_group = []
-    print("search in convert non l:", search)
     for grapheme in search:
         inner_group = []
         for latin_graph in grapheme:
-            if latin_graph in ["^", "(\\w*?)", "$"]:
+            if latin_graph in ["^", "(\\w*?)", "$", "h"]:
                 inner_group.append(latin_graph)
                 continue
 
@@ -211,7 +210,9 @@ def convert_key_to_grapheme(connected) -> list:
             
             # special characters
             else:
-                if char == "V":
+                if char == "h":
+                    group.append(char)
+                elif char == "V":
                     for vow in vowels:
                         group.append(vow)
                 elif char == "C":

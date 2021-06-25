@@ -324,8 +324,8 @@ function wrongInputHandling(key, pressed, fieldId) {
             if (pressed == "h") {
                 fieldValue = document.getElementById(fieldId).value;
                 lastChar = fieldValue.slice(-1);
-                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t")) {
-                    var message = `character 'h' only allowed after 'p', 'k', 't'`;
+                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t") && fieldValue.length != 0) {
+                    var message = `'h' only allowed after 'p', 'k', 't' or as first character`;
                     key.preventDefault();
                     wrongInput(message, fieldId);
                 }

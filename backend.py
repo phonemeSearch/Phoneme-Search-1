@@ -167,7 +167,12 @@ def result_page():
             first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
             
             path = os.path.dirname(os.path.abspath(sys.argv[0]))
-            mf.save(save_path=path + "\\static\\download\\", file_name="search_results", results=results, pattern=user_pattern)
+            if os.name == "nt":
+                path_os = "\\static\\download\\"
+            else:
+                path_os = "/static/download/"
+
+            mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
             
             return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")

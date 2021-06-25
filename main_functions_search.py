@@ -13,6 +13,15 @@ vowels = []
 path_main = ""
 
 
+def sql_fetch_entries(command) -> list:
+    connection = sqlite3.connect(path_main)
+    cursor = connection.cursor()
+    cursor.execute(command)
+    entries = cursor.fetchall()
+    connection.close()
+    return entries
+
+
 # prepares check list for
 def prepare_language_characteristics(language_index, accent) -> list:
     global path_main
@@ -28,13 +37,13 @@ def prepare_language_characteristics(language_index, accent) -> list:
     allowed = ["(", ")", "+"]
 
     for kind in ["vowel", "consonant"]:
-        kind_entries = hf.sql_fetch_entries(command=f"SELECT grapheme FROM {language}_{kind}")
+        kind_entries = sql_fetch_entries(command=f"SELECT grapheme FROM {language}_{kind}")
         if kind == "vowel":
             vowels.extend([grapheme[0] for grapheme in kind_entries])
         elif kind == "consonant":
             consonants.extend([grapheme[0] for grapheme in kind_entries])
 
-    key_entries = hf.sql_fetch_entries(command=f"SELECT key FROM search_key_{language}")
+    key_entries = sql_fetch_entries(command=f"SELECT key FROM search_key_{language}")
     allowed.extend([key[0] for key in key_entries])
     allowed.extend(vowels + consonants)
     
@@ -135,11 +144,11 @@ def convert_to_non_latin_alphabet(search) -> list:
             translit_sql_cmd = \
                 f"SELECT grapheme_{language} FROM {language}_consonant WHERE grapheme = '{latin_graph}'"
 
-            graph = hf.sql_fetch_entries(command=translit_sql_cmd)
+            graph = sql_fetch_entries(command=translit_sql_cmd)
             if len(graph) == 0:
                 translit_sql_cmd = \
                     f"SELECT grapheme_{language} FROM {language}_vowel WHERE grapheme = '{latin_graph}'"
-                graph = hf.sql_fetch_entries(command=translit_sql_cmd)
+                graph = sql_fetch_entries(command=translit_sql_cmd)
                 print("graph", graph)
             graph = graph[0]
             inner_group.append(graph[0])
@@ -171,7 +180,7 @@ def cluster_key_cmd(char, index, phoneme) -> tuple:
         select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
                                 f"WHERE key = '{char}'"
         # unclear section, write more comprehensible
-        value_kind = hf.sql_fetch_entries(command=select_value_kind_cmd)
+        value_kind = sql_fetch_entries(command=select_value_kind_cmd)
         value_kind = value_kind[0]
         current_value = value_kind[0]
         current_kind = value_kind[1]
@@ -179,7 +188,7 @@ def cluster_key_cmd(char, index, phoneme) -> tuple:
 
         if plus_true is False:
             print(select_phonemes_cmd)
-            phonemes = hf.sql_fetch_entries(command=select_phonemes_cmd)
+            phonemes = sql_fetch_entries(command=select_phonemes_cmd)
             select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
             
             return phonemes

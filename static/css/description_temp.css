@@ -37,6 +37,16 @@ a.search-link {
     text-align: right;
 }
 
+.dict-link {
+    display: inline;
+    color: rgb(150, 150, 200)
+}
+
+.dict-link:hover {
+    color: rgb(200, 200, 250);
+    text-decoration: underline;
+}
+
 h1 {
     color: rgb(150, 150, 200);
     margin-bottom: 1em;

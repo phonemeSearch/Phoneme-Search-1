@@ -1,4 +1,68 @@
+
+const featuresGreek = {
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
+    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+};
+
+//const phonemesVedic = {"a": "b"};
+const featuresVedic = {
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
+    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+};
+const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
+
+
+//FUNCTION CALLS
 renderKey();
+generateKeyboard(language = "1");
+
+
+// EVENT-LISTENER
+
+document.getElementById("user-input").addEventListener("keypress", key => {
+    var existing = document.getElementById("add-input-field");
+    if (existing != null) {
+        document.getElementById("add-input-field").setAttribute("class", "text-field");
+    }
+    wrongInputHandling(key, key.key, "user-input");
+});
+
+var chooseDropdown = document.getElementById("choose-language-id");
+// render key by change
+chooseDropdown.addEventListener("change", () => {
+    console.log("change key")
+    const oldContainer = document.getElementById("key-container");
+    if (oldContainer) {
+        console.log("key container exists")
+        oldContainer.remove();
+    };
+    renderKey();
+});
+
+// generate keyboard by change
+chooseDropdown.addEventListener("change", () => {
+    var language = document.getElementById("choose-language-id").value;
+    const oldContainer = document.getElementById("keyboard-container");
+    if (oldContainer) {
+        console.log("keyboard container exists")
+        oldContainer.remove();
+    };
+
+    generateKeyboard(language);
+});
+
+chooseDropdown.addEventListener("change", () => {
+    const userInput = document.getElementById("user-input");
+    const addInput = document.getElementById("add-input-field");
+    userInput.value = "";
+    addInput.value = "";
+});
+
+
+// FUNCTIONS
+
 // renders HTML for key tables
 function renderKey () {
     var language = document.getElementById("choose-language-id").value;
@@ -7,7 +71,7 @@ function renderKey () {
         console.log("key container exists")
         oldContainer.remove();
     };
-    const section = document.getElementById("expand-key-section");
+    const section = document.getElementById("key-section");
     const keyContainer = document.createElement("div");
     keyContainer.setAttribute("id", "key-container");
     section.append(keyContainer);
@@ -221,6 +285,58 @@ function renderKey () {
     }
 }
 
+// if key of virtual keyboard is pressed key is added to search input
+function printValue (val) {
+    document.getElementById('user-input').value += val;
+};
+
+// generates keyboard containing keys for key-characters and special characters in the respective language
+function generateKeyboard(language) {
+    console.log(language)
+    var keyIds = []
+    var keyboardContainer = document.createElement("div");
+    keyboardContainer.setAttribute("id", "keyboard-container");
+    keyboardContainer.setAttribute("class", "expand-container");
+    //var language = document.getElementById("choose-language-id").value;
+    var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"};
+    var specialCharsVedic = {
+        'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
+        'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
+    };
+    greek = [featuresGreek, specialCharsGreek, wildcards];
+    vedic = [featuresVedic, specialCharsVedic, wildcards];
+
+    for (var count=0; count<=1; count++) {
+        var kind;
+        if (language === "1") {
+            kind = greek[count];
+        } else if (language === "2") {
+            kind = vedic[count];
+        }
+        innerContainer = document.createElement("div");
+        innerContainer.setAttribute("class", "inner-key-container");
+        //console.log(kind);
+        for (var [key, value] of Object.entries(kind)) {
+            //var spanKey = document.createElement("span");
+            //spanKey.setAttribute("class", "key-span");
+            var btnKey = document.createElement("button");
+            btnKey.innerText = key;
+            btnKey.setAttribute("class", "key");
+            btnKey.setAttribute("value", key);
+            btnKey.setAttribute("onclick", "printValue(this.value);");
+            keyIds.push(`key${key}`);
+            btnKey.setAttribute("id", `key${key}`);
+            //spanKey.append(btnKey);
+            innerContainer.append(btnKey);
+            //innerContainer.append(spanKey);
+            //keyboardContainer.append(spanKey);
+            //btnKey.addEventListener("click" try with EventListener
+        }
+        keyboardContainer.append(innerContainer);
+    }
+    document.getElementById("expand-keyboard-section").append(keyboardContainer);
+};
+
 
 function removeDisabled(id) {
     document.getElementById(id).removeAttribute("disabled");
@@ -234,7 +350,6 @@ function addToSearch(inputContent) {
     document.getElementById("add-phoneme-container").remove();
     removeDisabled("plus-button");
 }
-
 
 
 //event listener for add phoneme button
@@ -254,6 +369,7 @@ document.getElementById("plus-button").addEventListener("click", () => {
     addBtn.textContent = "add";
     delBtn.setAttribute("type", "button");
     delBtn.setAttribute("id", "minus-button");
+    delBtn.setAttribute("class", "plus-minus-button");
     delBtn.textContent = "-";
 
     addContainer.append(delBtn, addInput, addBtn);
@@ -339,38 +455,6 @@ function wrongInputHandling(key, pressed, fieldId) {
 }
 
 
-document.getElementById("user-input").addEventListener("keypress", key => {
-    var existing = document.getElementById("add-input-field");
-    if (existing != null) {
-        document.getElementById("add-input-field").setAttribute("class", "text-field");
-    }
-    wrongInputHandling(key, key.key, "user-input");
-});
-
-//show key expand
-var chooseDropdown = document.getElementById("choose-language-id");
-chooseDropdown.addEventListener("change", () => {
-    console.log("change key")
-    renderKey();
-});
-
-chooseDropdown.addEventListener("change", () => {
-    var existing = document.getElementById("keyboard-container");
-    if (existing != null) {
-        var indicationVector = document.getElementById("keyboard-vector");
-        indicationVector.style.transform = "rotate(180deg)";
-        existing.remove();
-    }
-    });
-
-chooseDropdown.addEventListener("change", () => {
-    const userInput = document.getElementById("user-input");
-    const addInput = document.getElementById("add-input-field");
-    userInput.value = "";
-    addInput.value = "";
-});
-
-
 /*const phonemesGreek = {
     "a": " α", "e": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "é": " έ",
     "i": " ί", "o": " ό", "ō": " ώ", "y": " ύ", "u": " όυ", "ē": " ή", "i": " ι", "p": " π", "b": " β", "ph": "φ",
@@ -378,76 +462,3 @@ chooseDropdown.addEventListener("change", () => {
     "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
     "k": " κ", "g": " γ", "ks": "ξ"
 }; */
-const featuresGreek = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
-};
-
-//const phonemesVedic = {"a": "b"};
-const featuresVedic = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
-};
-const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
-
-//show keyboard expand
-function printValue (val) {
-    document.getElementById('user-input').value += val;
-};
-
-
-// adds a keyboard containing keys for key-characters and special characters in the respective language
-var keyIds = []
-var showKeyboard = document.getElementById("expand-keyboard-button")
-showKeyboard.addEventListener("click", () => {
-    var existing = document.getElementsByClassName("key");
-    if (existing.length != 0) {
-        document.getElementById("keyboard-vector").style.transform = "rotate(180deg)";
-        document.getElementById("keyboard-container").remove();
-    } else {
-        document.getElementById("keyboard-vector").style.transform = "none";
-        var keyboardContainer = document.createElement("div");
-        keyboardContainer.setAttribute("id", "keyboard-container");
-        keyboardContainer.setAttribute("class", "expand-container");
-        var language = document.getElementById("choose-language-id").value;
-        var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"};
-        var specialCharsVedic = {
-            'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
-            'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
-        };
-        greek = [featuresGreek, specialCharsGreek, wildcards];
-        vedic = [featuresVedic, specialCharsVedic, wildcards];
-
-        for (var count=0; count<=1; count++) {
-            var kind;
-            if (language === "1") {
-                kind = greek[count];
-            } else if (language === "2") {
-                kind = vedic[count];
-            }
-            innerContainer = document.createElement("div");
-            innerContainer.setAttribute("class", "inner-key-container");
-            //console.log(kind);
-            for (var [key, value] of Object.entries(kind)) {
-                //var spanKey = document.createElement("span");
-                //spanKey.setAttribute("class", "key-span");
-                var btnKey = document.createElement("button");
-                btnKey.innerText = key;
-                btnKey.setAttribute("class", "key");
-                btnKey.setAttribute("value", key);
-                btnKey.setAttribute("onclick", "printValue(this.value);");
-                keyIds.push(`key${key}`);
-                btnKey.setAttribute("id", `key${key}`);
-                //spanKey.append(btnKey);
-                innerContainer.append(btnKey);
-                //innerContainer.append(spanKey);
-                //keyboardContainer.append(spanKey);
-                //btnKey.addEventListener("click" try with EventListener
-            }
-            keyboardContainer.append(innerContainer);
-        }
-        document.getElementById("expand-keyboard-section").append(keyboardContainer);
-    }
-});

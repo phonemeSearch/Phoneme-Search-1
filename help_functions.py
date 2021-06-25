@@ -1,4 +1,3 @@
-import sqlite3
 import re
 import os
 import sys
@@ -191,7 +190,7 @@ def prepare_path():
         
     else:
         path = os.path.join(path, r"database/PhonemeSearch.db")
-        path_main = os.path.join(path_main, r"database/PhonemeSearch.db")
+        path = os.path.join(path, r"database/PhonemeSearch.db")
 
 
 # functions for main_functions_search
@@ -200,15 +199,6 @@ def prepare_path():
 def regexp(expr, item):
     find = re.search(expr, item)
     return find is not None
-
-
-def sql_fetch_entries(command) -> list:
-    connection = sqlite3.connect(path)
-    cursor = connection.cursor()
-    cursor.execute(command)
-    entries = cursor.fetchall()
-    connection.close()
-    return entries
 
 
 def handle_digraphs(digraph, current_list, count) -> tuple[str, bool]:

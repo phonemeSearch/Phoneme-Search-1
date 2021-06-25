@@ -11,6 +11,7 @@ language = ""
 consonants = []
 vowels = []
 path_main = ""
+user_pattern = ""
 
 
 def sql_fetch_entries(command) -> list:
@@ -32,7 +33,10 @@ def prepare_language_characteristics(language_index, accent) -> list:
 
     hf.get_language_info(language, accent)
     path_main = os.path.dirname(os.path.abspath(sys.argv[0]))
-    path_main = os.path.join(path_main, r"database\PhonemeSearch.db")
+    if os.name == "nt":
+        path_main = os.path.join(path_main, r"database\PhonemeSearch.db")
+    else:
+        path_main = os.path.join(path_main, r"database/PhonemeSearch.db")
 
     allowed = ["(", ")", "+"]
 
@@ -56,6 +60,9 @@ def prepare_language_characteristics(language_index, accent) -> list:
 def check_validity(search_string, allowed) -> bool:
     # check whether user str contains not allowed chars
     # check if there are probably misspelled blanks
+    global user_pattern
+
+    user_pattern = search_string
     false_input = []
     aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
     allowed_aspirated = []
@@ -307,11 +314,9 @@ def build_regex(grapheme_string) -> str:
 
 # sql regex search
 def phoneme_search(grapheme_list) -> tuple[list, str, str]:
+    global user_pattern
+
     pattern = build_regex(grapheme_list)
-    user_pattern = re.sub(r"(\\w\*\?)", "*", pattern)
-    user_pattern = re.sub(r"\^", "|", user_pattern)
-    user_pattern = re.sub(r"\$", "|", user_pattern)
-    
     print("regex pattern:", pattern)
     
     # sql access

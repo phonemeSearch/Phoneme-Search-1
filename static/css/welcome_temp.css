@@ -1,3 +1,24 @@
+
+/*
+
+Contents
+
+    1 Element
+
+    2 Class
+
+    3 Hover
+
+*/
+
+
+
+/*
+=================================================================
+
+1 Global Styles
+*/
+
 body {
     margin-left: 5em;
     margin-right: 5em;
@@ -32,6 +53,20 @@ p {
     margin-bottom: 3em;
 }
 
+a {
+    color: rgb(150, 150, 200);
+    text-decoration: none;
+}
+
+
+
+/*
+=================================================================
+
+2 Specififc Styles
+
+*/
+
 .button {
     width: 9em;
     height: 3em;
@@ -42,15 +77,21 @@ p {
     border-radius: 0.2em;
 }
 
+
+
+/*
+=================================================================
+
+3 Hover Styles
+
+*/
+
 .button:hover {
     background-color: rgb(80, 80, 80);
     cursor: pointer;
 }
 
-a {
-    color: rgb(150, 150, 200);
-    text-decoration: none;
-}
+
 
 a:hover{
     color: rgb(200, 200, 250);

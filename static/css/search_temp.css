@@ -1,3 +1,38 @@
+
+/*
+
+Contents
+
+    1 Global
+
+    2 Section
+
+    3 Form-elements
+
+    4 Button
+
+    5 Anchor
+    
+    6 Table
+
+    7 Container
+    
+    8 Hover
+    
+    9 Disabled
+    
+    10 Unordered
+
+*/
+
+
+
+/*
+=================================================================
+
+1 Global 
+*/
+
 body {
     margin-left: 5em;
     margin-right: 5em;
@@ -7,6 +42,159 @@ body {
     font-size: 18px;
     font-family: sans-serif;
 }
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1em;
+    row-gap: 1em;
+    color: rgb(230, 230, 230);
+}
+
+
+
+/*
+=================================================================
+
+2 Section
+*/
+
+section {
+    box-sizing: border-box;
+    height: auto;
+    padding: 0.5em 2em 0.5em 2em;
+    overflow: auto;
+    background-color: rgb(60, 60, 60);
+    border-radius: 0.5em;
+    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
+}
+
+    /*
+    --------------------------------------------------------------
+    ids
+    */
+
+#key-section {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+/*
+#expand-keyboard-section {
+    margin-left: 0.5%;
+    width: 49.5%;
+}*/
+
+
+
+/*
+=================================================================
+
+Form-elements 
+*/
+
+select {
+    margin-right: 1em;
+    width: 6em;
+    font-size: 20px;
+    background-color: rgb(60, 60, 60);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+    border-radius: 0.2em;
+}
+
+.text-field {
+    width: 85%;
+    font-size: 20px;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+}
+
+.text-field-wrong {
+    width: 45%;
+    font-size: 20px;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid rgb(100, 50, 50);
+}
+
+#add-input-field {
+    width: 75%;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+}
+
+
+
+/*
+=================================================================
+
+Button 
+*/
+
+button {
+    overflow: hidden;
+    font-size: 20px;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+    border-radius: 0.2em;
+}
+
+button:disabled {
+    background-color: rgb(60, 60, 60);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;
+}
+
+    /*
+    --------------------------------------------------------------
+    classes
+    */
+
+.show-button {
+    width: 100%;
+    background-color: rgb(60, 60, 60);
+    border: none;
+}
+
+.plus-minus-button {
+    width: 5%;
+    margin-right: 0.2em;
+}
+
+.key {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 1px;
+    font-size: 18px;
+}
+
+    /*
+    --------------------------------------------------------------
+    ids
+    */
+
+#start-button {
+    margin-left: 0.2em;
+    width: 10%;
+}
+
+#add-button {
+    margin-left: 0.2em;
+    width: 10%;
+}
+
+
+
+/*
+=================================================================
+
+Anchor 
+*/
 
 a.back {
     display: block;
@@ -22,143 +210,24 @@ a.help-link {
     text-decoration: none;
 }
 
-main {
-    color: rgb(230, 230, 230);
-}
 
-.search-section {
-    box-sizing: border-box;
-    margin-bottom: 1em;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 2em;
-    padding-right: 2em;
-    overflow: auto;
-    background-color: rgb(60, 60, 60);
-    border-radius: 0.5em;
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
-}
 
-#expand-key-section {
-    float: left;
-    margin-right: 0.5%;
-    width: 49.5%;
-}
+/*
+=================================================================
 
-#expand-keyboard-section {
-    float: left;
-    margin-left: 0.5%;
-    width: 49.5%;
-}
-
-.form-part-wrapper {
-    margin-bottom: 1em;
-    /*width: 100%;*/
-}
-
-select {
-    margin-right: 1em;
-    width: 6em;
-    font-size: 20px;
-    background-color: rgb(60, 60, 60);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-    border-radius: 0.2em;
-}
-
-select:hover {
-    background-color: rgb(80, 80, 80);
-    cursor: pointer;
-}
-
-.text-field {
-    width: 45%;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-}
-
-.text-field-wrong {
-    width: 45%;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid rgb(100, 50, 50);
-}
-
-.wrong-message {
-    margin-top: 0.2em;
-    color: rgb(200, 100, 100);
-}
-
-button {
-    overflow: hidden;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-    border-radius: 0.2em;
-}
-
-button:hover {
-    background-color: rgb(100, 100, 100);
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: rgb(60, 60, 60);
-    color: rgb(100, 100, 100);
-    border: 2px solid rgb(100, 100, 100);
-    cursor: auto;
-}
-
-#start-button {
-    margin-left: 0.2em;
-    width: 5%;
-}
-
-#plus-button {
-    width: 3%;
-    margin-right: 0.2em;
-}
-
-#minus-button {
-    width: 3%;
-    margin-right: 0.2em;
-}
-
-#add-phoneme-container {
-    margin-top: 0.2em;
-}
-
-#add-input-field {
-    width: 42%;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-}
-
-#add-button {
-    margin-left: 0.2em;
-    width: 5%;
-}
+Table
+*/
 
 .key-table {
-    font-size: 16px;
+    font-size: 18px;
     width: 100%;
-    border: 0.5px solid rgb(80, 80, 80);
+    border: 2px solid;
     border-spacing: 0;
     border-radius: 0.2em;
 }
 
-th {
-    font-weight: normal;
-    text-align: center;
-}
-
-th:first-child {
-    text-align: left;
+tr {
+    height: 2em;
 }
 
 tr:nth-child(even){
@@ -169,27 +238,30 @@ tr:nth-child(odd) {
     background-color: rgb(80, 80, 80);
 }
 
-td:first-child {
+th, td {
+    font-weight: normal;
+    text-align: center;
+}
+
+th:first-child, td:first-child {
     text-align: left;
+    padding-left: 0.5em;
     width: 35%;
+    border: 2px solid;
+    border-style: none solid none none;
 }
 
-td {
-    text-align: center;
-}
 
-.phoneme-category {
-    border: none;
-}
 
-.user-key {
-    text-align: center;
-    color: rgb(150, 150, 200);
-    border: none;
-}
+/*
+=================================================================
 
-.key-info {
-    font-size: 16px;
+Container 
+*/
+
+.form-part-wrapper {
+    margin-bottom: 1em;
+    /*width: 100%;*/
 }
 
 .button-wrapper{
@@ -197,34 +269,8 @@ td {
     padding-right: 30%;
 }
 
-.show-button {
-    width: 100%;
-    background-color: rgb(60, 60, 60);
-    border: none;
-}
-
-.show-button:hover{
-    background-color: rgb(60, 60, 60);
-}
-
-.show-button:hover .expand-tooltip {
-    visibility: visible;
-}
-
-svg {
-    transform: rotate(180deg);
-    margin-bottom: 1em;
-}
-
-svg:hover {
-    fill: rgb(100, 100, 100);
-}
-
-.expand-tooltip {
-    visibility: hidden;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    text-align: center;
+#add-phoneme-container {
+    margin-top: 0.2em;
 }
 
 .expand-container {
@@ -243,9 +289,92 @@ svg:hover {
     grid-template-rows: repeat(3, 1fr);
 }
 
-.key {
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-bottom: 1px;
-    font-size: 18px;
+
+
+/*
+=================================================================
+
+Hover 
+*/
+
+select:hover {
+    background-color: rgb(80, 80, 80);
+    cursor: pointer;
 }
+
+
+button:hover {
+    background-color: rgb(100, 100, 100);
+    cursor: pointer;
+}
+
+.show-button:hover{
+    background-color: rgb(60, 60, 60);
+}
+
+.show-button:hover .expand-tooltip {
+    visibility: visible;
+}
+
+svg:hover {
+    fill: rgb(100, 100, 100);
+}
+.wrong-message {
+    margin-top: 0.2em;
+    color: rgb(200, 100, 100);
+}
+
+
+
+/*
+=================================================================
+
+Disabled 
+*/
+
+button:disabled {
+    background-color: rgb(60, 60, 60);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;
+}
+
+
+
+/*
+=================================================================
+
+Unordered
+*/
+
+svg {
+    transform: rotate(180deg);
+    margin-bottom: 1em;
+}
+
+
+.phoneme-category {
+    border: none;
+}
+
+.user-key {
+    text-align: center;
+    color: rgb(150, 150, 200);
+    border: none;
+}
+
+.key-info {
+    font-size: 16px;
+}
+
+.expand-tooltip {
+    visibility: hidden;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+
+
+
+

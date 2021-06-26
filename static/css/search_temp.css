@@ -167,9 +167,6 @@ button:disabled {
 }
 
 .key {
-    margin-left: 1px;
-    margin-right: 1px;
-    margin-bottom: 1px;
     font-size: 18px;
 }
 
@@ -259,7 +256,7 @@ th:first-child, td:first-child {
 Container 
 */
 
-.form-part-wrapper {
+.form-part-container {
     margin-bottom: 1em;
     /*width: 100%;*/
 }
@@ -287,6 +284,8 @@ Container
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    column-gap: 2px;
+    row-gap: 2px;
 }
 
 

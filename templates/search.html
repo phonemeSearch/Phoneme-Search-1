@@ -11,7 +11,7 @@
     <main>
         <section id="input-section" class="search-section">
             <form id="search-form" action="/search_result" method="post">
-                <div class="form-part-wrapper">
+                <div class="form-part-container">
                     <label for="choose-language-id">language</label>
                     <select id="choose-language-id" name="choose-language" required="required">
                         <option value="1" selected="selected">Greek</option>
@@ -20,12 +20,12 @@
                     <label for='accent-check'>accent-sensitive</label>
                     <input id = "accent-check" class="sensitive-check" type="checkbox" name='accent-sensitive'>
                 </div>
-                <div id="user-input-container" class="form-part-wrapper">
+                <div id="user-input-container" class="form-part-container">
                     <input id="user-input" class="text-field" type="text" name="search-input"/>
                     <button id="start-button" type="submit" name="submit-button" value="start">start</button>
                     <a class="help-link" href="/search/description">?</a>
                 </div>
-                <button id= plus-button class="plus-minus-button" type="button">+</button><span>add phoneme</span>
+                <button id= plus-button class="plus-minus-button" type="button">+</button><label for="plus-button">add phoneme</label>
             </form>
         </section>
         <section id="expand-keyboard-section" class="search-section">

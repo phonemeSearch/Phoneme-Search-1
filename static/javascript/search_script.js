@@ -1,16 +1,16 @@
-
+// DICTIONARIES
 const featuresGreek = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
-//const phonemesVedic = {"a": "b"};
 const featuresVedic = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
+
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
 
@@ -53,11 +53,53 @@ chooseDropdown.addEventListener("change", () => {
     generateKeyboard(language);
 });
 
+// removes value of input fields by change of language
 chooseDropdown.addEventListener("change", () => {
     const userInput = document.getElementById("user-input");
     const addInput = document.getElementById("add-input-field");
     userInput.value = "";
     addInput.value = "";
+});
+
+
+//event listener for add phoneme button
+//adds secondary input field remove button and add button and their event listeners
+document.getElementById("plus-button").addEventListener("click", () => {
+    var addContainer = document.createElement("div");
+    var addInput = document.createElement("input");
+    var addBtn = document.createElement("button");
+    var delBtn = document.createElement("button");
+
+    addContainer.setAttribute("id", "add-phoneme-container");
+    addContainer.setAttribute("class", "form-part-wrapper");
+    addInput.setAttribute("class", "text-field");
+    addInput.setAttribute("id", "add-input-field");
+    addBtn.setAttribute("type", "button");
+    addBtn.setAttribute("id", "add-button");
+    addBtn.textContent = "add";
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("id", "minus-button");
+    delBtn.setAttribute("class", "plus-minus-button");
+    delBtn.textContent = "-";
+
+    addContainer.append(delBtn, addInput, addBtn);
+    document.getElementById("search-form").append(addContainer);
+
+
+    document.getElementById("add-input-field").addEventListener ("keypress", key => {
+        wrongInputHandling(key=key, pressed=key.key, fieldId="add-input-field");
+    });
+
+    document.getElementById("add-button").addEventListener("click", () => {
+       addToSearch(inputContent=document.getElementById("add-input-field").value);
+    });
+
+    document.getElementById("minus-button").addEventListener("click", () =>{
+        document.getElementById("add-phoneme-container").remove();
+        document.getElementById("plus-button").removeAttribute("disabled");
+    });
+
+    document.getElementById("plus-button").setAttribute("disabled", "disabled");
 });
 
 
@@ -285,11 +327,11 @@ function renderKey () {
     }
 }
 
+
 // if key of virtual keyboard is pressed key is added to search input
 function printValue (val) {
     document.getElementById('user-input').value += val;
 };
-
 // generates keyboard containing keys for key-characters and special characters in the respective language
 function generateKeyboard(language) {
     console.log(language)
@@ -326,11 +368,7 @@ function generateKeyboard(language) {
             btnKey.setAttribute("onclick", "printValue(this.value);");
             keyIds.push(`key${key}`);
             btnKey.setAttribute("id", `key${key}`);
-            //spanKey.append(btnKey);
             innerContainer.append(btnKey);
-            //innerContainer.append(spanKey);
-            //keyboardContainer.append(spanKey);
-            //btnKey.addEventListener("click" try with EventListener
         }
         keyboardContainer.append(innerContainer);
     }
@@ -341,8 +379,6 @@ function generateKeyboard(language) {
 function removeDisabled(id) {
     document.getElementById(id).removeAttribute("disabled");
 }
-
-
 // adds content of add phoneme input field to main input field
 function addToSearch(inputContent) {
     const searchInput = document.getElementById("user-input");
@@ -350,47 +386,6 @@ function addToSearch(inputContent) {
     document.getElementById("add-phoneme-container").remove();
     removeDisabled("plus-button");
 }
-
-
-//event listener for add phoneme button
-//adds secondary input field remove button and add button and their event listeners
-document.getElementById("plus-button").addEventListener("click", () => {
-    var addContainer = document.createElement("div");
-    var addInput = document.createElement("input");
-    var addBtn = document.createElement("button");
-    var delBtn = document.createElement("button");
-
-    addContainer.setAttribute("id", "add-phoneme-container");
-    addContainer.setAttribute("class", "form-part-wrapper");
-    addInput.setAttribute("class", "text-field");
-    addInput.setAttribute("id", "add-input-field");
-    addBtn.setAttribute("type", "button");
-    addBtn.setAttribute("id", "add-button");
-    addBtn.textContent = "add";
-    delBtn.setAttribute("type", "button");
-    delBtn.setAttribute("id", "minus-button");
-    delBtn.setAttribute("class", "plus-minus-button");
-    delBtn.textContent = "-";
-
-    addContainer.append(delBtn, addInput, addBtn);
-    document.getElementById("search-form").append(addContainer);
-
-
-    document.getElementById("add-input-field").addEventListener ("keypress", key => {
-        wrongInputHandling(key=key, pressed=key.key, fieldId="add-input-field");
-    });
-
-    document.getElementById("add-button").addEventListener("click", () => {
-       addToSearch(inputContent=document.getElementById("add-input-field").value);
-    });
-
-    document.getElementById("minus-button").addEventListener("click", () =>{
-        document.getElementById("add-phoneme-container").remove();
-        document.getElementById("plus-button").removeAttribute("disabled");
-    });
-
-    document.getElementById("plus-button").setAttribute("disabled", "disabled");
-});
 
 
 // adds a message for user if input is not allowed

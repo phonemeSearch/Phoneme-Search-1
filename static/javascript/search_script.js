@@ -2,7 +2,7 @@
 
 const featuresGreek = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", ">": "voiced",
+    "P": "plosive", "R": "approximant", "N": "nasal", "F": "fricative", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
@@ -411,7 +411,7 @@ function wrongInputHandling(key, pressed, fieldId) {
     var allowed;
 
     const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'W', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
+                          'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's', 's',
                           'ps', 'h', 'Enter'];
     const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',

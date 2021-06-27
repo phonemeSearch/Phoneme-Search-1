@@ -169,9 +169,9 @@ def result_page():
             
             path = os.path.dirname(os.path.abspath(sys.argv[0]))
             if os.name == "nt":
-                path_os = "\\static\\download\\"
+                path_os = "\\static\\download"
             else:
-                path_os = "/static/download/"
+                path_os = "/static/download"
 
             mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
             

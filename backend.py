@@ -158,6 +158,7 @@ def result_page():
     submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
+        #submit = request.args.get("submit-button")
         print(submit)
         if submit == "start":
             page_num = 1
@@ -182,7 +183,6 @@ def result_page():
             submit = ""
             return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>")
-
 
     elif request.method == 'GET':
         reverse_button = request.args.get("reverse-button")

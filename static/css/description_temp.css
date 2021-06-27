@@ -91,7 +91,8 @@ a.search-link {
 
 a.dict-link {
     display: inline;
-    color: rgb(150, 150, 200)
+    color: rgb(150, 150, 200);
+    text-decoration: underline;
 }
 
 

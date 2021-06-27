@@ -7,15 +7,15 @@ Contents
 
     2 Section
 
-    3 Form-elements
+    3 Container
 
-    4 Button
+    4 Form-elements
 
-    5 Anchor
+    5 Button
+
+    6 Anchor
     
-    6 Table
-
-    7 Container
+    7 Table
     
     8 Hover
     
@@ -34,13 +34,11 @@ Contents
 */
 
 body {
-    margin-left: 5em;
-    margin-right: 5em;
+    margin-left: 5%;
+    margin-right: 5%;
     font-size: 20px;
     font-family: sans-serif;
     background-color: rgb(50, 50, 50);
-    font-size: 18px;
-    font-family: sans-serif;
 }
 
 main {
@@ -62,7 +60,7 @@ main {
 section {
     box-sizing: border-box;
     height: auto;
-    padding: 0.5em 2em 0.5em 2em;
+    padding: 0.5em 4% 0.5em 4%;
     overflow: auto;
     background-color: rgb(60, 60, 60);
     border-radius: 0.5em;
@@ -79,11 +77,51 @@ section {
     grid-column-end: 3;
 }
 
+
+
 /*
-#expand-keyboard-section {
-    margin-left: 0.5%;
-    width: 49.5%;
-}*/
+=================================================================
+
+Container 
+*/
+
+.form-part-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    row-gap: 0.2em;
+    margin-bottom: 1em;
+}
+
+/*set margin to all child-elements of form-part except
+select which has an individual margin*/
+.form-part-container > *:not(select) {
+    margin-right: 0.2em;
+}
+
+#add-phoneme-container {
+    margin-top: 0.2em;
+}
+
+#add-phoneme-container::after {
+    content: "?";
+    visibility: hidden;
+}
+
+#keyboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: 1em;
+}
+
+.inner-key-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    column-gap: 2px;
+    row-gap: 2px;
+}
 
 
 
@@ -94,7 +132,7 @@ Form-elements
 */
 
 select {
-    margin-right: 1em;
+    margin-right: 2em;
     width: 6em;
     font-size: 20px;
     background-color: rgb(60, 60, 60);
@@ -104,7 +142,8 @@ select {
 }
 
 .text-field {
-    width: 85%;
+    /*width: 85%;*/
+    flex-grow: 1;
     font-size: 20px;
     background-color: rgb(80, 80, 80);
     color: rgb(230, 230, 230);
@@ -112,7 +151,7 @@ select {
 }
 
 .text-field-wrong {
-    width: 45%;
+    flex-grow: 1;
     font-size: 20px;
     background-color: rgb(80, 80, 80);
     color: rgb(230, 230, 230);
@@ -120,7 +159,8 @@ select {
 }
 
 #add-input-field {
-    width: 75%;
+    flex-grow: 1;
+    font-size: 20px;
     background-color: rgb(80, 80, 80);
     color: rgb(230, 230, 230);
     border: 2px solid;
@@ -143,31 +183,22 @@ button {
     border-radius: 0.2em;
 }
 
-button:disabled {
-    background-color: rgb(60, 60, 60);
-    color: rgb(100, 100, 100);
-    border: 2px solid rgb(100, 100, 100);
-    cursor: auto;
-}
-
     /*
     --------------------------------------------------------------
     classes
     */
 
-.show-button {
-    width: 100%;
-    background-color: rgb(60, 60, 60);
-    border: none;
-}
-
 .plus-minus-button {
     width: 5%;
+    min-width: 40px;
     margin-right: 0.2em;
 }
 
 .key {
+    font-family: sans-serif;
     font-size: 18px;
+    min-width: 40px;
+
 }
 
     /*
@@ -176,13 +207,13 @@ button:disabled {
     */
 
 #start-button {
-    margin-left: 0.2em;
     width: 10%;
+    min-width: 55px;
 }
 
 #add-button {
-    margin-left: 0.2em;
     width: 10%;
+    min-width: 55px;
 }
 
 
@@ -193,21 +224,26 @@ button:disabled {
 Anchor 
 */
 
+a {
+    text-decoration: none;
+}
+
 a.back {
     display: block;
     margin-top: 2em;
     margin-bottom: 1em;
     width: 2em;
     color: rgb(230, 230, 230);
-    text-decoration: none;
 }
 
 a.help-link {
     color: rgb(150, 150, 150);
-    text-decoration: none;
 }
 
-
+a.help-link > * {
+    vertical-align: super;
+    font-size: 14px;
+}
 
 /*
 =================================================================
@@ -248,44 +284,27 @@ th:first-child, td:first-child {
     border-style: none solid none none;
 }
 
+th > .user-key {
+    color: rgb(200, 100, 100);
+}
+
+td > .user-key {
+    display: inline-block;
+    text-align: right;
+    width: 30%;
+    color: rgb(200, 100, 100);
+}
 
 
 /*
 =================================================================
 
-Container 
+Active 
 */
 
-.form-part-container {
-    margin-bottom: 1em;
-    /*width: 100%;*/
-}
-
-.button-wrapper{
-    padding-left: 30%;
-    padding-right: 30%;
-}
-
-#add-phoneme-container {
-    margin-top: 0.2em;
-}
-
-.expand-container {
-    padding-top: 1em;
-}
-
-#keyboard-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.inner-key-container {
-    width: 47%;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    column-gap: 2px;
-    row-gap: 2px;
+.key:active {
+    background-color: rgb(60, 60, 60);
+    border-color: rgb(170, 170, 170);
 }
 
 
@@ -307,20 +326,8 @@ button:hover {
     cursor: pointer;
 }
 
-.show-button:hover{
-    background-color: rgb(60, 60, 60);
-}
-
-.show-button:hover .expand-tooltip {
-    visibility: visible;
-}
-
 svg:hover {
     fill: rgb(100, 100, 100);
-}
-.wrong-message {
-    margin-top: 0.2em;
-    color: rgb(200, 100, 100);
 }
 
 
@@ -346,34 +353,16 @@ button:disabled {
 Unordered
 */
 
-svg {
-    transform: rotate(180deg);
-    margin-bottom: 1em;
-}
-
-
 .phoneme-category {
     border: none;
 }
 
-.user-key {
-    text-align: center;
-    color: rgb(150, 150, 200);
-    border: none;
+.wrong-message {
+    width: 100%;
+    margin-top: 0.2em;
+    color: rgb(200, 100, 100);
 }
 
 .key-info {
     font-size: 16px;
 }
-
-.expand-tooltip {
-    visibility: hidden;
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-    text-align: center;
-}
-
-
-
-
-

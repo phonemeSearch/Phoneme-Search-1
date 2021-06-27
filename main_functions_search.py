@@ -3,7 +3,6 @@ from sqlite3.dbapi2 import connect
 import help_functions as hf
 import os
 import sys
-import re
 
 
 # language specific information

@@ -337,7 +337,11 @@ def phoneme_search(grapheme_list) -> tuple[list, str, str]:
 
 
 def save(save_path, file_name, results, pattern):
-    file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
+    if os.name == "nt":
+        file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
+    else:
+        file = open(save_path + f"/{file_name}.txt", "w", encoding="utf-8")
+
     file.write("\nnumber of results: " + str(len(results)))
     file.write("\nsearch pattern: " + pattern + "\n\n")
     file.write("\n".join(results))

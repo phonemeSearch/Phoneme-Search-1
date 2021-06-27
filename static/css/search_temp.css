@@ -111,7 +111,6 @@ select which has an individual margin*/
 #keyboard-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
     column-gap: 1em;
     row-gap: 1em;
 }

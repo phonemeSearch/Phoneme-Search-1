@@ -112,10 +112,12 @@ select which has an individual margin*/
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    column-gap: 1em;
     row-gap: 1em;
 }
 
 .inner-key-container {
+    flex-grow: 1;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(3, 1fr);

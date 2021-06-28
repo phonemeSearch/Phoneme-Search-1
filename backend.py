@@ -30,6 +30,8 @@ def mark_pattern (pattern):
     global results
     global language
 
+    print("marking ", pattern)
+
     marked_list = []
     for index in range(begin, end):
         if index >= len(results):
@@ -37,8 +39,14 @@ def mark_pattern (pattern):
         matches = re.finditer(pattern, results[index])
         marked = results[index]
         for match in matches:
+            print("match", match.group(0))
             group = match.group(0)
-            marked = re.sub(f"{group}(?!\w?%)", f"§{group}%", marked, 1)
+
+            if group in hf.following_digraph:
+                before = hf.follows_digraph(group)
+                marked = re.sub(f"(?<![{before}]){group}(?!\w?%)", f"§{group}%", marked, 1)
+            else:
+                marked = re.sub(f"{group}(?!\w?%)", f"§{group}%", marked, 1)
         
         marked = re.sub("%", "</span>", marked)
         marked = re.sub("§", "<span class='pattern'>", marked)

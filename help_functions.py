@@ -148,7 +148,7 @@ def get_language_info(language, accent):
     following_digraph_greek = ["h", "s"]
 
     vedic_digraphs = {"p": ["h"], "b": ["h"], "k": ["h"], "t": ["h"], "d": ["h"], "g": ["h"], "ṭ": ["h"],
-                        "ḍ": ["h"]}
+                        "ḍ": ["h"], "c": ["h"]}
     following_digraph_vedic = ["h"]
 
     if accent == "on":   

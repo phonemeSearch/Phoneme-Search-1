@@ -1,4 +1,39 @@
 
+
+/*
+
+Contents
+
+    1 Global
+
+    2 Section
+
+    3 Result-Section-Related
+
+    4 Form
+
+    5 Container
+
+    6 Button
+
+    7 Anchor
+    
+    8 Hover
+    
+    9 Disabled
+    
+    10 Unordered
+
+*/
+
+
+
+/*
+=================================================================
+
+1 Global 
+*/
+
 body {
     margin-left: 5%;
     margin-right: 5%;
@@ -16,55 +51,23 @@ main {
     row-gap: 0.7em;
 }
 
-a {
-    color:rgb(230, 230, 230);
-    text-decoration: none;
+hr {
+    width: 100%;
 }
 
-a:hover {
-    color: white;
+h2 {
+    font-size: 18px;
+    font-weight: normal;
+    grid-column: 1 / 5;
 }
 
-a:hover .pattern:nth-child(odd) {
-    color: rgb(250, 200, 200);
-}
 
-a:hover .pattern:nth-child(even) {
-    color: rgb(200, 200, 250);
-}
 
-#back-link {
-    display: block;
-    margin-top: 2em;
-    margin-bottom: 1em;
-    width: 2em;
-}
+/*
+=================================================================
 
-a.download-link {
-    display: block;
-    margin-top: 1em;
-}
-
-button {
-    overflow: hidden;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-    border-radius: 0.2em;
-}
-
-button:hover {
-    background-color: rgb(100, 100, 100);
-    cursor: pointer;
-}
-
-button:disabled {
-    background-color: rgb(60, 60, 60);
-    color: rgb(100, 100, 100);
-    border: 2px solid rgb(100, 100, 100);
-    cursor: auto;   
-}
+2 Section
+*/
 
 section {
     display: flex;
@@ -83,14 +86,6 @@ section {
     grid-row-end: 2;
 }
 
-.info {
-    color: rgb(150, 150, 150);
-    }
-
-.info-content {
-    color: rgb(230, 230, 230);
-}
-
 .result-section {
     grid-column-start: 1;
     grid-column-end: 2;
@@ -104,19 +99,13 @@ section {
     height: auto;
 }
 
-.navigation-form {
-    display: inline-flex;
-    width: 8%;
-}
 
-hr {
-    width: 100%;
-}
 
-/*#left-arrow {
-    transform: rotate(270deg);
-    min-width: 50px;
-}*/
+/*
+=================================================================
+
+3 Result-Section-Related
+*/
 
 .result-text {
     width: 80%;
@@ -133,46 +122,6 @@ hr {
     font-size: 18px;
 }
 
-.fa-external-link {
-    position: relative;
-    bottom: 1ex;
-    left: 0.5em;
-}
-
-#page-container {
-    text-align: center;
-}
-
-/*#right-arrow {
-    transform: rotate(90deg);
-    min-width: 50px;
-}*/
-
-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    column-gap: 0.5em;
-}
-
-h2 {
-    font-size: 18px;
-    font-weight: normal;
-    grid-column: 1 / 5;
-}
-
-#download-container {
-    margin-top: 2em;
-}
-
-/*.mark-even {
-    color: rgb(150, 150, 200);
-}
-
-.mark-odd {
-    color: rgb(200, 150, 150)
-}*/
-
 .pattern:nth-child(odd) {
     color: rgb(200, 150, 150)
 }
@@ -181,10 +130,122 @@ h2 {
     color: rgb(150, 150, 200);
 }
 
+
+
+/*
+=================================================================
+
+4 Form 
+*/
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    column-gap: 0.5em;
+}
+
+.navigation-form {
+    display: inline-flex;
+    width: 8%;
+}
+
+
+
+/*
+=================================================================
+
+5 Container 
+*/
+
+#page-container {
+    text-align: center;
+}
+
+#download-container {
+    margin-top: 2em;
+}
+
+
+
+/*
+=================================================================
+
+6 Button 
+*/
+
+button {
+    overflow: hidden;
+    font-size: 20px;
+    background-color: rgb(80, 80, 80);
+    color: rgb(230, 230, 230);
+    border: 2px solid;
+    border-radius: 0.2em;
+}
+
 .next-results-btn {
     width: 100%;
     background-color: rgb(60, 60, 60);
     border: none;
+}
+
+
+
+/*
+=================================================================
+
+7 Anchor 
+*/
+
+a {
+    color:rgb(230, 230, 230);
+    text-decoration: none;
+}
+
+a.back {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    width: 2em;
+    color: rgb(230, 230, 230);
+}
+
+a.help-link {
+    color: rgb(150, 150, 150);
+}
+
+a.help-link > * {
+    vertical-align: super;
+    font-size: 14px;
+}
+
+a.download-link {
+    display: block;
+    margin-top: 1em;
+}
+
+#back-link {
+    display: block;
+    margin-top: 2em;
+    margin-bottom: 1em;
+    width: 2em;
+}
+
+
+
+/*
+=================================================================
+
+8 Hover 
+*/
+
+button:hover {
+    background-color: rgb(100, 100, 100);
+    cursor: pointer;
+}
+
+a:hover {
+    color: white;
 }
 
 .next-results-btn:hover {
@@ -193,6 +254,51 @@ h2 {
     cursor: pointer;
 }
 
+a:hover .pattern:nth-child(odd) {
+    color: rgb(250, 200, 200);
+}
+
+a:hover .pattern:nth-child(even) {
+    color: rgb(200, 200, 250);
+}
+
+
+
+/*
+=================================================================
+
+9 Disabled 
+*/
+
+button:disabled {
+    background-color: rgb(60, 60, 60);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;   
+}
+
 .next-results-btn:disabled {
     visibility: hidden;
+}
+
+
+
+/*
+=================================================================
+
+10 Unordered 
+*/
+
+.fa-external-link {
+    position: relative;
+    bottom: 1ex;
+    left: 0.5em;
+}
+
+.info {
+    color: rgb(150, 150, 150);
+    }
+
+.info-content {
+    color: rgb(230, 230, 230);
 }

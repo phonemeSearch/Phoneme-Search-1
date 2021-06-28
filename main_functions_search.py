@@ -22,7 +22,7 @@ def sql_fetch_entries(command) -> list:
     return entries
 
 
-# prepares check list for
+# prepares check list
 def prepare_language_characteristics(language_index, accent) -> list:
     global path_main
     global language
@@ -66,6 +66,7 @@ def check_validity(search_string, allowed) -> bool:
     aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
     allowed_aspirated = []
     index = -1
+
     for char in search_string:
         index += 1
         if char == "h":
@@ -73,8 +74,10 @@ def check_validity(search_string, allowed) -> bool:
                 allowed_aspirated = aspirated_greek
                 if search_string[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("No allowed usage of 'h'!")
+
         elif char not in allowed:
             false_input.append(char)
+
         elif char == "|":
             if (search_string.index(char) == 0) or (search_string.index(char) == len(search_string)-1):
                 pass
@@ -241,8 +244,7 @@ def convert_key_to_grapheme(connected) -> list:
                     else:
                         group.append("$")
 
-                else:
-                    
+                else:  
                     phoneme_cluster = cluster_key_cmd(char, phoneme_index, phoneme)
                     if phoneme_cluster:
                         for phoneme in phoneme_cluster:
@@ -287,7 +289,13 @@ def build_regex(grapheme_string) -> str:
                         pass
                     else:
                         pattern += char + f"(?![{hf.join_digraph(char)}])"
-                        
+                
+                # checks if char can be part of digraph to construct lookahead 
+                elif char in hf.following_digraph:
+                    before = hf.follows_digraph(follow_char=char)
+                    pattern += f"(?<![{before}])" + char
+                    print(pattern)
+
                 else:
                     pattern += char
                 if index < len(grapheme):
@@ -297,6 +305,7 @@ def build_regex(grapheme_string) -> str:
         
         # handling of single graphemes
         else:
+            print(hf.following_digraph)
             if grapheme[0] in hf.ambiguous:
                 amb_grapheme = "("
                 amb_grapheme += hf.handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
@@ -306,7 +315,12 @@ def build_regex(grapheme_string) -> str:
             elif grapheme[0] in hf.digraphs:
                 grapheme[0] += f"(?![{hf.join_digraph(grapheme[0])}])"
 
+            elif grapheme[0] in hf.following_digraph:
+                before = hf.follows_digraph(follow_char=grapheme[0])
+                grapheme[0] =  f"(?<![{before}])" + grapheme[0]
+
             pattern += "".join(grapheme)
+            print(pattern)
     
     return pattern
 

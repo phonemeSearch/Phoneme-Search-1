@@ -1,4 +1,7 @@
-// DICTIONARIES
+/*
+================================================================================================ 
+Dictionaries
+*/
 
 const featuresGreek = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
@@ -15,12 +18,19 @@ const featuresVedic = {
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
 
-//FUNCTION CALLS
+/*
+================================================================================================ 
+INITIAL CALLS
+*/
+
 renderKey();
 generateKeyboard(language = "1");
 
 
-// EVENT-LISTENER
+/*
+================================================================================================ 
+EVENT-LISTENERS
+*/
 
 document.getElementById("user-input").addEventListener("keypress", key => {
     var existing = document.getElementById("add-input-field");
@@ -104,7 +114,10 @@ document.getElementById("plus-button").addEventListener("click", () => {
 });
 
 
-// FUNCTIONS
+/*
+================================================================================================ 
+Functions
+*/
 
 // renders HTML for key tables
 function renderKey () {
@@ -124,54 +137,54 @@ function renderKey () {
         keyContainer.innerHTML =
             `<table class="key-table">
                 <tr>
-                    <th class="head-roll">Greek</th>
-                    <th>labial<div class="user-key">key: L</div></th>
-                    <th>alveolar<div class="user-key">key: A</div></th>
-                    <th>velar<div class="user-key">key: K</div></th>
+                    <th class="head-roll"><span class="feature">Greek</span></th>
+                    <th><span class="feature">labial<span><div class="user-key">key: L</div></th>
+                    <th><span class="feature">alveolar</span><div class="user-key">key: A</div></th>
+                    <th><span class="feature">velar</span><div class="user-key">key: K</div></th>
                 </tr>
                 <tr>
-                    <td class="phoneme-category">stops<div class="user-key">key: P</div></td>
+                    <td class="phoneme-category"><span class="feature">stops</span><div class="user-key">key: P</div></td>
                 </tr>
                 <tr>
-                    <td>-voice <div class="user-key">key: P+&lt;</div></td>
+                    <td><span class="feature">-voice</span><div class="user-key">key: P+&lt;</div></td>
                     <td>p</td>
                     <td>t</td>
                     <td>k</td>
                 </tr>
                 <tr>
-                    <td>+voice <div class="user-key">key: P+&gt;</div></td>
+                    <td><span class="feature">+voice</span><div class="user-key">key: P+&gt;</div></td>
                     <td>b</td>
                     <td>d</td>
                     <td>g</td>
                 </tr>
                 <tr>
-                    <td>+aspirate <div class="user-key">key: P+#</div></td>
+                    <td><span class="feature">+aspirate</span><div class="user-key">key: P+#</div></td>
                     <td>ph</td>
                     <td>th</td>
                     <td>kh</td>
                 </tr>
-                <tr><td class="phoneme-category"<span class="">affricate</span><div class="user-key">key: Z</div></td></tr>
+                <tr><td class="phoneme-category"><span class="feature">affricate</span><div class="user-key">key: Z</div></td></tr>
                 <tr>
                     <td></td>
                     <td>ps</td>
                     <td>z</td>
                     <td>ks</td>
                 </tr>
-                <tr><td class="phoneme-category">non stops</td></tr>
+                <tr><td class="phoneme-category"><span class="feature">non stops</span></td></tr>
                 <tr>
-                    <td>nasal <div class="user-key">key: N</div></td>
+                    <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
                     <td>m</td>
                     <td>n</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>approximant <div class="user-key">key: R</div></td>
+                    <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
                     <td></td>
                     <td>l r</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>fricative <div class="user-key">key: F</div></td>
+                    <td><span class="feature">fricative</span><div class="user-key">key: F</div></td>
                     <td></td>
                     <td>s</td>
                     <td></td>
@@ -203,7 +216,7 @@ function renderKey () {
         keyContainer.innerHTML = 
         `<table class="key-table">
         <tr>
-            <th>Vedic</th>
+            <th><span class="feature">Vedic</span></th>
             <th>labial</th>
             <th>alveolar</th>
             <th>retroflex</th>
@@ -211,7 +224,7 @@ function renderKey () {
             <th>velar</th>
         </tr>
         <tr>
-        <td class="phoneme-category">stops</td>
+        <td class="phoneme-category"><span class="feature">stops</span><div class="user-key">key: P</div></td>
         <td class="user-key">key: L</td>
         <td class="user-key">key: A</td>
         <td class="user-key">key: X</td>
@@ -219,7 +232,7 @@ function renderKey () {
         <td class="user-key">key: K</td>
         </tr>
         <tr>
-            <td>-voice -aspirate <div class="user-key">key: P+&lt;+%</div></td>
+            <td><span class="feature">-voice -aspirate</span><div class="user-key">key: P+&lt;+%</div></td>
             <td>p</td>
             <td>t</td>
             <td>ṭ</td>
@@ -227,7 +240,7 @@ function renderKey () {
             <td>k</td>
         </tr>
         <tr>
-            <td>-voice +aspirate <div class="user-key">key: P+&lt;+#</div></td>
+            <td><span class="feature">-voice +aspirate</span><div class="user-key">key: P+&lt;+#</div></td>
             <td>ph</td>
             <td>th</td>
             <td>ṭh</td>
@@ -235,7 +248,7 @@ function renderKey () {
             <td>kh</td>
         </tr>
         <tr>
-            <td>+voice -aspirate <div class="user-key">key: P+&gt;+%</div></td>
+            <td><span class="feature">+voice -aspirate</span><div class="user-key">key: P+&gt;+%</div></td>
             <td>b</td>
             <td>d</td>
             <td>ḍ</td>
@@ -243,7 +256,7 @@ function renderKey () {
             <td>g</td>
         </tr>
         <tr>
-            <td>+voice +aspirate <div class="user-key">key: P+&gt;+#</div></td>
+            <td><span class="feature">+voice +aspirate</span><div class="user-key">key: P+&gt;+#</div></td>
             <td>bh</td>
             <td>dh</td>
             <td>ḍh</td>
@@ -251,7 +264,7 @@ function renderKey () {
             <td>gh</td>
         </tr>
         <tr>
-            <td class="phoneme-category">affricates</td>
+            <td class="phoneme-category"><span class="feature">affricates</span><div class="user-key">key: Z</div></td>
             <td></td>
             <td></td>
             <td></td>
@@ -259,7 +272,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>-voice -aspirate <div class="user-key">key: P+&lt;+%</div></td>
+            <td><span class="feature">-voice -aspirate</span></td>
             <td></td>
             <td></td>
             <td></td>
@@ -267,7 +280,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>-voice +aspirate</td>
+            <td><span class="feature">-voice +aspirate</span></td>
             <td></td>
             <td></td>
             <td></td>
@@ -275,7 +288,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>+voice -aspirate</td>
+            <td><span class="feature">+voice -aspirate</span></td>
             <td></td>
             <td></td>
             <td></td>
@@ -283,7 +296,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td class="phoneme-category">non stops</td>
+            <td class="phoneme-category"><span class="feature">non stops</span></td>
             <td></td>
             <td></td>
             <td></td>
@@ -291,7 +304,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>glide</td>
+            <td><span class="feature">glide</span><div class="user-key">key: W</div></td>
             <td>v</td>
             <td></td>
             <td></td>
@@ -299,7 +312,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>nasal</td>
+            <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
             <td>m</td>
             <td>n</td>
             <td>ṇ</td>
@@ -307,7 +320,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>approximant</td>
+            <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
             <td></td>
             <td>l r</td>
             <td></td>
@@ -315,7 +328,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td>fricative</td>
+            <td><span class="feature">fricative</span><div class="user-key">key: W</div></td>
             <td></td>
             <td>s</td>
             <td>ṣ</td>

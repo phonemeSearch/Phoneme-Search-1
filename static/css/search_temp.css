@@ -9,7 +9,7 @@ Contents
 
     3 Container
 
-    4 Form-elements
+    4 Form-Elements
 
     5 Button
 
@@ -17,11 +17,13 @@ Contents
     
     7 Table
     
-    8 Hover
+    8 Active
+
+    9 Hover
     
-    9 Disabled
+    10 Disabled
     
-    10 Unordered
+    11 Unordered
 
 */
 
@@ -82,7 +84,7 @@ section {
 /*
 =================================================================
 
-Container 
+3 Container 
 */
 
 .form-part-container {
@@ -124,12 +126,16 @@ select which has an individual margin*/
     row-gap: 2px;
 }
 
+.user-key {
+    color: rgb(200, 100, 100);
+}
+
 
 
 /*
 =================================================================
 
-Form-elements 
+4 Form-Elements
 */
 
 select {
@@ -172,7 +178,7 @@ select {
 /*
 =================================================================
 
-Button 
+5 Button 
 */
 
 button {
@@ -222,7 +228,7 @@ button {
 /*
 =================================================================
 
-Anchor 
+6 Anchor 
 */
 
 a {
@@ -249,7 +255,7 @@ a.help-link > * {
 /*
 =================================================================
 
-Table
+7 Table
 */
 
 .key-table {
@@ -285,22 +291,21 @@ th:first-child, td:first-child {
     border-style: none solid none none;
 }
 
-th > .user-key {
-    color: rgb(200, 100, 100);
+td > .feature {
+    display: inline-block;
+    width: 15em;
 }
 
 td > .user-key {
-    display: inline-block;
-    text-align: right;
-    width: 30%;
-    color: rgb(200, 100, 100);
+    display: inline;
 }
+
 
 
 /*
 =================================================================
 
-Active 
+8 Active 
 */
 
 .key:active {
@@ -313,7 +318,7 @@ Active
 /*
 =================================================================
 
-Hover 
+9 Hover 
 */
 
 select:hover {
@@ -336,7 +341,7 @@ svg:hover {
 /*
 =================================================================
 
-Disabled 
+10 Disabled 
 */
 
 button:disabled {
@@ -351,7 +356,7 @@ button:disabled {
 /*
 =================================================================
 
-Unordered
+11 Unordered
 */
 
 .phoneme-category {

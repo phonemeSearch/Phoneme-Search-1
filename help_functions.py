@@ -133,19 +133,23 @@ vedic_search_info = \
 current_search_info = ""
 
 digraphs = {}
+following_digraph = []
 ambiguous = {}
 path = ""
 
 
 def get_language_info(language, accent):
     global digraphs
+    global following_digraph
     global ambiguous
     global current_search_info
 
     greek_digraphs = {"p": ["h", "s"], "k": ["h","s"], "t": ["h"]}
+    following_digraph_greek = ["h", "s"]
 
     vedic_digraphs = {"p": ["h"], "b": ["h"], "k": ["h"], "t": ["h"], "d": ["h"], "g": ["h"], "ṭ": ["h"],
                         "ḍ": ["h"]}
+    following_digraph_vedic = ["h"]
 
     if accent == "on":   
         greek_ambiguous = {"σ": ["ς"], "α": ["ἀ", "ἁ"],
@@ -172,13 +176,15 @@ def get_language_info(language, accent):
 
     if language == "greek":
         digraphs = greek_digraphs
+        following_digraph = following_digraph_greek
         ambiguous = greek_ambiguous
         current_search_info = greek_search_info
     elif language == "vedic":
         digraphs = vedic_digraphs
+        following_digraph = following_digraph_vedic
         ambiguous = vedic_ambiguous
         current_search_info = vedic_search_info
-    
+    print(following_digraph)
     prepare_path()
 
 
@@ -189,7 +195,6 @@ def prepare_path():
         path = os.path.join(path, r"database\PhonemeSearch.db")
         
     else:
-        path = os.path.join(path, r"database/PhonemeSearch.db")
         path = os.path.join(path, r"database/PhonemeSearch.db")
 
 
@@ -226,6 +231,16 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
 def join_digraph(char):
     following = "".join(digraphs.get(char))    
     return following
+
+
+def follows_digraph(follow_char):
+    before = ""
+    for digraph in digraphs:
+        for char in digraphs.get(digraph):
+            if char == follow_char:
+                before += digraph
+
+    return before
 
 
 def digraphs_to_begin(group):

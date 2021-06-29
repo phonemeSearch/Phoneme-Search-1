@@ -1,6 +1,8 @@
 import re
 import os
 import sys
+import json
+import base64
 
 
 # data structures
@@ -184,7 +186,7 @@ def get_language_info(language, accent):
         following_digraph = following_digraph_vedic
         ambiguous = vedic_ambiguous
         current_search_info = vedic_search_info
-    print(following_digraph)
+
     prepare_path()
 
 
@@ -215,7 +217,6 @@ def handle_digraphs(digraph, current_list, count) -> tuple[str, bool]:
         if current_list[count + 1] == char:
             is_digraph = True
             digraph_out += char
-    print("digraph: ", digraph_out)
     return digraph_out, is_digraph
 
 
@@ -224,7 +225,6 @@ def handle_ambiguous_phonemes(ambiguous_char) -> str:
     ambiguous_out += ambiguous_char
     for char in ambiguous.get(ambiguous_char):
         ambiguous_out += "|" + char
-        print("ambig: ", ambiguous_out)
     return ambiguous_out
 
 
@@ -247,6 +247,37 @@ def digraphs_to_begin(group):
     sorted_group = [phoneme for phoneme in group if len(phoneme) > 1]
     sorted_group.extend([phoneme for phoneme in group if phoneme not in sorted_group])
     return sorted_group
+
+
+# built url
+
+def built_url_to_dictionaries(language, results, index):
+    lemma = results[index]
+    if language == "1":
+        #url = f"https://lsj.gr/wiki/{results[index]}"
+        url = f"https://logeion.uchicago.edu/{lemma}"
+    
+    elif language == "2":
+
+        json_obj = {
+            "input": f"{lemma}",
+            "field": "version_",
+            "regex": False,
+            "sortBy": None,
+            "sortOrder": None,
+            "size": 10,
+            "from": 0,
+            "mode": "quick",
+            "accents": False
+        }
+
+        json_str = json.dumps(json_obj)
+        bytes_json = bytes(json_str, "utf-8")
+        encoded_jsn = base64.b64encode(bytes_json)
+        str_code = encoded_jsn.decode("utf-8")
+        url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
+    
+    return url
 
 
 # order functions for results

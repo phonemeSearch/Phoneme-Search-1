@@ -5,8 +5,6 @@ import re
 import os
 import sys
 from math import ceil
-import json
-import base64
 
 
 app = Flask(__name__)
@@ -24,13 +22,12 @@ language = ""
 
 
 # wraps searched pattern of lemmas in span elements to mark them with css
+# calls 
 def mark_pattern (pattern):
     global begin
     global end
     global results
     global language
-
-    print("marking ", pattern)
 
     marked_list = []
     for index in range(begin, end):
@@ -39,9 +36,8 @@ def mark_pattern (pattern):
         matches = re.finditer(pattern, results[index])
         marked = results[index]
         for match in matches:
-            print("match", match.group(0))
-            group = match.group(0)
 
+            group = match.group(0)
             if group in hf.following_digraph:
                 before = hf.follows_digraph(group)
                 marked = re.sub(f"(?<![{before}]){group}(?!\w?%)", f"§{group}%", marked, 1)
@@ -52,31 +48,9 @@ def mark_pattern (pattern):
         marked = re.sub("§", "<span class='pattern'>", marked)
         marked = f"<span class='lemma'>{marked}</span>"
 
-        if language == "1":
-            #url = f"https://lsj.gr/wiki/{results[index]}"
-            url = f"https://logeion.uchicago.edu/{results[index]}"
-        elif language == "2":
-            lemma = results[index]
+        url = hf.built_url_to_dictionaries(language, results, index)
 
-            json_obj = {
-                "input": f"{lemma}",
-                "field": "version_",
-                "regex": False,
-                "sortBy": None,
-                "sortOrder": None,
-                "size": 10,
-                "from": 0,
-                "mode": "quick",
-                "accents": False
-            }
-
-            json_str = json.dumps(json_obj)
-            bytes_json = bytes(json_str, "utf-8")
-            encoded_jsn = base64.b64encode(bytes_json)
-            str_code = encoded_jsn.decode("utf-8")
-            url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
-
-        marked = f"<a class='lsj-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
+        marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
         marked = f"<div class=result>{marked}</div>"
         marked_list.append(marked)
     return marked_list
@@ -166,8 +140,7 @@ def result_page():
     submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
-        #submit = request.args.get("submit-button")
-        print(submit)
+
         if submit == "start":
             page_num = 1
             user_search = request.form['search-input']
@@ -196,10 +169,12 @@ def result_page():
         reverse_button = request.args.get("reverse-button")
         descending_button = request.args.get("descending-button")
         length_button = request.args.get("length-button")
+        
         if reverse_button == "reverse":
             results = hf.sort_reverse(results = results)
         elif reverse_button == "alphabetical":
             results = hf.sort_alphabetical(results = results)
+        
         if descending_button == "descending":
             hf.sort_descending(results)
         elif descending_button == "ascending":
@@ -216,6 +191,7 @@ def result_page():
         return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num,
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/25)}</span>",
                                 reverse="true")
+
 
 if __name__ == '__main__':
     app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True)

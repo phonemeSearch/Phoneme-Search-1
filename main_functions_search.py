@@ -105,7 +105,6 @@ def convert_string_to_list(search) -> list:
             grouped_list.append(group)
             group = ""
     grouped_list.append("fill")
-    # print("grouped_list: ", grouped_list)
     return grouped_list
 
 
@@ -137,7 +136,6 @@ def connect_phoneme_groups(grouped_list) -> list:
                     is_digraph = digraph_return[1]
                 connect_list.append(group_entry)
                 group_entry = ""
-    # print("connect_list: ", connect_list)
     return connect_list
 
 
@@ -158,7 +156,6 @@ def convert_to_non_latin_alphabet(search) -> list:
                 translit_sql_cmd = \
                     f"SELECT grapheme_{language} FROM {language}_vowel WHERE grapheme = '{latin_graph}'"
                 graph = sql_fetch_entries(command=translit_sql_cmd)
-                print("graph", graph)
             graph = graph[0]
             inner_group.append(graph[0])
         outer_group.append(inner_group)
@@ -196,7 +193,6 @@ def cluster_key_cmd(char, index, phoneme) -> tuple:
         select_phonemes_cmd += f"{current_kind} = '{current_value}'"
 
         if plus_true is False:
-            print(select_phonemes_cmd)
             phonemes = sql_fetch_entries(command=select_phonemes_cmd)
             select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
             
@@ -262,7 +258,6 @@ def convert_key_to_grapheme(connected) -> list:
 
 # uses regex
 def build_regex(grapheme_string) -> str:
-    print("amb", hf.ambiguous)
     pattern = ""
     # iterate over list with grapheme groups single and multi
     for grapheme in grapheme_string:
@@ -294,7 +289,6 @@ def build_regex(grapheme_string) -> str:
                 elif char in hf.following_digraph:
                     before = hf.follows_digraph(follow_char=char)
                     pattern += f"(?<![{before}])" + char
-                    print(pattern)
 
                 else:
                     pattern += char
@@ -305,7 +299,6 @@ def build_regex(grapheme_string) -> str:
         
         # handling of single graphemes
         else:
-            print(hf.following_digraph)
             if grapheme[0] in hf.ambiguous:
                 amb_grapheme = "("
                 amb_grapheme += hf.handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
@@ -320,7 +313,6 @@ def build_regex(grapheme_string) -> str:
                 grapheme[0] =  f"(?<![{before}])" + grapheme[0]
 
             pattern += "".join(grapheme)
-            print(pattern)
     
     return pattern
 
@@ -330,20 +322,17 @@ def phoneme_search(grapheme_list) -> tuple[list, str, str]:
     global user_pattern
 
     pattern = build_regex(grapheme_list)
-    print("regex pattern:", pattern)
     
     # sql access
     search_command = f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}'"
     connection = sqlite3.connect(path_main)
     cursor = connection.cursor()
-    print(search_command)
     connection.create_function("REGEXP", 2, hf.regexp)
     cursor.execute(search_command)
     results = cursor.fetchall()
     connection.close()
 
     results = [result[0] for result in results]
-    print("res ", results[0:20])
     results.sort()
 
     return results, user_pattern, pattern
@@ -368,7 +357,6 @@ def save_result(results, pattern) -> str:
     save_path = save_path + f"\\saved searches\\{language}"
     while exists:
         if os.path.exists(save_path) == False:
-            print(save_path)
             os.makedirs(save_path)
             
         try:

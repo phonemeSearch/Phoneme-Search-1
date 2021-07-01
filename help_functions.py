@@ -2,8 +2,9 @@ import re
 import os
 import sys
 import json
-import base64
-
+from base64 import b64encode
+from icu import Locale, Collator
+from functools import cmp_to_key
 
 # data structures
 
@@ -134,6 +135,8 @@ vedic_search_info = \
      "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
 current_search_info = ""
 
+subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
+
 digraphs = {}
 following_digraph = []
 ambiguous = {}
@@ -181,6 +184,7 @@ def get_language_info(language, accent):
         following_digraph = following_digraph_greek
         ambiguous = greek_ambiguous
         current_search_info = greek_search_info
+
     elif language == "vedic":
         digraphs = vedic_digraphs
         following_digraph = following_digraph_vedic
@@ -273,40 +277,123 @@ def built_url_to_dictionaries(language, results, index):
 
         json_str = json.dumps(json_obj)
         bytes_json = bytes(json_str, "utf-8")
-        encoded_jsn = base64.b64encode(bytes_json)
+        encoded_jsn = b64encode(bytes_json)
         str_code = encoded_jsn.decode("utf-8")
         url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
     
     return url
 
 
-# order functions for results
+# order functions
 
-def sort_reverse(results):
-    reversed = [lemma[::-1] for lemma in results]
-    reversed.sort()
-    results = [lemma[::-1] for lemma in reversed]
-    return results
+# alphabetical sorting
 
+def sort_key(x, y):
+    global subst
 
-def sort_alphabetical(results):
-    alphabetical = [lemma for lemma in results]
-    alphabetical.sort()
-    results = [lemma for lemma in alphabetical]
-    return results
+    if x == y:
+        return 0
+    
+    for key_subst in subst:
+        
+        to_subst = subst.get(key_subst)
 
+        x = re.sub(f"[{to_subst}]", f"{subst}", x)
+        y = re.sub(f"[{to_subst}]", f"{subst}", y) 
 
-def sort_descending(results):
-    results.sort(reverse=True)
-
-
-def sort_ascending(results):
-    results.sort()
+    return 1 if x > y else -1
 
 
-def sort_length_ascending(results):
-    results.sort(key=len)
+def reversing(to_reverse):
+    reversed = [lemma[::-1] for lemma in to_reverse]
+    return reversed
 
 
-def sort_length_descending(results):
-    results.sort(key=len, reverse=True)
+def sort_alphabetical(language, results, reverse_bool):
+    print(language)
+    if language == "1":
+        lang_code = "el"
+    elif language == "2":
+        lang_code = "san"
+    else:
+        lang_code = "el"
+
+    loc = Locale(f'{lang_code}')
+    col = Collator.createInstance(loc)
+    results_sorted = sorted(results, key=cmp_to_key(col.compare), reverse=reverse_bool)
+    return results_sorted
+
+
+def sort_prepare(results, language, reverse_status, descending_status):
+    print(reverse_status, descending_status)
+    reverse_bool = False
+
+    if reverse_status == "1":
+        checked_reverse = "checked"
+        results = reversing(results)
+    else:
+        checked_reverse = ""
+
+    if descending_status == "1":
+        checked_descending = "checked"
+        reverse_bool = True
+    else:
+        checked_descending = ""
+
+    switch_html = f"""
+                <label for='reverse-check'>
+                    sort reverse
+                    <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();' {checked_reverse}>
+                </label>
+                <label for='descending-check'>
+                    sort descending
+                    <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();' {checked_descending}>
+                </label>"""
+        
+    sorted_results = sort_alphabetical(language, results, reverse_bool)
+    
+    if reverse_status == "1":
+        results = reversing(sorted_results)
+    else:
+        results = sorted_results
+    
+    return switch_html, results
+
+    #elif sorting == "ascending":
+     #   sort_alphabetical(language, results, reverse_bool=False)
+
+
+# length sorting
+
+def length_sorting(sorting):
+
+    if sorting == "length_ascending":
+        pass
+    
+    elif sorting == "length_descending":
+        pass
+
+#def sort_reverse(results):
+ #   reversed = [lemma[::-1] for lemma in results]
+  #  reversed.sort()
+   # results = [lemma[::-1] for lemma in reversed]
+    #return results
+
+
+#def sort_descending(results):
+ #   results.sort(reverse=True)
+
+
+#def sort_ascending(results):
+ #   if language == ""
+  #  loc = Locale('el')  # 'el' is the locale code for Greek
+   # col = Collator.createInstance(loc)
+    #results_sorted = sorted(results, key=cmp_to_key(col.compare))
+    #return results_sorted
+
+#def sort_length_ascending(results):
+ #   results.sort(key=len)
+
+
+#def sort_length_descending(results):
+ #   results.sort(key=len, reverse=True)

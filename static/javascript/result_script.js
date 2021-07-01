@@ -15,3 +15,10 @@ if (parseInt(pageNum) <= 1) {
     lastButton.removeAttribute("disabled");
 };
 
+document.getElementById("reverse-check").addEventListener("change", () => {
+    document.getElementById("order-form").submit();
+});
+
+document.getElementById("descending-check").addEventListener("change", () => {
+    document.getElementById("order-form").submit();
+});

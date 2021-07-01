@@ -4,6 +4,8 @@ import sys
 import json
 from base64 import b64encode
 from icu import Locale, Collator
+from indic_transliteration import sanscript
+from indic_transliteration.sanscript import SchemeMap, transliterate
 from functools import cmp_to_key
 
 # data structures
@@ -288,20 +290,26 @@ def built_url_to_dictionaries(language, results, index):
 
 # alphabetical sorting
 
-def sort_key(x, y):
-    global subst
-
-    if x == y:
-        return 0
+def convert_to_devanagari(results):
     
-    for key_subst in subst:
-        
-        to_subst = subst.get(key_subst)
+    deva_results = []
+    change = {"è": "e", "á": "a", "à": "a", "é": "e", "ē": "e", "ō": "o", "ṛ": "r̥", "ṝ": "r̥̄", "l̥": "ḷ", "l̥̄":"ḹ", "ṁ": "ṃ"}
+    for lemma in results:
+        for char in change:
+            change_to = change.get(char)
+            lemma = re.sub(f"{char}", f"{change_to}", lemma)
+        deva_results.append(transliterate(lemma, sanscript.IAST, sanscript.DEVANAGARI))
+    
+    return deva_results
 
-        x = re.sub(f"[{to_subst}]", f"{subst}", x)
-        y = re.sub(f"[{to_subst}]", f"{subst}", y) 
 
-    return 1 if x > y else -1
+def convert_to_roman(results):
+    
+    roman_results = []
+    for lemma in results:
+        roman_results.append(transliterate(lemma, sanscript.DEVANAGARI, sanscript.IAST))
+    
+    return roman_results
 
 
 def reversing(to_reverse):
@@ -315,12 +323,17 @@ def sort_alphabetical(language, results, reverse_bool):
         lang_code = "el"
     elif language == "2":
         lang_code = "san"
+        results = convert_to_devanagari(results)
     else:
         lang_code = "el"
 
     loc = Locale(f'{lang_code}')
     col = Collator.createInstance(loc)
     results_sorted = sorted(results, key=cmp_to_key(col.compare), reverse=reverse_bool)
+    
+    if language == "2":
+        results_sorted = convert_to_roman(results_sorted)
+
     return results_sorted
 
 
@@ -373,23 +386,6 @@ def length_sorting(sorting):
     elif sorting == "length_descending":
         pass
 
-#def sort_reverse(results):
- #   reversed = [lemma[::-1] for lemma in results]
-  #  reversed.sort()
-   # results = [lemma[::-1] for lemma in reversed]
-    #return results
-
-
-#def sort_descending(results):
- #   results.sort(reverse=True)
-
-
-#def sort_ascending(results):
- #   if language == ""
-  #  loc = Locale('el')  # 'el' is the locale code for Greek
-   # col = Collator.createInstance(loc)
-    #results_sorted = sorted(results, key=cmp_to_key(col.compare))
-    #return results_sorted
 
 #def sort_length_ascending(results):
  #   results.sort(key=len)

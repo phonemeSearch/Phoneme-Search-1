@@ -71,3 +71,6 @@ venv.bak/
 # save directories
 saved searches/
 search_results.txt
+
+#database
+fill_in_database/

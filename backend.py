@@ -189,6 +189,7 @@ def result_page():
         descending = request.args.get("descending")
         
         res_html_tup = hf.sort_prepare(results, language, reversed, descending)
+        
         results = res_html_tup[1]
         switch_html = res_html_tup[0]
 

@@ -319,9 +319,9 @@ def reversing(to_reverse):
 
 def sort_alphabetical(language, results, reverse_bool):
     print(language)
-    if language == "1":
+    if language == "1" or language == "greek":
         lang_code = "el"
-    elif language == "2":
+    elif language == "2" or language == "vedic":
         lang_code = "san"
         results = convert_to_devanagari(results)
     else:

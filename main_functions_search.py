@@ -333,7 +333,9 @@ def phoneme_search(grapheme_list) -> tuple[list, str, str]:
     connection.close()
 
     results = [result[0] for result in results]
-    results.sort()
+    print(language)
+    results = hf.sort_prepare(results, language, None, None)[1]
+    #print(results)
 
     return results, user_pattern, pattern
 

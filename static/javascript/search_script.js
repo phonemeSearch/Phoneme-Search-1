@@ -85,6 +85,7 @@ document.getElementById("plus-button").addEventListener("click", () => {
     addContainer.setAttribute("class", "form-part-container");
     addInput.setAttribute("class", "text-field");
     addInput.setAttribute("id", "add-input-field");
+    addInput.setAttribute("placeholder", "search pattern");
     addBtn.setAttribute("type", "button");
     addBtn.setAttribute("id", "add-button");
     addBtn.textContent = "add";

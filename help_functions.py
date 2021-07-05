@@ -8,6 +8,7 @@ from indic_transliteration import sanscript
 from indic_transliteration.sanscript import SchemeMap, transliterate
 from functools import cmp_to_key
 
+
 # data structures
 
 greek_search_info = \
@@ -138,6 +139,17 @@ vedic_search_info = \
 current_search_info = ""
 
 subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
+
+switch_html_start = """
+<label for='reverse-check'>
+    sort reverse
+    <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();'>
+</label>
+<label for='descending-check'>
+    sort descending
+    <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();'>
+</label>
+"""
 
 digraphs = {}
 following_digraph = []
@@ -293,7 +305,7 @@ def built_url_to_dictionaries(language, results, index):
 def convert_to_devanagari(results):
     
     deva_results = []
-    change = {"è": "e", "á": "a", "à": "a", "é": "e", "ē": "e", "ō": "o", "ṛ": "r̥", "ṝ": "r̥̄", "l̥": "ḷ", "l̥̄":"ḹ", "ṁ": "ṃ"}
+    change = {"è": "e", "á": "a", "à": "a", "é": "e", "ē": "e", "ō": "o", "í": "i", "ó": "o", "ú": "u", "ṛ": "r̥", "ṝ": "r̥̄", "l̥": "ḷ", "l̥̄":"ḹ", "ṁ": "ṃ"}
     for lemma in results:
         for char in change:
             change_to = change.get(char)
@@ -318,7 +330,6 @@ def reversing(to_reverse):
 
 
 def sort_alphabetical(language, results, reverse_bool):
-    print(language)
     if language == "1" or language == "greek":
         lang_code = "el"
     elif language == "2" or language == "vedic":
@@ -331,7 +342,7 @@ def sort_alphabetical(language, results, reverse_bool):
     col = Collator.createInstance(loc)
     results_sorted = sorted(results, key=cmp_to_key(col.compare), reverse=reverse_bool)
     
-    if language == "2":
+    if language == "2" or language == "vedic":
         results_sorted = convert_to_roman(results_sorted)
 
     return results_sorted
@@ -378,18 +389,11 @@ def sort_prepare(results, language, reverse_status, descending_status):
 
 # length sorting
 
-def length_sorting(sorting):
-
-    if sorting == "length_ascending":
-        pass
+def length_sorting(results, sorting):
+    if sorting == "length-ascending":
+        results.sort(key=len)
     
-    elif sorting == "length_descending":
-        pass
+    elif sorting == "length-descending":
+        results.sort(key=len, reverse=True)
 
-
-#def sort_length_ascending(results):
- #   results.sort(key=len)
-
-
-#def sort_length_descending(results):
- #   results.sort(key=len, reverse=True)
+    return results

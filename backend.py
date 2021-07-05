@@ -21,15 +21,7 @@ results = []
 first_results = []
 next_results = []
 language = ""
-switch_html = f"""
-                <label for='reverse-check'>
-                    sort reverse
-                    <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();'>
-                </label>
-                <label for='descending-check'>
-                    sort descending
-                    <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();'>
-                </label>"""
+switch_html = hf.switch_html_start
 
 
 # wraps searched pattern of lemmas in span elements to mark them with css
@@ -187,12 +179,18 @@ def result_page():
         #user_result_num = int(request.args.get("user-result-num"))
         reversed = request.args.get("reverse")
         descending = request.args.get("descending")
-        
-        res_html_tup = hf.sort_prepare(results, language, reversed, descending)
-        
-        results = res_html_tup[1]
-        switch_html = res_html_tup[0]
+        length = request.args.get("length-button")
 
+        if length in ["length-ascending", "length-descending"]:
+            print("in length")
+            switch_html = hf.switch_html_start
+            results = hf.length_sorting(results, length)
+
+        else:
+            res_html_tup = hf.sort_prepare(results, language, reversed, descending)
+            results = res_html_tup[1]
+            switch_html = res_html_tup[0]
+        
         page_num = 1
         begin = 0
         end = user_num

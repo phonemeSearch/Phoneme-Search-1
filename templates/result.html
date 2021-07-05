@@ -25,13 +25,6 @@
                     page {{page_num|safe}} of {{pages|safe}}
                     <span class="last-page">
                 </div>
-                    <label for="per-page">results per page</label>
-                    <select id="per-page" class="result-per-page" name="user-result-num">
-                        <option id="25-selected" value="25">25</option>
-                        <option id="50-selected" value="50">50</option>
-                        <option id="75-selected" value="75">75</option>
-                        <option id="100-selected" value="100">100</option>
-                    </select>
                 <hr>
                 <div id="results-container">
                     {%for lemma in results%}
@@ -49,15 +42,7 @@
             <form id="order-form" action="/search_result" method="GET">
                 <h2>sort by alphabetical categories</h2>
                 {{switch_html|safe}}
-            <!--
-                <button id="reversed-alpha" name="reverse-button" type="submit" value="reverse">reverse</button>
-                <button id="alpha" name="reverse-button" type="submit" value="alphabetical">alphabetical</button>
-                <button id="descending-button-id" name="descending-button" type="submit" value="descending">descending</button>
-                <button id="ascending-button-id" name="descending-button" type="submit" value="ascending">ascending</button>
-            -->    
                 <h2>sort by lemma length</h2>
-                <label>sort <input id="length-ascending" class="length-check" type="checkbox" value="1"></label>
-                <label><input id="length-descending" class="length-check" type="checkbox" value="1"></label>
                 <button type="submit" name="length-button" value="length-ascending">length ascending</button>
                 <button type="submit" name="length-button" value="length-descending">length descending</button>
 

@@ -6,7 +6,6 @@ import os
 import sys
 from math import ceil
 
-import test
 
 app = Flask(__name__)
 
@@ -168,8 +167,6 @@ def result_page():
 
             mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
             
-            #results = test.translit(res=results)
-
             return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
 

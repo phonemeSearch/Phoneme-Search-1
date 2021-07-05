@@ -75,10 +75,7 @@ def check_validity(search_string, allowed) -> bool:
                 if search_string[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("No allowed usage of 'h'!")
         elif language == "latin":
-            if char == "q":
-                continue
-            
-            elif char in [char for char in allowed if char != "u"]:
+            if char in [char for char in allowed if char != "u"]:
                 if search_string[index - 1] == "q": 
                     false_input.append("No allowed usage of 'q'!")
 
@@ -280,8 +277,8 @@ def build_regex(grapheme_string) -> str:
 
             # iterate over grapheme
             print(grapheme)
+            index = -1
             for char in grapheme:
-                print("MULTI")
                 index += 1
                 first = char
                 pattern_part = char
@@ -292,7 +289,8 @@ def build_regex(grapheme_string) -> str:
 
                 if char[0] in hf.digraphs:
                     print(char)
-                    pattern_part += f"(?![{hf.join_digraph(char[0])}])"
+                    if char[1]:
+                        pattern_part += f"(?![{hf.join_digraph(char[0])}])"
                     #if index == len(grapheme):
                     #    pattern += char + f"(?![{hf.join_digraph(char)}])" 
                     #elif grapheme[index] in hf.digraphs.get(char):
@@ -303,11 +301,12 @@ def build_regex(grapheme_string) -> str:
                 # checks if char can be part of digraph to construct lookahead 
                 elif char in hf.following_digraph:
                     before = hf.follows_digraph(follow_char=char)
-                    pattern += f"(?<![{before}])" + char
+                    pattern_part = f"(?<![{before}])" + char
+                    print(pattern_part)
                     
                 pattern += pattern_part
-
-                if index < len(grapheme):
+                pattern_part = ""
+                if index + 1  < len(grapheme):
                     pattern += "|"
 
             pattern += ")"
@@ -330,7 +329,7 @@ def build_regex(grapheme_string) -> str:
                 
             elif first in hf.following_digraph:
                 before = hf.follows_digraph(follow_char=first)
-                grapheme =  f"(?<![{before}])" + grapheme
+                grapheme =  f"(?<![{before}])" + grapheme[0]
 
             pattern += "".join(grapheme)
     print(pattern)

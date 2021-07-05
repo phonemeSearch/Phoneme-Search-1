@@ -1,3 +1,16 @@
+
+// DATA STRUCTURES
+
+consonants_greek = ""
+vowels_greek = ""
+/*sylables_greek = [
+                    `^(\\${C}{1,2})?\\${V}\\${V}\\${V}`,
+                    `^(\\${C}{1,2})?\\${V}\\${V}\\${C}`,
+                    `^(\\${C}{1,2})?\\${V}\\${C}\\${V}`,
+                    `^(\\${C}{1,2})?\\${V}\\${C}\\${C}`
+                ]
+
+*/
 const nextButton = document.getElementById("next-btn");
 const lastButton = document.getElementById("last-btn");
 var pages = document.getElementById("pages").innerText;

@@ -41,12 +41,18 @@ def mark_pattern (pattern):
         for match in matches:
 
             group = match.group(0)
-            if group in hf.following_digraph:
+            if group in hf.digraphs:
+                after = hf.join_digraph(group)
+                mark_re = f"(?<!§){group}(?!({'|'.join(after)}))"
+            elif group in hf.following_digraph:
                 before = hf.follows_digraph(group)
-                marked = re.sub(f"(?<![{before}]){group}(?!\w?%)", f"§{group}%", marked, 1)
+                mark_re = f"(?<![{before}]){group}(?!\w?%)"
             else:
-                marked = re.sub(f"{group}(?!\w?%)", f"§{group}%", marked, 1)
+                mark_re = f"{group}(?!\w?%)"
+
+            marked = re.sub(mark_re, f"§{group}%", marked, 1)
         
+        print(marked)
         marked = re.sub("%", "</span>", marked)
         marked = re.sub("§", "<span class='pattern'>", marked)
         marked = f"<span class='lemma'>{marked}</span>"
@@ -148,7 +154,6 @@ def result_page():
         if submit == "start":
             page_num = 1
             #user_result_num = 25
-
             # get search data
             user_search = request.form['search-input']
             language = request.form['choose-language']

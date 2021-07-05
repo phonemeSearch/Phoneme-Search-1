@@ -176,7 +176,6 @@ def result_page():
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
 
     elif request.method == 'GET':
-        #user_result_num = int(request.args.get("user-result-num"))
         reversed = request.args.get("reverse")
         descending = request.args.get("descending")
         length = request.args.get("length-button")

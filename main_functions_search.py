@@ -265,33 +265,40 @@ def build_regex(grapheme_string) -> str:
         if "\\" in grapheme:
             pattern += grapheme
         
-        # handling of multigraphemes
+        # handling of multigraphemes (in groups)
         elif len(grapheme) > 1:
             index = 0
             pattern += "("
 
             # iterate over grapheme
+            print(grapheme)
             for char in grapheme:
+                print("MULTI")
                 index += 1
+                first = char
+                pattern_part = char
+                print(char)
+                if char[0] in hf.ambiguous:
+                    pattern_part = hf.handle_ambiguous_phonemes(ambiguous_char=char)
+                    pattern_part = f"({pattern_part})"
 
-                if char in hf.ambiguous:
-                    pattern += hf.handle_ambiguous_phonemes(ambiguous_char=char)
-
-                elif char in hf.digraphs:
-                    if index == len(grapheme):
-                        pattern += char + f"(?![{hf.join_digraph(char)}])" 
-                    elif grapheme[index] in hf.digraphs.get(char):
-                        pass
-                    else:
-                        pattern += char + f"(?![{hf.join_digraph(char)}])"
+                if char[0] in hf.digraphs:
+                    print(char)
+                    pattern_part += f"(?![{hf.join_digraph(char[0])}])"
+                    #if index == len(grapheme):
+                    #    pattern += char + f"(?![{hf.join_digraph(char)}])" 
+                    #elif grapheme[index] in hf.digraphs.get(char):
+                    #    pass
+                    #else:
+                    #    pattern += char + f"(?![{hf.join_digraph(char)}])"
                 
                 # checks if char can be part of digraph to construct lookahead 
                 elif char in hf.following_digraph:
                     before = hf.follows_digraph(follow_char=char)
                     pattern += f"(?<![{before}])" + char
+                    
+                pattern += pattern_part
 
-                else:
-                    pattern += char
                 if index < len(grapheme):
                     pattern += "|"
 
@@ -299,21 +306,26 @@ def build_regex(grapheme_string) -> str:
         
         # handling of single graphemes
         else:
-            if grapheme[0] in hf.ambiguous:
+            first = grapheme[0]
+            print(first)
+            print(hf.digraphs)
+            if first in hf.ambiguous:
                 amb_grapheme = "("
-                amb_grapheme += hf.handle_ambiguous_phonemes(ambiguous_char=grapheme[0])
+                amb_grapheme += hf.handle_ambiguous_phonemes(ambiguous_char=first)
                 amb_grapheme += ")"
                 grapheme = amb_grapheme
 
-            elif grapheme[0] in hf.digraphs:
-                grapheme[0] += f"(?![{hf.join_digraph(grapheme[0])}])"
-
-            elif grapheme[0] in hf.following_digraph:
-                before = hf.follows_digraph(follow_char=grapheme[0])
-                grapheme[0] =  f"(?<![{before}])" + grapheme[0]
+            if first in hf.digraphs:
+                print("is di", grapheme)
+                grapheme += f"(?![{hf.join_digraph(first)}])"
+                print(grapheme)
+                
+            elif first in hf.following_digraph:
+                before = hf.follows_digraph(follow_char=first)
+                grapheme =  f"(?<![{before}])" + grapheme
 
             pattern += "".join(grapheme)
-    
+    print(pattern)
     return pattern
 
 

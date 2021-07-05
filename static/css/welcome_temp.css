@@ -57,6 +57,12 @@ a {
     color: rgb(150, 150, 200);
 }
 
+ol {
+    margin: 0;
+    padding: 0;
+    color: rgb(230, 230, 230);
+    list-style: none;
+}
 
 
 /*

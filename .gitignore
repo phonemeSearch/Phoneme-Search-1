@@ -74,3 +74,6 @@ search_results.txt
 
 #database
 fill_in_database/
+
+#test
+test.py

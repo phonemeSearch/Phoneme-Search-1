@@ -5,13 +5,19 @@ Dictionaries
 
 const featuresGreek = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "R": "approximant", "N": "nasal", "F": "fricative", ">": "voiced",
+    "P": "plosive", "Z": "affricate", "R": "approximant", "N": "nasal", "F": "fricative", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
 const featuresVedic = {
     "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
     "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+};
+
+const featuresLatin = {
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
+    "P": "plosive", "Z": "affricate", "R": "approximant", "N": "nasal", "F": "fricative", "H": "laryngeal", ">": "voiced",
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
@@ -144,7 +150,7 @@ function renderKey () {
                     <th><span class="feature">velar</span><div class="user-key">key: K</div></th>
                 </tr>
                 <tr>
-                    <td class="phoneme-category"><span class="feature">stops</span><div class="user-key">key: P</div></td>
+                    <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
                 </tr>
                 <tr>
                     <td><span class="feature">-voice</span><div class="user-key">key: P+&lt;</div></td>
@@ -171,7 +177,7 @@ function renderKey () {
                     <td>z</td>
                     <td>ks</td>
                 </tr>
-                <tr><td class="phoneme-category"><span class="feature">non stops</span></td></tr>
+                <tr><td class="phoneme-category"><span class="feature">non plosives</span></td></tr>
                 <tr>
                     <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
                     <td>m</td>
@@ -225,7 +231,7 @@ function renderKey () {
             <th>velar</th>
         </tr>
         <tr>
-        <td class="phoneme-category"><span class="feature">stops</span><div class="user-key">key: P</div></td>
+        <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
         <td class="user-key">key: L</td>
         <td class="user-key">key: A</td>
         <td class="user-key">key: X</td>
@@ -297,7 +303,7 @@ function renderKey () {
             <td></td>
         </tr>
         <tr>
-            <td class="phoneme-category"><span class="feature">non stops</span></td>
+            <td class="phoneme-category"><span class="feature">non plosives</span></td>
             <td></td>
             <td></td>
             <td></td>
@@ -336,9 +342,72 @@ function renderKey () {
             <td>ś</td>
             <td></td>
         </tr>
+    </table>`;
+    } else if (language === "3") {
+        keyContainer.innerHTML = 
+    `<table class="key-table">
+        <tr>
+            <th class="head-roll"><span class="feature">Latin</span></th>
+            <th><span class="feature">labial<span><div class="user-key">key: L</div></th>
+            <th><span class="feature">alveolar</span><div class="user-key">key: A</div></th>
+            <th><span class="feature">velar</span><div class="user-key">key: K</div></th>
+            <th><span class="feature">labiovelar</span><div class="user-key">key: Q</div></th>
+            <th><span class="feature">laryngeal</span><div class="user-key">key: H</div></th>
+        </tr>
+        <tr>
+            <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
+        </tr>
+        <tr>
+            <td><span class="feature">-voice</span><div class="user-key">key: P+&lt;</div></td>
+            <td>p</td>
+            <td>t</td>
+            <td>k</td>
+            <td>qu</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span class="feature">+voice</span><div class="user-key">key: P+&gt;</div></td>
+            <td>b</td>
+            <td>d</td>
+            <td>g</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="phoneme-category"><span class="feature">non plosives</span></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
+            <td>m</td>
+            <td>n</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
+            <td></td>
+            <td>l r</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td><span class="feature">fricative</span><div class="user-key">key: F</div></td>
+            <td>f</td>
+            <td>s</td>
+            <td></td>
+            <td></td>
+            <td>h</td>
+        </tr>
     </table>`
-    }
-}
+    };
+};
 
 
 // if key of virtual keyboard is pressed key is added to search input
@@ -358,8 +427,12 @@ function generateKeyboard(language) {
         'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
         'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
     };
+
+    noChars = null;
+
     greek = [featuresGreek, specialCharsGreek, wildcards];
     vedic = [featuresVedic, specialCharsVedic, wildcards];
+    latin = [featuresLatin, noChars, wildcards];
 
     for (var count=0; count<=1; count++) {
         var kind;
@@ -367,7 +440,15 @@ function generateKeyboard(language) {
             kind = greek[count];
         } else if (language === "2") {
             kind = vedic[count];
+        } else if (language === "3") {
+            kind = latin[count];
         }
+
+        if (kind == null) {
+            console.log("null");
+            continue;
+        };
+
         innerContainer = document.createElement("div");
         innerContainer.setAttribute("class", "inner-key-container");
         //console.log(kind);
@@ -432,6 +513,10 @@ function wrongInputHandling(key, pressed, fieldId) {
                           'R', 'V', 'W', 'X', 'Z', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
                           'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', 'Enter'];
+    
+    const latinAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
+                          'R', 'V', 'H', 'Q', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p',
+                          'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'Enter']
                           
     var language = document.getElementById("choose-language-id").value;
     console.log(language);
@@ -441,6 +526,9 @@ function wrongInputHandling(key, pressed, fieldId) {
     } else if (language == "2") {
         allowed = vedicAllowed;
         lang = "Vedic"
+    } else if (language == "3") {
+        allowed = latinAllowed;
+        lang = "Latin"
     }
     
     if (allowed.includes(pressed)) {
@@ -454,7 +542,8 @@ function wrongInputHandling(key, pressed, fieldId) {
                     wrongInput(message, fieldId);
                 }
             }
-        }
+        } else if (language == "3") {
+        };
     } else {
         var message = `character '${pressed}' is no allowed input for ${lang}`;
         key.preventDefault();

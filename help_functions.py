@@ -136,6 +136,7 @@ vedic_search_info = \
      "\n"
      "- '(abP+L)': If you want to allow a specific combination of phonemes at a certain place, you have to put\n"
      "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
+latin_search_info = ""
 current_search_info = ""
 
 subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
@@ -173,7 +174,7 @@ def get_language_info(language, accent):
                         "ὁ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
                         "ὂ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
                         "ὃ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"]
-                        }
+                    }
 
     following_digraph_greek = ["h", "s", "υ", "υ" "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"]
 
@@ -187,9 +188,15 @@ def get_language_info(language, accent):
                         "ṭ": ["h"],
                         "ḍ": ["h"],
                         "c": ["h"]
-                        }
+                    }
 
     following_digraph_vedic = ["h"]
+    
+    latin_digraphs = {
+                        "q": ["u"]
+                    }
+
+    following_digraph_latin = ["u"]
 
     if accent == "on":   
         greek_ambiguous = {
@@ -203,9 +210,11 @@ def get_language_info(language, accent):
                             "ου": ["οὐ","οὑ"],  
                             "υ": ["ὐ", "ὑ", "υ"],
                             "h":["ἁ","ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ"]
-                            }
+                        }
 
         vedic_ambiguous = {}
+
+        latin_ambiguous = {}
 
     else:
         greek_ambiguous = {
@@ -228,6 +237,8 @@ def get_language_info(language, accent):
                             'o': ['ò'],
                             'u': ['ù', 'ú']
                             }
+        
+        latin_ambiguous = {}
 
     if language == "greek":
         digraphs = greek_digraphs
@@ -240,6 +251,12 @@ def get_language_info(language, accent):
         following_digraph = following_digraph_vedic
         ambiguous = vedic_ambiguous
         current_search_info = vedic_search_info
+   
+    elif language == "latin":
+        digraphs = latin_digraphs
+        following_digraph = following_digraph_latin
+        ambiguous = latin_ambiguous
+        current_search_info = latin_search_info
 
     prepare_path()
 
@@ -307,7 +324,7 @@ def digraphs_to_begin(group):
 
 def built_url_to_dictionaries(language, results, index):
     lemma = results[index]
-    if language == "1":
+    if language == "1" or language == "3":
         #url = f"https://lsj.gr/wiki/{results[index]}"
         url = f"https://logeion.uchicago.edu/{lemma}"
     
@@ -373,7 +390,7 @@ def sort_alphabetical(language, results, reverse_bool):
         # results = convert_to_devanagari(results)
         results.sort(reverse=reverse_bool)
         return results
-    elif language == "3":
+    elif language == "3" or language == "latin":
         # lang_code = ""
         results.sort(reverse=reverse_bool)
         return results

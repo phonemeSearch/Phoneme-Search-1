@@ -27,7 +27,7 @@ def prepare_language_characteristics(language_index, accent) -> list:
     global path_main
     global language
 
-    language_list = ["greek", "vedic"]
+    language_list = ["greek", "vedic", "latin"]
     language = language_list[language_index - 1]
 
     hf.get_language_info(language, accent)
@@ -66,7 +66,7 @@ def check_validity(search_string, allowed) -> bool:
     aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
     allowed_aspirated = []
     index = -1
-
+    print(allowed)
     for char in search_string:
         index += 1
         if char == "h":
@@ -74,6 +74,13 @@ def check_validity(search_string, allowed) -> bool:
                 allowed_aspirated = aspirated_greek
                 if search_string[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("No allowed usage of 'h'!")
+        elif language == "latin":
+            if char == "q":
+                continue
+            
+            elif char in [char for char in allowed if char != "u"]:
+                if search_string[index - 1] == "q": 
+                    false_input.append("No allowed usage of 'q'!")
 
         elif char not in allowed:
             false_input.append(char)
@@ -186,6 +193,7 @@ def cluster_key_cmd(char, index, phoneme) -> tuple:
         select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
                                 f"WHERE key = '{char}'"
         # unclear section, write more comprehensible
+        print(select_value_kind_cmd)
         value_kind = sql_fetch_entries(command=select_value_kind_cmd)
         value_kind = value_kind[0]
         current_value = value_kind[0]
@@ -411,8 +419,9 @@ def main_menu():
                               "\n"
                               "2) Vedic"
                               "\n"
+                              "3) Latin" 
                               "input: ")
-        if user_language in ["1", "2"]:
+        if user_language in ["1", "2", "3"]:
             user_language = int(user_language)
             user_input_check = True
             allowed = prepare_language_characteristics(language_index=user_language, accent="off")

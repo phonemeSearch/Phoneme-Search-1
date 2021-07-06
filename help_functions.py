@@ -143,12 +143,12 @@ subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "�
 
 switch_html_start = """
 <label for='reverse-check'>
-    sort reverse
     <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();'>
+    sort reverse
 </label>
 <label for='descending-check'>
-    sort descending
     <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();'>
+    sort descending
 </label>
 """
 
@@ -168,15 +168,15 @@ def get_language_info(language, accent):
                         "p": ["h", "s"],
                         "k": ["h","s"],
                         "t": ["h"],
-                        "ο": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
-                        "ό": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
-                        "ὀ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
-                        "ὁ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
-                        "ὂ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"],
-                        "ὃ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"]
+                        "ο": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ό": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὀ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὁ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὂ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὃ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
                     }
 
-    following_digraph_greek = ["h", "s", "υ", "υ" "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ"]
+    following_digraph_greek = ["h", "s", "υ", "υ" "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
 
     vedic_digraphs = {
                         "p": ["h"],
@@ -202,11 +202,17 @@ def get_language_info(language, accent):
         greek_ambiguous = {
                             "σ": ["ς"],
                             "α": ["ἀ", "ἁ"],
+                            "ά": ["ἄ", "ἅ", "ἇ", "ἆ", "ᾶ"],
                             "ο": ["ὀ", "ὁ"],
+                            "ό": ["ὄ", "ὅ"],
                             "ε": ["ἐ", "ἑ"],
+                            "έ": ["ἔ", "ἕ"],
                             "η": ["ἠ", "ἡ"],
+                            "ή": ["ἤ", "ἥ", "ἦ", "ἧ", "ῆ"],
                             "ι": ["ἰ", "ἱ"],
+                            "ί": ["ἶ", "ἷ", "ἴ", "ἵ", "ῖ"],
                             "ω": ["ὠ", "ὡ"],
+                            "ώ": ["ῶ", "ὤ", "ὥ", "ὦ", "ὧ"],
                             "ου": ["οὐ","οὑ"],  
                             "υ": ["ὐ", "ὑ", "υ"],
                             "h": ["ἁ","ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ"]
@@ -219,15 +225,15 @@ def get_language_info(language, accent):
     else:
         greek_ambiguous = {
                             "σ": ["ς"],
-                            "α": ["ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ"],
-                            "ο": ["ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ"], 
-                            "ε": ["έ", "ἐ", "ἑ", "ἒ", "ἓ"],
-                            "η": ["ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ"],
-                            "ι": ["ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ"],
-                            "ω": ["ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ"],
-                            "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ", "ού"],  # partly not yet in database, database transskript of 'hou'
-                            "υ": ["ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ"], 
-                            "h": ["ἁ", "ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ"]
+                            "α": ["ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ"],
+                            "ο": ["ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ"], 
+                            "ε": ["έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ"],
+                            "η": ["ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ", "ἤ", "ἥ"],
+                            "ι": ["ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ", "ἴ", "ἵ"],
+                            "ω": ["ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ", "ὤ", "ὥ"],
+                            "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ", "ού", "οὔ", "οὕ"],  # partly not yet in database, database transskript of 'hou'
+                            "υ": ["ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ὔ", "ὕ"], 
+                            "h": ["ἁ", "ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ", "οὔ", "οὕ"]
                             }  
 
         vedic_ambiguous = {
@@ -423,12 +429,12 @@ def sort_prepare(results, language, reverse_status, descending_status):
 
     switch_html = f"""
                 <label for='reverse-check'>
-                    sort reverse
                     <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();' {checked_reverse}>
+                    sort reverse
                 </label>
                 <label for='descending-check'>
-                    sort descending
                     <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();' {checked_descending}>
+                    sort descending
                 </label>"""
         
     sorted_results = sort_alphabetical(language, results, reverse_bool)
@@ -454,3 +460,101 @@ def length_sorting(results, sorting):
         results.sort(key=len, reverse=True)
 
     return results
+
+
+# syllablificate
+
+V = [
+    "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",
+    "ο", "ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ",
+    "ε", "έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ",
+    "η", "ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ","ἤ","ἥ",
+    "ι", "ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ","ἴ","ἵ",
+    "ω", "ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ","ὤ","ὥ",
+    "υ", "ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ","ὔ","ὕ",
+    "u"
+    ]
+
+C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν", "ψ", "χ", "φ", "ξ", "λ"]
+
+
+def syllabificate(results):
+    syllable_lem = []
+    numCount = 0
+    for lemma in results:
+        numCount += 1
+        print("Nummer: ", numCount)
+        lemma = re.sub(("ου"), "u", lemma)
+        lemma = re.sub(("όυ"), "ú", lemma)
+        lemma = re.sub(("ού"), "ù", lemma)
+        lemma = re.sub(("οῦ"), "o", lemma)
+        lemma = re.sub(("οὐ"), "ó", lemma)
+        lemma = re.sub(("οὑ"), "ò", lemma)
+        lemma = re.sub(("οὖ"), "ü", lemma)
+        lemma = re.sub(("οὗ"), "q", lemma)
+        lemma = re.sub(("ού"), "w", lemma)
+        index = 0
+        point = False
+        syllables = ""
+        
+        for char in lemma:
+            print(index, char)
+            #print(syllables)
+            if char in V:
+                print("Vow")
+            try:
+                lemma[index+1]
+                try:
+                    lemma[index+2]
+                except IndexError:
+                    if point:
+                        char += "."
+                    print("ex 2")
+                    syllables += char + lemma[index+1]
+                    break
+            except IndexError:
+                print("ex 1")
+                syllables += char
+                break
+
+            if point:
+                #print("Point")
+                #print(syllables)
+                point = False
+                syllables += char + "."
+
+            elif char in C:
+                #print("Cons")
+                syllables += char
+            elif char in V:
+                if lemma[index+1] in V and lemma[index+2] in V:
+                    #print("in: --VVV--")
+                    syllables += char + "."
+                elif lemma[index+1] in V and lemma[index+2] in C:
+                    #print("in: --VVC--")
+                    point = True
+                    syllables += char
+                elif lemma[index+1] in C and lemma[index+2] in V:
+                    #print("in: --VCV--")
+                    syllables += char + "."
+        
+                elif lemma[index+1] in C and lemma[index+2] in C:
+                    #print("in: --VCC--")
+                    point = True
+                    syllables += char
+
+            index += 1
+
+        syllables = re.sub(("u"), "ου", syllables)
+        syllables = re.sub(("ú"), "όυ", syllables)
+        syllables = re.sub(("ù"), "ού", syllables)
+        syllables = re.sub(("o"), "οῦ", syllables)
+        syllables = re.sub(("ó"), "οὐ", syllables)
+        syllables = re.sub(("ò"), "οὑ", syllables)
+        syllables = re.sub(("ü"), "οὖ", syllables)
+        syllables = re.sub(("q"), "οὗ", syllables)
+        syllables = re.sub(("w"), "ού", syllables)
+
+        syllable_lem.append("<div class='syllable-lemma'>" + syllables + "</div>")
+        
+    return syllable_lem

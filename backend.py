@@ -50,8 +50,7 @@ def mark_pattern (pattern):
                 mark_re = f"{group}(?!\w?%)"
 
             marked = re.sub(mark_re, f"§{group}%", marked, 1)
-        
-        print(marked)
+
         marked = re.sub("%", "</span>", marked)
         marked = re.sub("§", "<span class='pattern'>", marked)
         marked = f"<span class='lemma'>{marked}</span>"
@@ -85,8 +84,10 @@ def submit_start (user_search, accent_sensitive):
         user_pattern = user_results[1]
         num = len(user_results[0])
 
+        syllables = hf.syllabificate(results[begin:end])
         marked_results = mark_pattern(pattern=pattern)
         first_results = [marked_results[index] for index in range(begin, end) if index < len(marked_results)]
+        first_results = (first_results, syllables)
         return first_results
     else:
         return "an unexpected error occurred"
@@ -115,7 +116,10 @@ def submit_next (direction):
             page_num += 1
             begin += user_num
             end += user_num
+    
+    syllables = hf.syllabificate(results[begin:end])
     next_results = mark_pattern(pattern=pattern)
+    next_results = (next_results, syllables)
 
     return next_results
 
@@ -166,17 +170,14 @@ def result_page():
                 path_os = "/static/download"
 
             mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
-
-            #print(hf.syllabificate(results[0:25]))
-            
-            return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num,
+            return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num, language=language,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
 
         elif submit == "next" or submit == "last":
             next_results = submit_next(direction=submit)
             submit = ""
 
-            return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num,
+            return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num, language=language,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
 
     elif request.method == 'GET':
@@ -198,7 +199,7 @@ def result_page():
         begin = 0
         end = user_num
         reversed_results = submit_next(direction="last")
-        return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num,
+        return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num, language=language,
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
                                 reverse="true", switch_html=switch_html)
 

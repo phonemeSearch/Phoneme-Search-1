@@ -110,12 +110,17 @@ section {
 .result-text {
     width: 80%;
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
 }
 
 .result {
     font-size: 10px;
-    margin-bottom: 0.5em;
+    margin-bottom: 5px;
+}
+
+.syllable-lemma {
+    margin-bottom: 5px;
 }
 
 .lemma {
@@ -159,7 +164,21 @@ form {
 */
 
 #page-container {
+    width: 100%;
     text-align: center;
+}
+
+#results-container {
+    flex-grow: 2;
+}
+
+#syllabification-container{
+    display: none;
+    flex-grow: 1;
+}
+
+#syllable-container {
+    margin-top: 1em;
 }
 
 #download-container {
@@ -187,6 +206,12 @@ button {
     width: 100%;
     background-color: rgb(60, 60, 60);
     border: none;
+}
+
+#show-syllable-button {
+    background-color: rgb(60, 60, 60);
+    border: none;
+
 }
 
 
@@ -262,6 +287,10 @@ a:hover .pattern:nth-child(even) {
     color: rgb(200, 200, 250);
 }
 
+#show-syllable-button:hover {
+    color: white;
+}
+
 
 
 /*
@@ -302,3 +331,4 @@ button:disabled {
 .info-content {
     color: rgb(230, 230, 230);
 }
+

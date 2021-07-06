@@ -142,7 +142,7 @@ function renderKey () {
     if (language === "1") {
         
         keyContainer.innerHTML =
-            `<table class="key-table">
+            `<table class="key-con-table">
                 <tr>
                     <th class="head-roll"><span class="feature">Greek</span></th>
                     <th><span class="feature">labial<span><div class="user-key">key: L</div></th>
@@ -197,31 +197,35 @@ function renderKey () {
                     <td></td>
                 </tr>
             </table>
-            <div class="key-info">
-                <span class=vowel>a</span>    
-                <span class=vowel>á</span>
-                <span class=vowel>e</span>
-                <span class=vowel>é</span>
-                <span class=vowel>i</span>
-                <span class=vowel>í</span>
-                <span class=vowel>o</span>
-                <span class=vowel>ó</span>
-                <span class=vowel>u</span>
-                <span class=vowel>ú</span>
-                <span class=vowel>y</span>
-                <span class=vowel>ý</span>
-                <span class=vowel>ē</span>
-                <span class=vowel>ḗ</span>
-                <span class=vowel>ō</span>
-                <span class=vowel>ṓ</span>
-            </div>
-            <div class="key-info">
-            <span class=wildcard>end/begin marker: |</span>
-            <span class=wildcard>any character: *</span>
-            </div>`;
+            <table class="key-vow-table">
+                <tr>
+                    <th></th>
+                    <th>front</th>
+                    <th>mid</th>
+                    <th>back</th>
+                </tr>
+                <tr>
+                    <td>high</td>
+                    <td>i í, y ý</td>
+                    <td></td>
+                    <td>u ú</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>e é, ē ḗ</td>
+                    <td></td>
+                    <td>o ó, ō ṓ</td>
+                </tr>
+                <tr>
+                    <td>low</td>
+                    <td></td>
+                    <td>a á</td>
+                    <td></td>
+                </tr>
+            </table>`;
     } else if (language === "2") {
         keyContainer.innerHTML = 
-        `<table class="key-table">
+        `<table class="key-con-table">
         <tr>
             <th><span class="feature">Vedic</span></th>
             <th>labial</th>
@@ -345,7 +349,7 @@ function renderKey () {
     </table>`;
     } else if (language === "3") {
         keyContainer.innerHTML = 
-    `<table class="key-table">
+    `<table class="key-con-table">
         <tr>
             <th class="head-roll"><span class="feature">Latin</span></th>
             <th><span class="feature">labial<span><div class="user-key">key: L</div></th>

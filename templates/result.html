@@ -10,6 +10,17 @@
     <a id="back-link" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
     <main>
         <section class="info-section">
+            <div class="info">language:
+                <span id="searched-lang" class="info-content">
+                    {%if language == "1"%}
+                        Greek
+                    {%elif language == "2"%}
+                        Vedic
+                    {%elif language == "3"%}
+                        Latin
+                    {%endif%}
+                </span>
+            </div>
             <div class="info">search pattern: <span class="info-content">{{user_pattern}}</span></div>
             <div class="info"> number of lemmas: <span class="info-content">{{num}}</span></div>
         </section>
@@ -27,7 +38,12 @@
                 </div>
                 <hr>
                 <div id="results-container">
-                    {%for lemma in results%}
+                    {%for lemma in results[0]%}
+                        {{lemma|safe}}
+                    {%endfor%}
+                </div>
+                <div id="syllabification-container">
+                    {%for lemma in results[1]%}
                         {{lemma|safe}}
                     {%endfor%}
                 </div>
@@ -38,14 +54,13 @@
                 </button>
             </form>
         </section>
-        <section class="order-section">
+        <section id="order-section-id" class="order-section">
             <form id="order-form" action="/search_result" method="GET">
                 <h2>sort by alphabetical categories</h2>
                 {{switch_html|safe}}
                 <h2>sort by lemma length</h2>
                 <button type="submit" name="length-button" value="length-ascending">length ascending</button>
                 <button type="submit" name="length-button" value="length-descending">length descending</button>
-
             </form>
             <div id="download-container">
                 Downloads

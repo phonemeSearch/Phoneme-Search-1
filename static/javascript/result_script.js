@@ -36,14 +36,17 @@ if (language == "Greek") {
     const orderSection = document.getElementById("order-section-id");
     const syllableContainer = document.createElement("div");
     const downloadContainer = document.getElementById("download-container");
+    const separator = document.createElement("hr");
     syllableContainer.setAttribute("id", "syllable-container");
     const showSyllableCheck = document.createElement("input");
     const syllableLabel = document.createElement("label");
+    syllableLabel.setAttribute("for", "show-syllable-check");
     syllableLabel.innerText = "show syllables";
     showSyllableCheck.setAttribute("id", "show-syllable-check");
     showSyllableCheck.setAttribute("type", "checkbox");
     syllableContainer.append(showSyllableCheck, syllableLabel);
     orderSection.insertBefore(syllableContainer, downloadContainer);
+    orderSection.insertBefore(separator, downloadContainer);
 
     document.getElementById("show-syllable-check").addEventListener("change", () => {
         var container = document.getElementById("syllabification-container");

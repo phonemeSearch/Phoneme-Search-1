@@ -179,10 +179,11 @@ form {
 
 #syllable-container {
     margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 #download-container {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 
@@ -208,10 +209,11 @@ button {
     border: none;
 }
 
-#show-syllable-button {
+.length-btn {
+    text-align: left;
+    font-size: 18px;
     background-color: rgb(60, 60, 60);
     border: none;
-
 }
 
 
@@ -287,8 +289,9 @@ a:hover .pattern:nth-child(even) {
     color: rgb(200, 200, 250);
 }
 
-#show-syllable-button:hover {
+.length-btn:hover {
     color: white;
+    background-color: rgb(60, 60, 60);
 }
 
 
@@ -331,4 +334,3 @@ button:disabled {
 .info-content {
     color: rgb(230, 230, 230);
 }
-

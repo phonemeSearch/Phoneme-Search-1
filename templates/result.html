@@ -59,9 +59,10 @@
                 <h2>sort by alphabetical categories</h2>
                 {{switch_html|safe}}
                 <h2>sort by lemma length</h2>
-                <button type="submit" name="length-button" value="length-ascending">length ascending</button>
-                <button type="submit" name="length-button" value="length-descending">length descending</button>
+                <button class="length-btn" type="submit" name="length-button" value="length-ascending">length ascending</button>
+                <button class="length-btn" type="submit" name="length-button" value="length-descending">length descending</button>
             </form>
+            <hr>
             <div id="download-container">
                 Downloads
                 <a class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download>download results as txt-file  <i class="fa fa-download"></i></a>

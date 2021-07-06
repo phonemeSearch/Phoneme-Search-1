@@ -210,6 +210,8 @@ button {
 }
 
 .length-btn {
+    display: inherit;
+    margin: 0;
     text-align: left;
     font-size: 18px;
     background-color: rgb(60, 60, 60);

@@ -498,10 +498,10 @@ def syllabificate(results):
         syllables = ""
         
         for char in lemma:
-            print(index, char)
+            #print(index, char)
             #print(syllables)
-            if char in V:
-                print("Vow")
+            #if char in V:
+             #   print("Vow")
             try:
                 lemma[index+1]
                 try:

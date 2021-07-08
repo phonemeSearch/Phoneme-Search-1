@@ -271,38 +271,33 @@ def build_regex(grapheme_string) -> str:
             pattern += grapheme
         
         # handling of multigraphemes (in groups)
-        elif len(grapheme) > 1:
+        else: #len grapheme > 1
             index = 0
             pattern += "("
 
             # iterate over grapheme
-            print(grapheme)
             index = -1
             for char in grapheme:
                 index += 1
-                first = char
+
                 pattern_part = char
-                print(char)
+
                 if char[0] in hf.ambiguous:
                     pattern_part = hf.handle_ambiguous_phonemes(ambiguous_char=char)
                     pattern_part = f"({pattern_part})"
 
                 if char[0] in hf.digraphs:
-                    print(char)
-                    if char[1]:
-                        pattern_part += f"(?![{hf.join_digraph(char[0])}])"
-                    #if index == len(grapheme):
-                    #    pattern += char + f"(?![{hf.join_digraph(char)}])" 
-                    #elif grapheme[index] in hf.digraphs.get(char):
-                    #    pass
-                    #else:
-                    #    pattern += char + f"(?![{hf.join_digraph(char)}])"
+                  
+                    try:
+                        char[1]
+                    except IndexError:
+                        pattern_part += f"(?![{hf.join_digraph(char)}])"
+                        
                 
                 # checks if char can be part of digraph to construct lookahead 
                 elif char in hf.following_digraph:
                     before = hf.follows_digraph(follow_char=char)
                     pattern_part = f"(?<![{before}])" + char
-                    print(pattern_part)
                     
                 pattern += pattern_part
                 pattern_part = ""
@@ -311,28 +306,6 @@ def build_regex(grapheme_string) -> str:
 
             pattern += ")"
         
-        # handling of single graphemes
-        else:
-            first = grapheme[0]
-            print(first)
-            print(hf.digraphs)
-            if first in hf.ambiguous:
-                amb_grapheme = "("
-                amb_grapheme += hf.handle_ambiguous_phonemes(ambiguous_char=first)
-                amb_grapheme += ")"
-                grapheme = amb_grapheme
-
-            if first in hf.digraphs:
-                print("is di", grapheme)
-                grapheme += f"(?![{hf.join_digraph(first)}])"
-                print(grapheme)
-                
-            elif first in hf.following_digraph:
-                before = hf.follows_digraph(follow_char=first)
-                grapheme =  f"(?<![{before}])" + grapheme[0]
-
-            pattern += "".join(grapheme)
-    print(pattern)
     return pattern
 
 

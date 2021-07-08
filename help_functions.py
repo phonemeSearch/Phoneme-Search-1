@@ -483,7 +483,7 @@ def syllabificate(results):
     numCount = 0
     for lemma in results:
         numCount += 1
-        print("Nummer: ", numCount)
+        #print("Nummer: ", numCount)
         lemma = re.sub(("ου"), "u", lemma)
         lemma = re.sub(("όυ"), "ú", lemma)
         lemma = re.sub(("ού"), "ù", lemma)
@@ -509,11 +509,9 @@ def syllabificate(results):
                 except IndexError:
                     if point:
                         char += "."
-                    print("ex 2")
                     syllables += char + lemma[index+1]
                     break
             except IndexError:
-                print("ex 1")
                 syllables += char
                 break
 

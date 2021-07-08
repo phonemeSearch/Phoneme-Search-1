@@ -472,7 +472,7 @@ V = [
     "ι", "ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ","ἴ","ἵ",
     "ω", "ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ","ὤ","ὥ",
     "υ", "ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ","ὔ","ὕ",
-    "u"
+    "u", "ú", "ù", "ò", "o", "ó", "ü", "q", "w"
     ]
 
 C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν", "ψ", "χ", "φ", "ξ", "λ"]
@@ -483,7 +483,8 @@ def syllabificate(results):
     numCount = 0
     for lemma in results:
         numCount += 1
-        #print("Nummer: ", numCount)
+
+        print("Nummer: ", numCount)
         lemma = re.sub(("ου"), "u", lemma)
         lemma = re.sub(("όυ"), "ú", lemma)
         lemma = re.sub(("ού"), "ù", lemma)
@@ -498,10 +499,10 @@ def syllabificate(results):
         syllables = ""
         
         for char in lemma:
-            #print(index, char)
+            print(index, char)
             #print(syllables)
-            #if char in V:
-             #   print("Vow")
+            if char in V:
+                print("Vow")
             try:
                 lemma[index+1]
                 try:

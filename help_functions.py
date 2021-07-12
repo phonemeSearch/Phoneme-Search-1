@@ -3,11 +3,8 @@ import os
 import sys
 import json
 from base64 import b64encode
-from icu import Locale, Collator
-from indic_transliteration import sanscript
-from indic_transliteration.sanscript import SchemeMap, transliterate
-from functools import cmp_to_key
-
+import sqlite3
+import main_functions_search as mf 
 
 # data structures
 
@@ -156,13 +153,16 @@ digraphs = {}
 following_digraph = []
 ambiguous = {}
 path = ""
-
+lang = ""
 
 def get_language_info(language, accent):
     global digraphs
     global following_digraph
     global ambiguous
     global current_search_info
+    global lang
+
+    lang = language
 
     greek_digraphs = {
                         "p": ["h", "s"],
@@ -361,69 +361,15 @@ def built_url_to_dictionaries(language, results, index):
 
 # alphabetical sorting
 
-def convert_to_devanagari(results):
-    
-    deva_results = []
-    change = {"è": "e", "á": "a", "à": "a", "é": "e", "ē": "e", "ō": "o", "í": "i", "ó": "o", "ú": "u", "ṛ": "r̥", "ṝ": "r̥̄", "l̥": "ḷ", "l̥̄":"ḹ", "ṁ": "ṃ"}
-    for lemma in results:
-        for char in change:
-            change_to = change.get(char)
-            lemma = re.sub(f"{char}", f"{change_to}", lemma)
-        deva_results.append(transliterate(lemma, sanscript.IAST, sanscript.DEVANAGARI))
-    
-    return deva_results
-
-
-def convert_to_roman(results):
-    
-    roman_results = []
-    for lemma in results:
-        roman_results.append(transliterate(lemma, sanscript.DEVANAGARI, sanscript.IAST))
-    
-    return roman_results
-
-
-def reversing(to_reverse):
-    reversed = [lemma[::-1] for lemma in to_reverse]
-    return reversed
-
-
-def sort_alphabetical(language, results, reverse_bool):
-    if language == "1" or language == "greek":
-        lang_code = "el"
-    elif language == "2" or language == "vedic":
-        # lang_code = "san"
-        # results = convert_to_devanagari(results)
-        results.sort(reverse=reverse_bool)
-        return results
-    elif language == "3" or language == "latin":
-        # lang_code = ""
-        results.sort(reverse=reverse_bool)
-        return results
-
-    loc = Locale(f'{lang_code}')
-    col = Collator.createInstance(loc)
-    results_sorted = sorted(results, key=cmp_to_key(col.compare), reverse=reverse_bool)
-    
-    if language == "2" or language == "vedic":
-        results_sorted = convert_to_roman(results_sorted)
-
-    return results_sorted
-
-
-def sort_prepare(results, language, reverse_status, descending_status):
-    print(reverse_status, descending_status)
-    reverse_bool = False
+def change_switch_status(reverse_status, descending_status):
 
     if reverse_status == "1":
         checked_reverse = "checked"
-        results = reversing(results)
     else:
         checked_reverse = ""
 
     if descending_status == "1":
         checked_descending = "checked"
-        reverse_bool = True
     else:
         checked_descending = ""
 
@@ -436,18 +382,8 @@ def sort_prepare(results, language, reverse_status, descending_status):
                     <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();' {checked_descending}>
                     sort descending
                 </label>"""
-        
-    sorted_results = sort_alphabetical(language, results, reverse_bool)
-    
-    if reverse_status == "1":
-        results = reversing(sorted_results)
-    else:
-        results = sorted_results
-    
-    return switch_html, results
 
-    #elif sorting == "ascending":
-     #   sort_alphabetical(language, results, reverse_bool=False)
+    return switch_html
 
 
 # length sorting
@@ -479,12 +415,13 @@ C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν"
 
 
 def syllabificate(results):
+    #print(results)
     syllable_lem = []
     numCount = 0
     for lemma in results:
         numCount += 1
 
-        print("Nummer: ", numCount)
+        #print("Nummer: ", numCount)
         lemma = re.sub(("ου"), "u", lemma)
         lemma = re.sub(("όυ"), "ú", lemma)
         lemma = re.sub(("ού"), "ù", lemma)
@@ -499,10 +436,11 @@ def syllabificate(results):
         syllables = ""
         
         for char in lemma:
-            print(index, char)
+            #print(index, char)
             #print(syllables)
             if char in V:
-                print("Vow")
+                #print("Vow")
+                pass
             try:
                 lemma[index+1]
                 try:
@@ -557,3 +495,29 @@ def syllabificate(results):
         syllable_lem.append("<div class='syllable-lemma'>" + syllables + "</div>")
         
     return syllable_lem
+
+
+def download(pattern, user_pattern):
+    print("DOWNLOAD")
+    global lang
+    search_command = \
+    f"SELECT lemma FROM {lang} WHERE lemma REGEXP '{pattern}' "
+    
+    connection = sqlite3.connect("database\\PhonemeSearch.db")
+    cursor = connection.cursor()
+    connection.create_function("REGEXP", 2, regexp)
+    print(search_command)
+    cursor.execute(search_command)
+    results = cursor.fetchall()
+    
+    connection.close()
+
+    results = [result[0] for result in results]
+
+    path = os.path.dirname(os.path.abspath(sys.argv[0]))
+    if os.name == "nt":
+        path_os = "\\static\\download"
+    else:
+        path_os = "/static/download"
+
+    mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)

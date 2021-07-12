@@ -65,6 +65,9 @@
             <hr>
             <div id="download-container">
                 Downloads
+                <form id="download-form" action="/search_result" method="GET">
+                    <button id="download-button" name="download" type="submit" value="download-results">download results as txt-file  <i class="fa fa-download"></i></button>
+                </form>
                 <a class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download>download results as txt-file  <i class="fa fa-download"></i></a>
             </div>
         </section>

@@ -3,14 +3,16 @@ import main_functions_search as mf
 import help_functions as hf
 import re
 import os
-import sys
+import sqlite3
 from math import ceil
 
 
 app = Flask(__name__)
 
-begin = 0
-end = 0
+limit = 25
+offset = 0
+order_id = "id"
+asc_desc = "ASC"
 num = 0
 user_num = 25
 page_num = 0
@@ -26,15 +28,13 @@ switch_html = hf.switch_html_start
 # wraps searched pattern of lemmas in span elements to mark them with css
 # calls 
 def mark_pattern (pattern):
-    global begin
-    global end
+    global limit
+    global offset
     global results
     global language
 
     marked_list = []
-    for index in range(begin, end):
-        if index >= len(results):
-            break
+    for index in range(len(results)):
         matches = re.finditer(pattern, results[index])
         marked = results[index]
         for match in matches:
@@ -65,28 +65,49 @@ def mark_pattern (pattern):
 
 # uses mf to get search results
 def submit_start (user_search, accent_sensitive):
-    global begin
-    global end
+    global limit
+    global offset
     global pattern
     global user_pattern
     global num
     global results
     global language
-    
-    begin = 0
-    end = user_num
+
     user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
     check = mf.check_validity(search_string=user_search, allowed=user_allowed)
     if check:
         user_results = mf.connect_search_related_fcts(search_string=user_search)
         results = user_results[0]
-        pattern = user_results[2]
         user_pattern = user_results[1]
-        num = len(user_results[0])
+        pattern = user_results[2]
+        
+        if os.name == "nt":
+            conn = sqlite3.connect("database\\PhonemeSearch.db")
+        else:
+            conn = sqlite3.connect("database/PhonemeSearch.db")
+        
+        if language == "1":
+            lang = "greek"
+        elif language == "2":
+            lang = "vedic"
+        elif language == "3":
+            lang = "latin"
 
-        syllables = hf.syllabificate(results[begin:end])
+        cur = conn.cursor()
+        conn.create_function("REGEXP", 2, hf.regexp)
+        count_command = \
+        f"SELECT COUNT(*) FROM {lang} WHERE lemma REGEXP '{pattern}'"
+        print(count_command)
+        cur.execute(count_command)
+        number = cur.fetchall()
+        for num in number:
+            number = num[0]
+        print(number)
+        num = number
+
+        syllables = hf.syllabificate(results)
         marked_results = mark_pattern(pattern=pattern)
-        first_results = [marked_results[index] for index in range(begin, end) if index < len(marked_results)]
+        first_results = marked_results
         first_results = (first_results, syllables)
         return first_results
     else:
@@ -95,29 +116,32 @@ def submit_start (user_search, accent_sensitive):
 
 # gets the next search results if click on next button
 def submit_next (direction):
-    global begin
-    global end
+    global limit
+    global offset
+    global order_id
+    global asc_desc
     global page_num
+    global user_num
     global num
     global pattern
     global user_pattern
+    global results
 
     if direction == "last":
         if page_num == 1:
             pass
         else:
             page_num -= 1
-            begin -= user_num
-            end -= user_num
+            offset -= user_num
     elif direction == "next":
         if page_num == ceil(num / user_num):
             pass
         else:
             page_num += 1
-            begin += user_num
-            end += user_num
+            offset += user_num
     
-    syllables = hf.syllabificate(results[begin:end])
+    results = mf.phoneme_search(pattern, order_id, asc_desc, limit, offset)[0]
+    syllables = hf.syllabificate(results)
     next_results = mark_pattern(pattern=pattern)
     next_results = (next_results, syllables)
 
@@ -142,13 +166,16 @@ def description():
 @app.route('/search_result', methods=['POST', 'GET'])
 def result_page():
     global page_num
-    global begin
-    global end
+    global limit
+    global offset
+    global order_id
+    global asc_desc
     global next_results
     global first_results
     global language
     global results
     global switch_html
+    global pattern
 
     submit = ""
     if request.method == 'POST':
@@ -156,20 +183,13 @@ def result_page():
 
         if submit == "start":
             page_num = 1
-            #user_result_num = 25
             # get search data
             user_search = request.form['search-input']
             language = request.form['choose-language']
             accent_sensitive = request.form.get('accent-sensitive')
-            first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
             
-            path = os.path.dirname(os.path.abspath(sys.argv[0]))
-            if os.name == "nt":
-                path_os = "\\static\\download"
-            else:
-                path_os = "/static/download"
+            first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
 
-            mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
             return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num, language=language,
                                     page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
 
@@ -184,21 +204,42 @@ def result_page():
         reversed = request.args.get("reverse")
         descending = request.args.get("descending")
         length = request.args.get("length-button")
+        download = request.args.get("download")
 
-        if length in ["length-ascending", "length-descending"]:
-            print("in length")
-            switch_html = hf.switch_html_start
-            results = hf.length_sorting(results, length)
+        if download == "download-results":
+            hf.download(pattern, user_pattern)
+            reversed_results = results
 
         else:
-            res_html_tup = hf.sort_prepare(results, language, reversed, descending)
-            results = res_html_tup[1]
-            switch_html = res_html_tup[0]
-        
-        page_num = 1
-        begin = 0
-        end = user_num
-        reversed_results = submit_next(direction="last")
+            offset = 0
+            if length in ["length-ascending", "length-descending"]:
+                print("in length")
+
+                switch_html = hf.switch_html_start
+                order_id = "id_length"
+                if length == "length-ascending":
+                    asc_desc = "ASC"
+                elif length == "length-descending":
+                    asc_desc = "DESC"
+                results = mf.phoneme_search(pattern, order_id, asc_desc, 25, offset)
+
+            else:
+
+                switch_html = hf.change_switch_status(reversed, descending)
+
+                if reversed == "1":
+                    order_id = "id_reverse"
+                else:
+                    order_id = "id"
+                if descending == "1":
+                    asc_desc = "DESC"
+                else:
+                    asc_desc = "ASC"
+
+                results = mf.phoneme_search(pattern, order_id, asc_desc, 25, offset)
+
+            page_num = 1
+            reversed_results = submit_next(direction="last")
         return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num, language=language,
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
                                 reverse="true", switch_html=switch_html)

@@ -66,14 +66,16 @@ def check_validity(search_string, allowed) -> bool:
     aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
     allowed_aspirated = []
     index = -1
-    print(allowed)
+
     for char in search_string:
         index += 1
+
         if char == "h":
             if language == "greek":
                 allowed_aspirated = aspirated_greek
                 if search_string[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("No allowed usage of 'h'!")
+
         elif language == "latin":
             if char in [char for char in allowed if char != "u"]:
                 if search_string[index - 1] == "q": 
@@ -88,6 +90,7 @@ def check_validity(search_string, allowed) -> bool:
             else:
                 false_input.append(char)
                 print("no allowed usage of '|'!")
+                
     if len(false_input) > 0:
         return False
     else:
@@ -189,8 +192,7 @@ def cluster_key_cmd(char, index, phoneme) -> tuple:
 
         select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
                                 f"WHERE key = '{char}'"
-        # unclear section, write more comprehensible
-        print(select_value_kind_cmd)
+
         value_kind = sql_fetch_entries(command=select_value_kind_cmd)
         value_kind = value_kind[0]
         current_value = value_kind[0]
@@ -301,7 +303,7 @@ def build_regex(grapheme_string) -> str:
                     
                 pattern += pattern_part
                 pattern_part = ""
-                if index + 1  < len(grapheme):
+                if index + 1 < len(grapheme):
                     pattern += "|"
 
             pattern += ")"
@@ -310,27 +312,27 @@ def build_regex(grapheme_string) -> str:
 
 
 # sql regex search
-def phoneme_search(grapheme_list) -> tuple[list, str, str]:
+def phoneme_search(pattern, order_id, asc_desc, limit, offset) -> tuple[list, str, str]:
     global user_pattern
-
-    pattern = build_regex(grapheme_list)
     
     # sql access
-    search_command = f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}'"
+    search_command = \
+    f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}' " \
+    f"ORDER BY {order_id} {asc_desc} " \
+    f"LIMIT {limit} OFFSET {offset}"
+    
     connection = sqlite3.connect(path_main)
     cursor = connection.cursor()
     connection.create_function("REGEXP", 2, hf.regexp)
+
     cursor.execute(search_command)
     results = cursor.fetchall()
+    
     connection.close()
 
     results = [result[0] for result in results]
-    print(language)
-    results = hf.sort_prepare(results, language, None, None)[1]
-    #print(results)
 
     return results, user_pattern, pattern
-
 
 def save(save_path, file_name, results, pattern):
     if os.name == "nt":
@@ -373,8 +375,9 @@ def connect_search_related_fcts(search_string) -> tuple[list, str]:
     in_list = (convert_string_to_list(search=search_string))
     connected_list = connect_phoneme_groups(in_list)
     grapheme_list = convert_key_to_grapheme(connected=connected_list)
-    results = phoneme_search(grapheme_list=grapheme_list)
-    return results
+    regex_pattern = build_regex(grapheme_list)
+    results = phoneme_search(regex_pattern, "id", "ASC", 25, 0)  # order_id, asc_desc, limit, offset
+    return results  # tuple(results, user_pattern, pattern, number)
 
 
 # user gives search, decides whether to save it or not

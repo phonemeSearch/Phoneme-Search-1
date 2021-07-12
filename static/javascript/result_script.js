@@ -31,6 +31,10 @@ document.getElementById("descending-check").addEventListener("change", () => {
     document.getElementById("order-form").submit();
 });
 
+document.getElementById("download-button").addEventListener("click", () => {
+    document.getElementById("download-link").click();
+});
+
 
 if (language == "Greek") {
     const orderSection = document.getElementById("order-section-id");

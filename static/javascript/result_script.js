@@ -5,6 +5,10 @@ var visibility = "unvisible";
 
 
 var language = document.getElementById("searched-lang").innerText;
+var pattern = document.getElementById("pattern").innerText;
+var result_number = document.getElementById("result-number").innerText;
+document.getElementById("download-link-id").setAttribute("download", `${language}_${pattern}_${result_number}`);
+
 
 const nextButton = document.getElementById("next-btn");
 const lastButton = document.getElementById("last-btn");

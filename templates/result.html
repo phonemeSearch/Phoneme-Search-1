@@ -21,8 +21,8 @@
                     {%endif%}
                 </span>
             </div>
-            <div class="info">search pattern: <span class="info-content">{{user_pattern}}</span></div>
-            <div class="info"> number of lemmas: <span class="info-content">{{num}}</span></div>
+            <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>
+            <div class="info"> number of lemmas: <span id="result-number" class="info-content">{{num}}</span></div>
         </section>
         <section class="result-section">
             <form class="navigation-form" action="/search_result" method="POST">
@@ -37,15 +37,17 @@
                     <span class="last-page">
                 </div>
                 <hr>
-                <div id="results-container">
-                    {%for lemma in results[0]%}
-                        {{lemma|safe}}
-                    {%endfor%}
-                </div>
-                <div id="syllabification-container">
-                    {%for lemma in results[1]%}
-                        {{lemma|safe}}
-                    {%endfor%}
+                <div id="lemma-container">
+                    <div id="results-container">
+                        {%for lemma in results[0]%}
+                            {{lemma|safe}}
+                        {%endfor%}
+                    </div>
+                    <div id="syllabification-container">
+                        {%for lemma in results[1]%}
+                            {{lemma|safe}}
+                        {%endfor%}
+                    </div>
                 </div>
             </div>
             <form class="navigation-form" action="/search_result" method="POST">
@@ -66,9 +68,9 @@
             <div id="download-container">
                 Downloads
                 <form id="download-form" action="/search_result" method="GET">
-                    <button id="download-button" name="download" type="submit" value="download-results">download results as txt-file  <i class="fa fa-download"></i></button>
+                    <button id="download-button" name="download" type="submit" value="download-results"><span class="button-text">generate data</span></button>
+                    <a id="download-link-id" class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download="search_results"><span>download results <i class="fa fa-download"></i></span></a>
                 </form>
-                <a class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download>download results as txt-file  <i class="fa fa-download"></i></a>
             </div>
         </section>
     </main>

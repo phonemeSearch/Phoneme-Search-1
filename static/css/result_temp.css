@@ -109,14 +109,20 @@ section {
 
 .result-text {
     width: 80%;
-    display: flex;
+    /*display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: row;*/
 }
 
 .result {
     font-size: 10px;
     margin-bottom: 5px;
+}
+
+#lemma-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .syllable-lemma {
@@ -145,14 +151,22 @@ section {
 
 form {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     column-gap: 0.5em;
 }
 
 .navigation-form {
     display: inline-flex;
+    justify-content: center;
     width: 8%;
+}
+
+#download-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 1em;
 }
 
 
@@ -196,24 +210,16 @@ form {
 
 button {
     overflow: hidden;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
+    font-size: 18px;
+    text-align: left;
     color: rgb(230, 230, 230);
-    border: 2px solid;
-    border-radius: 0.2em;
-}
-
-.next-results-btn {
-    width: 100%;
     background-color: rgb(60, 60, 60);
-    border: none;
+    border: none
 }
 
 .length-btn {
     display: inherit;
     margin: 0;
-    text-align: left;
-    font-size: 18px;
     background-color: rgb(60, 60, 60);
     border: none;
 }
@@ -249,8 +255,7 @@ a.help-link > * {
 }
 
 a.download-link {
-    display: block;
-    margin-top: 1em;
+
 }
 
 #back-link {
@@ -269,18 +274,12 @@ a.download-link {
 */
 
 button:hover {
-    background-color: rgb(100, 100, 100);
+    color: white;
     cursor: pointer;
 }
 
 a:hover {
     color: white;
-}
-
-.next-results-btn:hover {
-    color: white;
-    background-color: rgb(60, 60, 60);
-    cursor: pointer;
 }
 
 a:hover .pattern:nth-child(odd) {
@@ -289,11 +288,6 @@ a:hover .pattern:nth-child(odd) {
 
 a:hover .pattern:nth-child(even) {
     color: rgb(200, 200, 250);
-}
-
-.length-btn:hover {
-    color: white;
-    background-color: rgb(60, 60, 60);
 }
 
 
@@ -335,4 +329,8 @@ button:disabled {
 
 .info-content {
     color: rgb(230, 230, 230);
+}
+
+.button-text {
+    vertical-align: top;
 }

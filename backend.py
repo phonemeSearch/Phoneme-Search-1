@@ -58,7 +58,7 @@ def mark_pattern (pattern):
         url = hf.built_url_to_dictionaries(language, results, index)
 
         marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
-        marked = f"<div class=result>{marked}</div>"
+        marked = f"<div class='result'>{marked}</div>"
         marked_list.append(marked)
     return marked_list
 
@@ -208,7 +208,9 @@ def result_page():
 
         if download == "download-results":
             hf.download(pattern, user_pattern)
-            reversed_results = results
+            print(results)
+            reversed_results = mark_pattern(pattern=pattern)
+            reversed_results = (reversed_results, hf.syllabificate(reversed_results))
 
         else:
             offset = 0

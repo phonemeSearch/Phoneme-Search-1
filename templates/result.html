@@ -67,9 +67,11 @@
             <hr>
             <div id="download-container">
                 Downloads
+                <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
                 <form id="download-form" action="/search_result" method="GET">
-                    <button id="download-button" name="download" type="submit" value="download-results"><span class="button-text">generate data</span></button>
-                    <a id="download-link-id" class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download="search_results"><span>download results <i class="fa fa-download"></i></span></a>
+                    <button id="download-button" name="download" type="submit" value="download-results">download results as txt <i class="fa fa-download"></i></button>
+                    {{download|safe}}
+                    <a id="download-link-id" class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download="search_results"></a>
                 </form>
             </div>
         </section>

@@ -1,19 +1,16 @@
 
-// DATA STRUCTURES
+// VARIABLES
 
 var visibility = "unvisible";
-
-
 var language = document.getElementById("searched-lang").innerText;
-var pattern = document.getElementById("pattern").innerText;
-var result_number = document.getElementById("result-number").innerText;
-document.getElementById("download-link-id").setAttribute("download", `${language}_${pattern}_${result_number}`);
 
+console.log(language);
 
 const nextButton = document.getElementById("next-btn");
 const lastButton = document.getElementById("last-btn");
 var pages = document.getElementById("pages").innerText;
 var pageNum = document.getElementById("page-num").innerText;
+
 
 if (parseInt(pageNum) === parseInt(pages)) {
     nextButton.setAttribute("disabled", "disabled");
@@ -27,6 +24,7 @@ if (parseInt(pageNum) <= 1) {
     lastButton.removeAttribute("disabled");
 };
 
+
 document.getElementById("reverse-check").addEventListener("change", () => {
     document.getElementById("order-form").submit();
 });
@@ -35,9 +33,16 @@ document.getElementById("descending-check").addEventListener("change", () => {
     document.getElementById("order-form").submit();
 });
 
-document.getElementById("download-button").addEventListener("click", () => {
-    document.getElementById("download-link").click();
-});
+// download txt-file
+if (document.getElementById("download-status")) {
+        console.log("download");
+        const downloadLink = document.getElementById("download-link-id");
+        var pattern = document.getElementById("pattern").innerText;
+        var result_number = document.getElementById("result-number").innerText;
+        var fileName = `${language}_${pattern}_${result_number}.txt`
+        downloadLink.setAttribute("download", fileName);
+        downloadLink.click();
+}
 
 
 if (language == "Greek") {

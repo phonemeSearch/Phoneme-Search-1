@@ -340,10 +340,13 @@ select:hover {
     cursor: pointer;
 }
 
-
 button:hover {
     background-color: rgb(100, 100, 100);
     cursor: pointer;
+}
+
+a:hover {
+    color: white;
 }
 
 svg:hover {

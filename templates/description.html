@@ -28,7 +28,7 @@
     </p>
     <p id="paranthesis">
       3) If you may allow an individual set of graphemes at a certain place in your pattern you can use parenthesis to wrap these graphemes. You can give this pattern for example: P(ae)L
-      which means that lemmas with a plosive followed by a or e followed by a labial are matched. You may also enter the keywords into parenthesis, following the same rules as described in 2).
+      which means that forms with a plosive followed by a or e followed by a labial are matched. You may also enter the keywords into parenthesis, following the same rules as described in 2).
       If you wrap a '*' in parenthesis it means all characters are allowed at this position, so additional characters at this place will have no effect.
     </p>
     <h2 id="accent-sensitive">Accent-Sensitive Checkbox</h2>
@@ -42,12 +42,11 @@
       via add-button into the main input field. If you don't find it useful just ignore it.
     </p>
     <h2 id="key">Key</h2>
-    <!--example picture of table/search input-->
     <p>
       The key for every language is provided as a table below the search input field. The phonemes are ordered by linguistic categories. All graphemes which are given in these tables can
       be entered. The key words for consonant clusters are given next to the categories. You can combine them with '+' like described in 2). There are two special key characters: '|' and '*'.
-      The asterisk allows all graphemes at the place where you put it in your pattern. The vertical bar marks the begin or ending of the lemma. If you enter '|et' for example, only lemmas starting with
-      'et' (depending on the language) at the begin will be matched. When placed at the end lemmas which end with this pattern will be matched.
+      The asterisk allows all graphemes at the place where you put it in your pattern. The vertical bar marks the begin or ending of the word. If you enter '|et' for example, only words starting with
+      'et' (depending on the language) at the begin will be matched. When placed at the end word forms which end with this pattern will be matched.
     </p>
     <h2 id="keyboard">Keyboard</h2>
     <p>
@@ -59,19 +58,24 @@
     <div>Result Page</div>
     <h2 id="match">Match</h2>
     <p>
-      A lemma is matched if the given pattern is found at least once in the lemma. This means if you want a lemma to match the same pattern twice (or more) you must specify that explicitly:
-      to*to matches lemmas which contain to at least two times.
-      At the moment there is no way to exclude lemmas containing multiple matches.
+      A word form is matched if the given pattern is found at least once within it. This means if you want a word form to match the same pattern twice (or more) you must specify that explicitly:
+      to*to matches words which contain 'to' at least two times.
+      At the moment there is no way to exclude words containing multiple matches.
     </p>
     <h2 id="result-order">Result Order</h2>
     <p>
-      <!--example picture of result page-->
       The search results are presented as pages with a maximum of 25 matches per page. There are arrow symbols to navigate through the result pages. On the right side is some basic information about the results,
       at first the pattern you gave and below the number of matches. Below that are some buttons to modify the result order. Currently you can order the results alphabetical ascending and descending,
-      reverse alphabetical ascending (seen from the end of the lemmas) and by length ascending and descending. Default is alphabetical ascending. Other possibilities to order the results are in progress.
-      The given pattern is marked in the resulting lemmas. If the pattern is found more than once the marking colors alternate from red to blue to provide a better overview. They have no further meaning.
-      The found lemmas are links to a dictionary entry of the respective lemma (if there is one). In Greek and Latin they link
+      reverse alphabetical ascending (seen from the end of the word) and by length ascending and descending. Default is alphabetical ascending. Other possibilities to order the results are in progress.
+      The given pattern is marked in the resulting words. If the pattern is found more than once the marking colors alternate from red to blue to provide a better overview. They have no further meaning.
+      The found word forms are links to a dictionary entry of the respective lemma (if there is one). In Greek and Latin they link
       to <a class="dict-link" href="https://logeion.uchicago.edu/%CE%BB%CE%BF%CE%B3%CE%B5%E1%BF%96%CE%BF%CE%BD">Logeion</a> dictionary and in Vedic to <a class="dict-link" href="https://vedaweb.uni-koeln.de/">VedaWeb</a> application.
+  </p>
+  <h2 id="download">Downloads</h2>
+  <p>
+    You can download your search results as a txt-file. A download with mark-up may become available, too.
+    The file name has following pattern: Language_Pattern_Number. At first stands the language which in was searched followed
+    by the given search pattern and lastly the number of results. In the file are all found forms and additionally the language and the number.
   </p>
 </section>
 </main>

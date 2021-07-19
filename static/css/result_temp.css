@@ -255,7 +255,7 @@ a.help-link > * {
 }
 
 a.download-link {
-
+    display: none;
 }
 
 #back-link {
@@ -331,6 +331,6 @@ button:disabled {
     color: rgb(230, 230, 230);
 }
 
-.button-text {
-    vertical-align: top;
+#download-status {
+    display: none;
 }

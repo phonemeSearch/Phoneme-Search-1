@@ -499,7 +499,6 @@ def syllabificate(results):
 
 
 def download(pattern, user_pattern):
-    print("DOWNLOAD")
     global lang
     search_command = \
     f"SELECT lemma FROM {lang} WHERE lemma REGEXP '{pattern}' "

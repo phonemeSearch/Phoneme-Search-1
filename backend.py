@@ -180,7 +180,7 @@ def result_page():
     submit = ""
     if request.method == 'POST':
         submit = request.form.get("submit-button")
-
+        download_status = ""
         if submit == "start":
             page_num = 1
             # get search data
@@ -191,26 +191,29 @@ def result_page():
             first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
 
             return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num, language=language,
-                                    page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
+                                    page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
+                                    switch_html=switch_html, download=download_status)
 
         elif submit == "next" or submit == "last":
             next_results = submit_next(direction=submit)
             submit = ""
 
             return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num, language=language,
-                                    page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>", switch_html=switch_html)
+                                    page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
+                                    switch_html=switch_html, download=download_status)
 
     elif request.method == 'GET':
         reversed = request.args.get("reverse")
         descending = request.args.get("descending")
         length = request.args.get("length-button")
         download = request.args.get("download")
-
+        download_status = ""
+        
         if download == "download-results":
             hf.download(pattern, user_pattern)
-            print(results)
-            reversed_results = mark_pattern(pattern=pattern)
-            reversed_results = (reversed_results, hf.syllabificate(reversed_results))
+            reversed_results = (mark_pattern(pattern), hf.syllabificate(results))
+            print(reversed_results)
+            download_status = "<input id='download-status' type='checkbox' value='download' checked>"
 
         else:
             offset = 0
@@ -244,7 +247,7 @@ def result_page():
             reversed_results = submit_next(direction="last")
         return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num, language=language,
                                 page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
-                                reverse="true", switch_html=switch_html)
+                                reverse="true", switch_html=switch_html, download=download_status)
 
 
 if __name__ == '__main__':

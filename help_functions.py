@@ -503,7 +503,11 @@ def download(pattern, user_pattern):
     search_command = \
     f"SELECT lemma FROM {lang} WHERE lemma REGEXP '{pattern}' "
     
-    connection = sqlite3.connect("database\\PhonemeSearch.db")
+    if os.name == "nt":
+        connection = sqlite3.connect("database\\PhonemeSearch.db")
+    else:
+        connection = sqlite3.connect("database/PhonemeSearch.db")
+        
     cursor = connection.cursor()
     connection.create_function("REGEXP", 2, regexp)
     print(search_command)

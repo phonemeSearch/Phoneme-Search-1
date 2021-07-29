@@ -97,12 +97,11 @@ def submit_start (user_search, accent_sensitive):
         conn.create_function("REGEXP", 2, hf.regexp)
         count_command = \
         f"SELECT COUNT(*) FROM {lang} WHERE lemma REGEXP '{pattern}'"
-        print(count_command)
         cur.execute(count_command)
         number = cur.fetchall()
         for num in number:
             number = num[0]
-        print(number)
+        
         num = number
 
         syllables = hf.syllabificate(results)
@@ -212,13 +211,11 @@ def result_page():
         if download == "download-results":
             hf.download(pattern, user_pattern)
             reversed_results = (mark_pattern(pattern), hf.syllabificate(results))
-            print(reversed_results)
             download_status = "<input id='download-status' type='checkbox' value='download' checked>"
 
         else:
             offset = 0
             if length in ["length-ascending", "length-descending"]:
-                print("in length")
 
                 switch_html = hf.switch_html_start
                 order_id = "id_length"

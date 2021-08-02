@@ -138,18 +138,6 @@ current_search_info = ""
 
 #subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
 
-switch_html_start = \
-"""
-<label for='reverse-check'>
-    <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='1' onChange='this.form.submit();'>
-    sort reverse
-</label>
-<label for='descending-check'>
-    <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='1' onChange='this.form.submit();'>
-    sort descending
-</label>
-"""
-
 digraphs = {}
 following_digraph = []
 ambiguous = {}

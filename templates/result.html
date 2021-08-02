@@ -1,81 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Results</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result_temp.css') }}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
     <a id="back-link" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
-    <main>
-        <section class="info-section">
-            <div class="info">language:
-                <span id="searched-lang" class="info-content">
-                    {%if language == "1"%}
+    <form method="GET" target="/search_result">
+        <main>
+            <section class="info-section">
+                <div class="info">language:
+                    <span id="searched-lang" class="info-content">
+                        {%if language == "1"%}
                         Greek
-                    {%elif language == "2"%}
+                        {%elif language == "2"%}
                         Vedic
-                    {%elif language == "3"%}
+                        {%elif language == "3"%}
                         Latin
-                    {%endif%}
-                </span>
-            </div>
-            <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>
-            <div class="info"> number of lemmas: <span id="result-number" class="info-content">{{num}}</span></div>
-        </section>
-        <section class="result-section">
-            <form class="navigation-form" action="/search_result" method="POST">
-                <button id="last-btn" class="next-results-btn" type="submit" name="submit-button" value="last">
+                        {%endif%}
+                    </span>
+                </div>
+                <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>
+                <div class="info"> number of words: <span id="result-number" class="info-content">{{number}}</span></div>
+            </section>
+            <section class="result-section">
+                <button id="last-btn" class="next-results-btn" type="submit" name="page" value="last">
                     <i class="fa fa-chevron-left"></i>
                 </button>
-            </form>
-            <div class="result-text">
-                <div id="page-container" class="page">
-                    <span class="first-page"></span>
-                    page {{page_num|safe}} of {{pages|safe}}
-                    <span class="last-page">
-                </div>
-                <hr>
-                <div id="lemma-container">
-                    <div id="results-container">
-                        {%for lemma in results[0]%}
-                            {{lemma|safe}}
-                        {%endfor%}
+                <div class="result-text">
+                    <div id="page-container" class="page">
+                        <span class="first-page"></span>
+                        page <span id="page-num-id">{{page_num}}</span> of {{pages|safe}}
+                        <span class="last-page">
                     </div>
-                    <div id="syllabification-container">
-                        {%for lemma in results[1]%}
-                            {{lemma|safe}}
-                        {%endfor%}
+                    <hr>
+                    <div id="lemma-container">
+                        <div id="results-container">
+                            {%for word in results[0]%}
+                            {{word|safe}}
+                            {%endfor%}
+                        </div>
+                        <div id="syllabification-container">
+                            {%for word in results[1]%}
+                            {{word|safe}}
+                            {%endfor%}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <form class="navigation-form" action="/search_result" method="POST">
-                <button id="next-btn" class="next-results-btn" type="submit" name="submit-button" value="next">
+                <button id="next-btn" class="next-results-btn" type="submit" name="page" value="next">
                     <i class="fa fa-chevron-right"></i>
                 </button>
-            </form>
-        </section>
-        <section id="order-section-id" class="order-section">
-            <form id="order-form" action="/search_result" method="GET">
-                <h2>sort by alphabetical categories</h2>
+            </section>
+            <section id="order-section-id" class="order-section">
+                <h2>sort alphabetical</h2>
                 {{switch_html|safe}}
-                <h2>sort by lemma length</h2>
-                <button class="length-btn" type="submit" name="length-button" value="length-ascending">length ascending</button>
-                <button class="length-btn" type="submit" name="length-button" value="length-descending">length descending</button>
-            </form>
-            <hr>
-            <div id="download-container">
-                Downloads
-                <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
-                <form id="download-form" action="/search_result" method="GET">
-                    <button id="download-button" name="download" type="submit" value="download-results">download results as txt <i class="fa fa-download"></i></button>
+                <hr>
+                <div id="download-container">
+                    Downloads
+                    <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
+                    <button id="download-button" name="download" type="submit" value="download-results">download results
+                        as txt <i class="fa fa-download"></i></button>
                     {{download|safe}}
-                    <a id="download-link-id" class="download-link" href="{{ url_for('static', filename='download/search_results.txt') }}" download="search_results"></a>
-                </form>
-            </div>
-        </section>
-    </main>
+                    <a id="download-link-id" class="download-link"
+                        href="{{ url_for('static', filename='download/search_results.txt') }}"
+                        download="search_results"></a>
+                </div>
+            </section>
+        </main>
+
+        <input name="search-input" value="{{user_pattern}}" hidden>
+        <input name="choose-language" value="{{language}}" hidden>
+        <input name="accent-sensitive" value="{{accent_sensitive}}" hidden>
+        <input name="offset" value="{{offset}}" hidden>
+        <input name="asc-desc" value="{{asc_desc}}" hidden>
+        <input name="page-num" value="{{page_num}}" hidden>
+
+    </form>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>
 </body>
+
 </html>

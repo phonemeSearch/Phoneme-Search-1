@@ -371,12 +371,12 @@ def save_result(results, pattern) -> str:
     return f"Search saved as {file_name}.txt."
 
 
-def connect_search_related_fcts(search_string) -> tuple[list, str]:
+def connect_search_related_fcts(search_string, order_id, asc_desc, limit, offset) -> tuple[list, str]:
     in_list = (convert_string_to_list(search=search_string))
     connected_list = connect_phoneme_groups(in_list)
     grapheme_list = convert_key_to_grapheme(connected=connected_list)
     regex_pattern = build_regex(grapheme_list)
-    results = phoneme_search(regex_pattern, "id", "ASC", 25, 0)  # order_id, asc_desc, limit, offset
+    results = phoneme_search(regex_pattern, order_id, asc_desc, limit, offset)
     return results  # tuple(results, user_pattern, pattern, number)
 
 

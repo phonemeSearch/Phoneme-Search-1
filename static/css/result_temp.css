@@ -24,6 +24,8 @@ Contents
     
     10 Unordered
 
+    11 Toggles
+
 */
 
 
@@ -150,10 +152,7 @@ section {
 */
 
 form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    column-gap: 0.5em;
+   width: 100%;
 }
 
 .navigation-form {
@@ -334,3 +333,59 @@ button:disabled {
 #download-status {
     display: none;
 }
+
+
+
+/*
+=================================================================
+
+11 Toggles
+*/
+
+ .switch {
+    position: relative;
+    width: 30px;
+    height: 17px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 1em;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 13px;
+    width: 13px;
+    left: 2px;
+    bottom: 2px;
+    background-color: rgb(230, 230, 230);
+    border-radius: 50%;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: rgb(150, 150, 200);
+  }
+  
+  input:checked + .slider:before {
+    -webkit-transform: translateX(13px);
+    -ms-transform: translateX(13px);
+    transform: translateX(13px);
+  }

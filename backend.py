@@ -237,27 +237,35 @@ def result_page():
 
     switch_html = \
     f"""
-    <label class="switch" for='reverse-check'>
-        <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='true' onChange='this.form.submit();' {reverse_checked}>
-        <span class="slider"></span>
-    </label>
-    <span>sort reverse</span>
-    <label class="switch" for='descending-check'>
-        <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='true' onChange='this.form.submit();' {descending_checked}>
-        <span class="slider"></span>
-    </label>
-    <span>sort descending</span>
+    <span>
+        <label class="switch" for='reverse-check'>
+            <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='true' onChange='this.form.submit();' {reverse_checked}>
+            <span class="slider"></span>
+        </label>
+        <span class="switch-label">sort reverse</span>
+        </span>
+    <span>
+        <label class="switch" for='descending-check'>
+            <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='true' onChange='this.form.submit();' {descending_checked}>
+            <span class="slider"></span>
+        </label>
+        <span class="switch-label">sort descending</span>
+    </span>
     <h2>sort by word length</h2>
-    <label class="switch" for='length-asc'>
-        <input id='length-asc' class='alphabet-check' type='checkbox' name='length-asc' value='true' onChange='this.form.submit();' {length_asc_checked}>
-        <span class="slider"></span>
-    </label>
-    <span>ascending</span>
-    <label class="switch" for='length-desc'>
-        <input id='length-desc' class='alphabet-check' type='checkbox' name='length-desc' value='true' onChange='this.form.submit();' {length_desc_checked}>
-        <span class="slider"></span>
-    </label>
-    <span>descending</span>
+    <span>
+        <label class="switch" for='length-asc'>
+            <input id='length-asc' class='alphabet-check' type='checkbox' name='length-asc' value='true' onChange='this.form.submit();' {length_asc_checked}>
+            <span class="slider"></span>
+        </label>
+        <span class="switch-label">ascending</span>
+    </span>
+    <span>
+        <label class="switch" for='length-desc'>
+            <input id='length-desc' class='alphabet-check' type='checkbox' name='length-desc' value='true' onChange='this.form.submit();' {length_desc_checked}>
+            <span class="slider"></span>
+        </label>
+        <span class="switch-label">descending</span>
+    </span>
     """
 
     print("offset2", offset)

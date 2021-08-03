@@ -43,7 +43,7 @@ def mark_pattern (pattern, results, language):
 
 
 # uses mf to get search results
-def submit_start (user_search, accent_sensitive, language, order_id, asc_desc, limit, offset):
+def get_results(user_search, accent_sensitive, language, order_id, asc_desc, limit, offset):
     user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
     check = mf.check_validity(search_string=user_search, allowed=user_allowed)
 
@@ -86,40 +86,6 @@ def submit_start (user_search, accent_sensitive, language, order_id, asc_desc, l
         return "an unexpected error occurred"
 
 
-# gets the next search results if click on next button
-#def submit_next (direction):
-#    global limit
-#    global offset
-#    global order_id
-#    global asc_desc
-#    global page_num
-#    global user_num
-#    global num
-#    global pattern
-#    global user_pattern
-#    global results
-#
-#    if direction == "last":
-#        if page_num == 1:
-#            pass
-#        else:
-#            page_num -= 1
-#            offset -= user_num
-#    elif direction == "next":
-#        if page_num == ceil(num / user_num):
-#            pass
-#        else:
-#            page_num += 1
-#            offset += user_num
-#    
-#    results = mf.phoneme_search(pattern, order_id, asc_desc, limit, offset)[0]
-#    syllables = hf.syllabificate(results)
-#    next_results = mark_pattern(pattern=pattern)
-#    next_results = (next_results, syllables)
-#
-#    return next_results
-
-
 @app.route('/')
 def route_page():
     return render_template('welcome.html')
@@ -144,8 +110,6 @@ def result_page():
     download_status = ""
     order_id = ""
 
-    print("page", page)
-
     # get search data
     user_search = request.args.get("search-input")
     language = request.args.get("choose-language")
@@ -153,16 +117,11 @@ def result_page():
     offset = int(request.args.get("offset")) if request.args.get("offset") is not None else 0
 
     asc_desc = "ASC"
-
-    print("offset", offset)
     reverse_checked = ""
     descending_checked = ""
     length_asc_checked = ""
     length_desc_checked = ""
-
     limit = 25
-
-    print("submit", submit)
 
     if submit == "start":
         print("start")
@@ -259,9 +218,7 @@ def result_page():
     </span>
     """
 
-    print("offset2", offset)
-    results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
-    print("pageNum", page_num)
+    results = get_results(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
     if page_num > ceil(results[3]/25):
         page_num -= 1
         offset -= 25
@@ -284,95 +241,6 @@ def result_page():
         accent_sensitive=accent_sensitive
     )
 
-    #elif submit == "next" or submit == "last":
-    #    next_results = submit_next(direction=submit)
-    #    submit = ""
-#
-    #    return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num, language=language,
-    #                            page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
-    #                            switch_html=switch_html, download=download_status)
-    #global page_num
-    #global limit
-    #global offset
-    #global order_id
-    #global asc_desc
-    #global next_results
-    #global first_results
-    #global language
-    #global results
-    #global switch_html
-    #global pattern
-
-    #submit = ""
-    #if request.method == 'POST':
-    #    submit = request.form.get("submit-button")
-    #    download_status = ""
-    #    if submit == "start":
-    #        page_num = 1
-    #        # get search data
-    #        user_search = request.form['search-input']
-    #        language = request.form['choose-language']
-    #        accent_sensitive = request.form.get('accent-sensitive')
-    #        
-    #        first_results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive)
-#
-    #        return render_template('result.html', results=first_results, user_pattern=user_pattern, num=num, language=language,
-    #                                page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
-    #                                switch_html=switch_html, download=download_status)
-#
-    #    elif submit == "next" or submit == "last":
-    #        next_results = submit_next(direction=submit)
-    #        submit = ""
-#
-    #        return render_template('result.html', results=next_results, user_pattern=user_pattern, num=num, language=language,
-    #                                page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
-    #                                switch_html=switch_html, download=download_status)
-#
-    #elif request.method == 'GET':
-    #    reversed = request.args.get("reverse")
-    #    descending = request.args.get("descending")
-    #    length = request.args.get("length-button")
-    #    download = request.args.get("download")
-    #    download_status = ""
-    #    
-    #    if download == "download-results":
-    #        hf.download(pattern, user_pattern)
-    #        reversed_results = (mark_pattern(pattern), hf.syllabificate(results))
-    #        download_status = "<input id='download-status' type='checkbox' value='download' checked>"
-#
-    #    else:
-    #        offset = 0
-    #        if length in ["length-ascending", "length-descending"]:
-#
-    #            switch_html = hf.switch_html_start
-    #            order_id = "id_length"
-    #            if length == "length-ascending":
-    #                asc_desc = "ASC"
-    #            elif length == "length-descending":
-    #                asc_desc = "DESC"
-    #            results = mf.phoneme_search(pattern, order_id, asc_desc, 25, offset)
-#
-    #        else:
-#
-    #            switch_html = hf.change_switch_status(reversed, descending)
-#
-    #            if reversed == "1":
-    #                order_id = "id_reverse"
-    #            else:
-    #                order_id = "id"
-    #            if descending == "1":
-    #                asc_desc = "DESC"
-    #            else:
-    #                asc_desc = "ASC"
-#
-    #            results = mf.phoneme_search(pattern, order_id, asc_desc, 25, offset)
-#
-    #        page_num = 1
-    #        reversed_results = submit_next(direction="last")
-    #    return render_template('result.html', results=reversed_results, user_pattern=user_pattern, num=num, language=language,
-    #                            page_num=f"<span id='page-num'>{page_num}</span>", pages=f"<span id='pages'>{ceil(num/user_num)}</span>",
-    #                            reverse="true", switch_html=switch_html, download=download_status)
-#
 
 if __name__ == '__main__':
     app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True)

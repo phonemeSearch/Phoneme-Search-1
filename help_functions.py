@@ -187,6 +187,9 @@ def get_language_info(language, accent):
 
     following_digraph_latin = ["u"]
 
+    armenian_digraphs = {"ո": ["ւ"]}
+    following_digraph_armenian = ["ւ"]
+
     if accent == "on":   
         greek_ambiguous = {
                             "σ": ["ς"],
@@ -210,6 +213,8 @@ def get_language_info(language, accent):
         vedic_ambiguous = {}
 
         latin_ambiguous = {}
+
+        armenian_ambiguous = {}
 
     else:
         greek_ambiguous = {
@@ -235,6 +240,8 @@ def get_language_info(language, accent):
         
         latin_ambiguous = {}
 
+        armenian_ambiguous = {}
+
     if language == "greek":
         digraphs = greek_digraphs
         following_digraph = following_digraph_greek
@@ -252,6 +259,12 @@ def get_language_info(language, accent):
         following_digraph = following_digraph_latin
         ambiguous = latin_ambiguous
         current_search_info = latin_search_info
+
+    elif language == "armenian":
+        digraphs = armenian_digraphs
+        following_digraph = following_digraph_armenian
+        ambiguous = armenian_ambiguous
+        current_search_info = ""
 
     prepare_path()
 
@@ -343,6 +356,8 @@ def built_url_to_dictionaries(language, results, index):
         str_code = encoded_jsn.decode("utf-8")
         url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
     
+    elif language == "4":
+        url = ""
     return url
 
 
@@ -486,10 +501,11 @@ def syllabificate(results):
     return syllable_lem
 
 
-def download(pattern, user_pattern):
-    global lang
+def download(pattern, user_pattern, language):
+    languages = ["greek", "vedic", "latin", "armenian"]
+    language = languages[language-1]
     search_command = \
-    f"SELECT lemma FROM {lang} WHERE lemma REGEXP '{pattern}' "
+    f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}' "
     
     if os.name == "nt":
         connection = sqlite3.connect("database\\PhonemeSearch.db")

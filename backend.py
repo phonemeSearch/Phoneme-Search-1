@@ -9,20 +9,6 @@ from math import ceil
 
 app = Flask(__name__)
 
-#limit = 25
-#offset = 0
-#order_id = "id"
-#asc_desc = "ASC"
-#num = 0
-user_num = 25
-#page_num = 0
-#pattern = ""
-#user_pattern = ""
-#results = []
-#first_results = []
-#next_results = []
-#language = ""
-
 # wraps searched pattern of lemmas in span elements to mark them with css
 # calls 
 def mark_pattern (pattern, results, language):
@@ -79,6 +65,8 @@ def submit_start (user_search, accent_sensitive, language, order_id, asc_desc, l
             lang = "vedic"
         elif language == "3":
             lang = "latin"
+        elif language == "4":
+            lang = "armenian"
 
         cur = conn.cursor()
         conn.create_function("REGEXP", 2, hf.regexp)
@@ -92,7 +80,7 @@ def submit_start (user_search, accent_sensitive, language, order_id, asc_desc, l
         syllables = hf.syllabificate(results)
         marked_results = mark_pattern(pattern=pattern, language=language, results=results)
         results = marked_results
-        results_tup = (results, syllables, number)
+        results_tup = (results, syllables, pattern, number)
         return results_tup
     else:
         return "an unexpected error occurred"
@@ -150,6 +138,7 @@ def description():
 @app.route('/search_result', methods=['GET'])
 def result_page():
     submit = request.args.get("submit-button")
+    download = request.args.get("download")
     page_num = int(request.args.get("page-num")) if request.args.get("page-num") is not None else 0
     page = request.args.get("page") if request.args.get("page") is not None else 0
     download_status = ""
@@ -165,7 +154,6 @@ def result_page():
 
     asc_desc = "ASC"
 
-    print("asc_desc_bool", asc_desc)
     print("offset", offset)
     reverse_checked = ""
     descending_checked = ""
@@ -185,9 +173,12 @@ def result_page():
 
     elif page == "next" or page == "last":
         print("page", type(offset))
-        if page == "last": 
-            page_num -= 1
-            offset -= 25
+        if page == "last":
+            if page_num == 1:
+                pass
+            else:
+                page_num -= 1
+                offset -= 25
         elif page == "next":
             page_num += 1
             offset += 25
@@ -242,14 +233,14 @@ def result_page():
             <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='true' onChange='this.form.submit();' {reverse_checked}>
             <span class="slider"></span>
         </label>
-        <span class="switch-label">sort reverse</span>
+        <span class="switch-label">reverse</span>
         </span>
     <span>
         <label class="switch" for='descending-check'>
             <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='true' onChange='this.form.submit();' {descending_checked}>
             <span class="slider"></span>
         </label>
-        <span class="switch-label">sort descending</span>
+        <span class="switch-label">descending</span>
     </span>
     <h2>sort by word length</h2>
     <span>
@@ -271,15 +262,23 @@ def result_page():
     print("offset2", offset)
     results = submit_start(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
     print("pageNum", page_num)
+    if page_num > ceil(results[3]/25):
+        page_num -= 1
+        offset -= 25
+    
+    if download == "true":
+        hf.download(pattern=results[2], user_pattern=user_search, language=int(language))
+        download_status = "<input id='download-status' type='checkbox' value='download' checked hidden>"
+
     return render_template(
         'result.html',
         results=(results[0], results[1]),
         user_pattern=user_search,
-        number=results[2],
+        number=results[3],
         language=language,
-        pages=f"<span id='pages'>{ceil(results[2]/25)}</span>",
+        pages=f"<span id='pages'>{ceil(results[3]/25)}</span>",
         switch_html=switch_html,
-        download=download_status,
+        download_status=download_status,
         page_num=page_num,
         offset=offset,
         accent_sensitive=accent_sensitive

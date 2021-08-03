@@ -9,7 +9,7 @@ console.log(language);
 const nextButton = document.getElementById("next-btn");
 const lastButton = document.getElementById("last-btn");
 var pages = document.getElementById("pages").innerText;
-var pageNum = document.getElementById("page-num").innerText;
+var pageNum = document.getElementById("page-num-visible").innerText;
 
 
 if (parseInt(pageNum) === parseInt(pages)) {

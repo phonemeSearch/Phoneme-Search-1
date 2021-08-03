@@ -21,6 +21,10 @@ const featuresLatin = {
     "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 };
 
+const featuresArmenian = {
+
+}
+
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
 
@@ -410,6 +414,8 @@ function renderKey () {
             <td>h</td>
         </tr>
     </table>`
+    } else if (language === "4") {
+        keyContainer.innerHTML = `coming soon`
     };
 };
 

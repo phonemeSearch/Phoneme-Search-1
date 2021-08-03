@@ -10,7 +10,7 @@
 
 <body>
     <a id="back-link" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
-    <form method="GET" target="/search_result">
+    <form method="GET" action="/search_result">
         <main>
             <section class="info-section">
                 <div class="info">language:
@@ -34,7 +34,7 @@
                 <div class="result-text">
                     <div id="page-container" class="page">
                         <span class="first-page"></span>
-                        page <span id="page-num-id">{{page_num}}</span> of {{pages|safe}}
+                        page <span id="page-num-visible">{{page_num}}</span> of {{pages|safe}}
                         <span class="last-page">
                     </div>
                     <hr>
@@ -59,15 +59,20 @@
                 <h2>sort alphabetical</h2>
                 {{switch_html|safe}}
                 <hr>
+
                 <div id="download-container">
-                    Downloads
-                    <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
-                    <button id="download-button" name="download" type="submit" value="download-results">download results
-                        as txt <i class="fa fa-download"></i></button>
-                    {{download|safe}}
+                    <span>
+                        Downloads
+                        <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
+                    </span>
+                    <button id="download-button" name="download" type="submit" value="true">
+                        download results as txt <i class="fa fa-download"></i>
+                    </button>
+                    {{download_status|safe}}
                     <a id="download-link-id" class="download-link"
                         href="{{ url_for('static', filename='download/search_results.txt') }}"
-                        download="search_results"></a>
+                        download="search_results" hidden>
+                    </a>
                 </div>
             </section>
         </main>

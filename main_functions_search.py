@@ -27,7 +27,7 @@ def prepare_language_characteristics(language_index, accent) -> list:
     global path_main
     global language
 
-    language_list = ["greek", "vedic", "latin"]
+    language_list = ["greek", "vedic", "latin", "armenian"]
     language = language_list[language_index - 1]
 
     hf.get_language_info(language, accent)
@@ -258,7 +258,7 @@ def convert_key_to_grapheme(connected) -> list:
         search.append(group)
         group = []
 
-    if language in ["greek"]:
+    if language in ["greek", "armenian"]:
         search = convert_to_non_latin_alphabet(search=search)
     return search
 

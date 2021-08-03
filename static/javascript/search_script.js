@@ -22,7 +22,9 @@ const featuresLatin = {
 };
 
 const featuresArmenian = {
-
+    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "O": "postalveolar", "X": "lateral", "Q": "trill", "R": "flap",
+    "W": "glide", "P": "plosive", "Z": "affricate", "N": "nasal", "F": "fricative", "H": "laryngeal", ">": "voiced",
+    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
 }
 
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
@@ -437,12 +439,16 @@ function generateKeyboard(language) {
         'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
         'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
     };
+    var specialCharsArmenian = {
+        'ē': "1", 'ǝ': "2", 'š': "3", 'ž': "4", 'ł': "5", 'č': "6", 'ǰ': "7"
+    };
 
     noChars = null;
 
     greek = [featuresGreek, specialCharsGreek, wildcards];
     vedic = [featuresVedic, specialCharsVedic, wildcards];
     latin = [featuresLatin, noChars, wildcards];
+    armenian = [featuresArmenian, specialCharsArmenian, wildcards]
 
     for (var count=0; count<=1; count++) {
         var kind;
@@ -452,7 +458,9 @@ function generateKeyboard(language) {
             kind = vedic[count];
         } else if (language === "3") {
             kind = latin[count];
-        }
+        } else if (language === "4") {
+            kind = armenian[count];
+        };
 
         if (kind == null) {
             console.log("null");
@@ -505,7 +513,7 @@ function wrongInput(errorMessage, fieldId) {
 }
 
 
-// handles the input in the main and secondary input field
+// handles input in the main and secondary input field
 // checks whether given char is in list of allowed inputs of the respective language
 // special treatment for h in Greek which is only allowed after certain characters
 function wrongInputHandling(key, pressed, fieldId) {
@@ -518,41 +526,67 @@ function wrongInputHandling(key, pressed, fieldId) {
     const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
                           'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's', 's',
-                          'ps', 'h', 'Enter'];
+                          'ps', 'h', 'Enter'
+                        ];
     const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', 'X', 'Z', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
-                          'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', 'Enter'];
+                          'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', 'Enter'
+                        ];
     
     const latinAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'H', 'Q', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p',
-                          'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'Enter']
-                          
+                          'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'Enter'
+                        ];
+
+    const armenianAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
+                             'R', 'V', 'H', 'Q', 'Z', "'", 'a', 'e', 'ē', 'ǝ', 'i', 'o', 'u',
+                             'p', 'b', 't', 'd', 'ṭ', 'ḍ', 'k', 'g', 'c', 'j', 'v', 'y', 'm', 'n', 'l', 'r', 'ṙ', 's', 'h', 'š',
+                             'ž', 'ł', 'č', 'ǰ', 'f', 'Enter'
+                            ];
+
+    const greekFollows = {"h": ["p", "t", "k"]};
+    const greekInitial = ["h"];
+    const armenianFollows = {"'": ["p", "t", "k", "c", "č"], "h": ["p"]};
+    var follows;
+    var initial;
+
     var language = document.getElementById("choose-language-id").value;
     console.log(language);
-    if (language == "1") {
+    if (language === "1") {
         allowed = greekAllowed;
-        lang = "Greek"
-    } else if (language == "2") {
+        follows = greekFollows;
+        initial = greekInitial;
+        lang = "Greek";
+    } else if (language === "2") {
         allowed = vedicAllowed;
-        lang = "Vedic"
-    } else if (language == "3") {
+        follows = {"": ""};
+        initial = [""]
+        lang = "Vedic";
+    } else if (language === "3") {
         allowed = latinAllowed;
-        lang = "Latin"
-    }
+        follows = {"": ""};
+        initial = [""];
+        lang = "Latin";
+    } else if (language === "4") {
+        allowed = armenianAllowed;
+        follows = armenianFollows;
+        initial = [""];
+        lang = "Armenian";
+    };
     
     if (allowed.includes(pressed)) {
-        if (language == "1") {
-            if (pressed == "h") {
-                fieldValue = document.getElementById(fieldId).value;
-                lastChar = fieldValue.slice(-1);
-                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t") && fieldValue.length != 0) {
-                    var message = `'h' only allowed after 'p', 'k', 't' or as first character`;
-                    key.preventDefault();
-                    wrongInput(message, fieldId);
-                }
-            }
-        } else if (language == "3") {
+        if (follows.hasOwnProperty(pressed)) {
+            fieldValue = document.getElementById(fieldId).value;
+            lastChar = fieldValue.slice(-1);
+            var value = follows[pressed];
+            if (value.includes(lastChar)) {
+                console.log("allowed input");
+            } else {
+                var message = `'${pressed}' only allowed after ${value.join(", ")}`;
+                key.preventDefault();
+                wrongInput(message, fieldId);
+            };
         };
     } else {
         var message = `character '${pressed}' is no allowed input for ${lang}`;
@@ -568,4 +602,17 @@ function wrongInputHandling(key, pressed, fieldId) {
     "t": " τ", "d": " δ", "th": "θ", "k": " κ", "g": " γ", "kh": "χ", "z": " ζ", "m": " μ", "n": " ν", "l": " λ",
     "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
     "k": " κ", "g": " γ", "ks": "ξ"
-}; */
+};
+
+if (language == "1") {
+            if (pressed == "h") {
+                fieldValue = document.getElementById(fieldId).value;
+                lastChar = fieldValue.slice(-1);
+                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t") && fieldValue.length != 0) {
+                    var message = `'h' only allowed after 'p', 'k', 't' or as first character`;
+                    key.preventDefault();
+                    wrongInput(message, fieldId);
+                }
+            }
+
+*/

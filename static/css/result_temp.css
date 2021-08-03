@@ -253,10 +253,6 @@ a.help-link > * {
     font-size: 14px;
 }
 
-a.download-link {
-    display: none;
-}
-
 #back-link {
     display: block;
     margin-top: 2em;
@@ -328,10 +324,6 @@ button:disabled {
 
 .info-content {
     color: rgb(230, 230, 230);
-}
-
-#download-status {
-    display: none;
 }
 
 .switch-label {

@@ -52,7 +52,7 @@ def prepare_language_characteristics(language_index, accent) -> list:
     
     return allowed
 
-
+print("hello")
 # checks if user string is a valid input
 # returns False if there are syntax related problems
 # returns True if there are no syntax related problems

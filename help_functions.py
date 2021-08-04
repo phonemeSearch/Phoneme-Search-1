@@ -287,7 +287,7 @@ def regexp(expr, item):
     return find is not None
 
 
-def handle_digraphs(digraph, current_list, count) -> tuple[str, bool]:
+def handle_digraphs(digraph, current_list, count):
     digraph_out = ""
     digraph_out += digraph
     is_digraph = False

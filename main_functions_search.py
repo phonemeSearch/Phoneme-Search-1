@@ -173,7 +173,7 @@ def convert_to_non_latin_alphabet(search) -> list:
 # as long as plus_true is True or cluster key is given sql-cmd is built
 # captures list index out of range error to examine end of list
 # if plus_true is False and there's no key or end of list sql-cmd is executed
-def cluster_key_cmd(char, index, phoneme) -> tuple:
+def cluster_key_cmd(char, index, phoneme):
     # set select phonemes command
     select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
     
@@ -312,7 +312,7 @@ def build_regex(grapheme_string) -> str:
 
 
 # sql regex search
-def phoneme_search(pattern, order_id, asc_desc, limit, offset) -> tuple[list, str, str]:
+def phoneme_search(pattern, order_id, asc_desc, limit, offset):
     global user_pattern
     
     # sql access
@@ -371,7 +371,7 @@ def save_result(results, pattern) -> str:
     return f"Search saved as {file_name}.txt."
 
 
-def connect_search_related_fcts(search_string, order_id, asc_desc, limit, offset) -> tuple[list, str]:
+def connect_search_related_fcts(search_string, order_id, asc_desc, limit, offset):
     in_list = (convert_string_to_list(search=search_string))
     connected_list = connect_phoneme_groups(in_list)
     grapheme_list = convert_key_to_grapheme(connected=connected_list)

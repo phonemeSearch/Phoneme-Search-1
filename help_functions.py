@@ -404,7 +404,39 @@ def length_sorting(results, sorting):
 
 # syllablificate
 
-V = [
+#Armenian Data
+def syllabificate_arm (results):
+    V = ['ի', 'u', 'ե', 'ո', 'ը', 'է', 'ա'] # "o" missing
+
+    C = ['պ', 'բ', 'փ', 'տ', 'դ', 'թ', 'կ', 'գ', 'ք', 'մ',
+         'ն', 'ռ', 'ր', 'ս', 'զ', 'շ', 'ժ', 'խ', 'հ', 'ֆ',
+         'վ', 'ւ', 'յ', 'լ', 'ղ', 'ծ', 'ձ', 'ց', 'ճ', 'ջ', 'չ'
+        ]
+
+    for word in results:
+        word = re.sub(("ու"), "u", word)
+        word = word[::-1]
+        index = -1
+        if len(word) <= 1:
+            continue
+
+        for char in word:
+            index += 1
+            if char in V:
+                if word[1] in C:
+                    pass #set syllable mark
+            else:
+                if word[1] in V:
+                    if word[2] in C:
+                        pass #set syllable mark
+                    else:
+                        pass #immediatly set mark
+                else:
+                    pass
+            
+            
+def syllabificate(results):
+    V = [
     "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",
     "ο", "ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ",
     "ε", "έ", "έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ",
@@ -415,10 +447,10 @@ V = [
     "u", "ú", "ù", "ò", "o", "ó", "ü", "q", "w"
     ]
 
-C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν", "ψ", "χ", "φ", "ξ", "λ"]
+    C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν",
+         "ψ", "χ", "φ", "ξ", "λ"
+        ]
 
-
-def syllabificate(results):
     #print(results)
     syllable_lem = []
     numCount = 0

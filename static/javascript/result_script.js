@@ -1,7 +1,8 @@
 
 // VARIABLES
 
-var visibility = "unvisible";
+var syllableVisibility = "unvisible";
+var translitVisibility = "unvisible";
 var language = document.getElementById("searched-lang").innerText;
 
 console.log(language);
@@ -45,11 +46,17 @@ if (document.getElementById("download-status")) {
 }
 
 
-if (language == "Greek") {
-    const orderSection = document.getElementById("order-section-id");
+if (language === "Latin") {
+    translitCheck = document.getElementById("translit-check");
+    translitCheck.setAttribute("disabled", "disabled");
+}
+
+if (language != "Greek") {
+    document.getElementById("show-syllable-check").setAttribute("disabled", "disabled")
+}
+    /*const orderSection = document.getElementById("order-section-id");
     const syllableContainer = document.createElement("div");
     const downloadContainer = document.getElementById("download-container");
-    const separator = document.createElement("hr");
     syllableContainer.setAttribute("id", "syllable-container");
     const showSyllableCheck = document.createElement("input");
     const syllableLabel = document.createElement("label");
@@ -59,17 +66,27 @@ if (language == "Greek") {
     showSyllableCheck.setAttribute("type", "checkbox");
     syllableContainer.append(showSyllableCheck, syllableLabel);
     orderSection.insertBefore(syllableContainer, downloadContainer);
-    orderSection.insertBefore(separator, downloadContainer);
+*/
+document.getElementById("show-syllable-check").addEventListener("change", () => {
+    var container = document.getElementById("syllabification-container");
+    if (syllableVisibility === "unvisible") {
+        syllableVisibility = "visible";
+        console.log("listener");
+        container.style.display = "block";
+    } else if (syllableVisibility === "visible") {
+        syllableVisibility = "unvisible";
+        container.style.display = "none";
+    };
+});
 
-    document.getElementById("show-syllable-check").addEventListener("change", () => {
-        var container = document.getElementById("syllabification-container");
-        if (visibility == "unvisible") {
-            visibility = "visible";
-            console.log("listener");
-            container.style.display = "block";
-        } else if (visibility == "visible") {
-            visibility = "unvisible";
-            container.style.display = "none";
-        };
-    });
-}
+document.getElementById("translit-check").addEventListener("change", () => {
+    var container = document.getElementById("transliteration-container");
+    if (translitVisibility === "unvisible") {
+        translitVisibility = "visible";
+        console.log("listener");
+        container.style.display = "block";
+    } else if (translitVisibility === "visible") {
+        translitVisibility = "unvisible";
+        container.style.display = "none";
+    };
+});

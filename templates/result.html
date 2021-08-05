@@ -46,8 +46,13 @@
                             {{word|safe}}
                             {%endfor%}
                         </div>
-                        <div id="syllabification-container">
+                        <div id="transliteration-container">
                             {%for word in results[1]%}
+                            <div class="translit">{{word|safe}}</div>
+                            {%endfor%}
+                        </div>
+                        <div id="syllabification-container">
+                            {%for word in results[2]%}
                             {{word|safe}}
                             {%endfor%}
                         </div>
@@ -61,7 +66,19 @@
                 <h2>sort alphabetical</h2>
                 {{switch_html|safe}}
                 <hr>
-
+                <div id="translit-container">
+                    <label for="translit-check">
+                        <input id="translit-check" type="checkbox" value="true">
+                        show transliteration
+                    </label>
+                </div>
+                <div id="syllable-container">
+                    <label for="show-syllable-check">
+                        <input id="show-syllable-check" type="checkbox">
+                        show syllables
+                    </label>
+                </div>
+                <hr>
                 <div id="download-container">
                     <span>
                         Downloads

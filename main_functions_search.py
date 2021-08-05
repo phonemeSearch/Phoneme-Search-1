@@ -314,12 +314,16 @@ def build_regex(grapheme_string) -> str:
 def phoneme_search(pattern, order_id, asc_desc, limit, offset):
     global user_pattern
     
+    selection = "lemma"
     # sql access
+    if language in ["armenian"]:
+        selection = "lemma, transliteration"
+         
     search_command = \
-    f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}' " \
+    f"SELECT {selection} FROM {language} WHERE lemma REGEXP '{pattern}' " \
     f"ORDER BY {order_id} {asc_desc} " \
     f"LIMIT {limit} OFFSET {offset}"
-    
+
     connection = sqlite3.connect(path_main)
     cursor = connection.cursor()
     connection.create_function("REGEXP", 2, hf.regexp)
@@ -329,7 +333,10 @@ def phoneme_search(pattern, order_id, asc_desc, limit, offset):
     
     connection.close()
 
-    results = [result[0] for result in results]
+    if language in ["armenian"]:
+        results = [(result[0], result[1]) for result in results]
+    else:
+        results = [(result[0], "") for result in results]
 
     return results, user_pattern, pattern
 

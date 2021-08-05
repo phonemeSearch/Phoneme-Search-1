@@ -121,6 +121,10 @@ section {
     margin-bottom: 5px;
 }
 
+.translit {
+    margin-bottom: 5px;
+}
+
 #lemma-container {
     display: flex;
     flex-direction: row;
@@ -155,7 +159,7 @@ form {
    width: 100%;
 }
 
-.navigation-form {
+/*.navigation-form {
     display: inline-flex;
     justify-content: center;
     width: 8%;
@@ -166,7 +170,7 @@ form {
     flex-direction: row;
     flex-wrap: wrap;
     margin-top: 1em;
-}
+}*/
 
 
 
@@ -183,6 +187,11 @@ form {
 
 #results-container {
     flex-grow: 2;
+}
+
+#transliteration-container {
+    display: none;
+    flex-grow: 1;
 }
 
 #syllabification-container{

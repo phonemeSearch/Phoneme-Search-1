@@ -49,7 +49,8 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
 
     if check:
         user_results = mf.connect_search_related_fcts(search_string=user_search, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
-        results = user_results[0]
+        results = [word[0] for word in user_results[0]]
+        transliteration = [word[1] for word in user_results[0]]
         #user_pattern = user_results[1]
         pattern = user_results[2]
         
@@ -80,7 +81,7 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
         syllables = hf.syllabificate(results)
         marked_results = mark_pattern(pattern=pattern, language=language, results=results)
         results = marked_results
-        results_tup = (results, syllables, pattern, number)
+        results_tup = (results, transliteration, syllables, pattern, number)
         return results_tup
     else:
         return "an unexpected error occurred"
@@ -219,21 +220,22 @@ def result_page():
     """
 
     results = get_results(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
-    if page_num > ceil(results[3]/25):
+    # returns tuple(results, transliteration, syllables, pattern, number of results)
+    if page_num > ceil(results[4]/25):
         page_num -= 1
         offset -= 25
     
     if download == "true":
-        hf.download(pattern=results[2], user_pattern=user_search, language=int(language))
+        hf.download(pattern=results[3], user_pattern=user_search, language=int(language))
         download_status = "<input id='download-status' type='checkbox' value='download' checked hidden>"
 
     return render_template(
         'result.html',
-        results=(results[0], results[1]),
+        results=(results[0], results[1],results[2]),
         user_pattern=user_search,
-        number=results[3],
+        number=results[4],
         language=language,
-        pages=f"<span id='pages'>{ceil(results[3]/25)}</span>",
+        pages=f"<span id='pages'>{ceil(results[4]/25)}</span>",
         switch_html=switch_html,
         download_status=download_status,
         page_num=page_num,

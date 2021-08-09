@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # wraps searched pattern of lemmas in span elements to mark them with css
 # calls 
-def mark_pattern (pattern, results, language):
+def mark_pattern (pattern, results, language, xml):
     marked_list = []
     for index in range(len(results)):
         matches = re.finditer(pattern, results[index])
@@ -32,11 +32,12 @@ def mark_pattern (pattern, results, language):
 
         marked = re.sub("%", "</span>", marked)
         marked = re.sub("§", "<span class='pattern'>", marked)
-        marked = f"<span class='lemma'>{marked}</span>"
+        marked = f"<span class='word'>{marked}</span>"
+        
+        if xml is False:
+            url = hf.built_url_to_dictionaries(language, results, index)
+            marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
 
-        url = hf.built_url_to_dictionaries(language, results, index)
-
-        marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
         marked = f"<div class='result'>{marked}</div>"
         marked_list.append(marked)
     return marked_list
@@ -79,7 +80,7 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
             number = num[0]
 
         syllables = hf.syllabificate(results)
-        marked_results = mark_pattern(pattern=pattern, language=language, results=results)
+        marked_results = mark_pattern(pattern=pattern, language=language, results=results, xml=False)
         results = marked_results
         results_tup = (results, transliteration, syllables, pattern, number)
         return results_tup
@@ -106,6 +107,7 @@ def description():
 def result_page():
     submit = request.args.get("submit-button")
     download = request.args.get("download")
+    xml_download = request.args.get("download-xml")
     page_num = int(request.args.get("page-num")) if request.args.get("page-num") is not None else 0
     page = request.args.get("page") if request.args.get("page") is not None else 0
     download_status = ""
@@ -225,10 +227,17 @@ def result_page():
         page_num -= 1
         offset -= 25
     
-    if download == "true":
-        hf.download(pattern=results[3], user_pattern=user_search, language=int(language))
+    if download == "true" or xml_download == "true":
+        kind = ""
+        if xml_download == "true":
+            kind="xml"
+        elif download == "true":
+            kind="txt"
+        file_name = hf.download(pattern=results[3], user_pattern=user_search, language=int(language), kind=kind)
         download_status = "<input id='download-status' type='checkbox' value='download' checked hidden>"
-
+    else:
+        file_name = ""
+        
     return render_template(
         'result.html',
         results=(results[0], results[1],results[2]),
@@ -238,6 +247,7 @@ def result_page():
         pages=f"<span id='pages'>{ceil(results[4]/25)}</span>",
         switch_html=switch_html,
         download_status=download_status,
+        file_name_download=file_name,
         page_num=page_num,
         offset=offset,
         accent_sensitive=accent_sensitive

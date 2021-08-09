@@ -4,7 +4,8 @@ import sys
 import json
 from base64 import b64encode
 import sqlite3
-import main_functions_search as mf 
+import main_functions_search as mf
+from backend import mark_pattern
 
 # data structures
 
@@ -406,18 +407,19 @@ def length_sorting(results, sorting):
 
 def syllabificate(results):
     V = [
-    "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",
-    "ο", "ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ",
-    "ε", "έ", "έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ",
-    "η", "ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ","ἤ","ἥ",
-    "ι", "ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ","ἴ","ἵ",
-    "ω", "ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ","ὤ","ὥ",
-    "υ", "ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ","ὔ","ὕ",
-    "u", "ú", "ù", "ò", "o", "ó", "ü", "q", "w"
-    ]
+        "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",
+        "ο", "ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ",
+        "ε", "έ", "έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ",
+        "η", "ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ","ἤ","ἥ",
+        "ι", "ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ","ἴ","ἵ",
+        "ω", "ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ","ὤ","ὥ",
+        "υ", "ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ","ὔ","ὕ",
+        "u", "ú", "ù", "ò", "o", "ó", "ü", "q", "w"
+        ]
 
-    C = ["β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν",
-         "ψ", "χ", "φ", "ξ", "λ"
+    C = [
+        "β", "γ","δ", "ζ", "θ", "τ", "κ", "ρ", "ς", "σ", "π", "μ", "ν",
+        "ψ", "χ", "φ", "ξ", "λ"
         ]
 
     #print(results)
@@ -502,7 +504,7 @@ def syllabificate(results):
     return syllable_lem
 
 
-def download(pattern, user_pattern, language):
+def download(pattern, user_pattern, language, kind):
     languages = ["greek", "vedic", "latin", "armenian"]
     language = languages[language-1]
     search_command = \
@@ -522,6 +524,11 @@ def download(pattern, user_pattern, language):
     connection.close()
 
     results = [result[0] for result in results]
+    if kind == "xml":
+        results = mark_pattern(pattern, results, language, xml=True)
+        file_name = "save_results.xml"
+    else:
+        file_name = "save_results.txt"
 
     path = os.path.dirname(os.path.abspath(sys.argv[0]))
     if os.name == "nt":
@@ -529,4 +536,5 @@ def download(pattern, user_pattern, language):
     else:
         path_os = "/static/download"
 
-    mf.save(save_path=path + path_os, file_name="search_results", results=results, pattern=user_pattern)
+    mf.save(save_path=path + path_os, file_name=file_name, results=results, pattern=user_pattern)
+    return file_name

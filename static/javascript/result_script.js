@@ -38,9 +38,16 @@ document.getElementById("descending-check").addEventListener("change", () => {
 if (document.getElementById("download-status")) {
         console.log("download");
         const downloadLink = document.getElementById("download-link-id");
+        var hrefAtt = downloadLink.getAttribute("href");
+        var ending
+        if (hrefAtt.includes(".xml")) {
+            ending = "xml";
+        }else {
+            ending = "txt";
+        };
         var pattern = document.getElementById("pattern").innerText;
         var result_number = document.getElementById("result-number").innerText;
-        var fileName = `${language}_${pattern}_${result_number}.txt`
+        var fileName = `${language}_${pattern}_${result_number}.${ending}`
         downloadLink.setAttribute("download", fileName);
         downloadLink.click();
 }

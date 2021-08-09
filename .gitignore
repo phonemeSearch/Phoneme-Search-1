@@ -70,7 +70,9 @@ venv.bak/
 
 # save directories
 saved searches/
-search_results.txt
+*.txt
+*.xml
+
 
 #database
 fill_in_database/

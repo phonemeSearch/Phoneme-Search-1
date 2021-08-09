@@ -125,7 +125,7 @@ section {
     margin-bottom: 5px;
 }
 
-#lemma-container {
+#word-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -135,7 +135,7 @@ section {
     margin-bottom: 5px;
 }
 
-.lemma {
+.word {
     font-size: 18px;
 }
 

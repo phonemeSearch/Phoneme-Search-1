@@ -40,7 +40,7 @@
                         <span class="last-page">
                     </div>
                     <hr>
-                    <div id="lemma-container">
+                    <div id="word-container">
                         <div id="results-container">
                             {%for word in results[0]%}
                             {{word|safe}}
@@ -87,9 +87,12 @@
                     <button id="download-button" name="download" type="submit" value="true">
                         download results as txt <i class="fa fa-download"></i>
                     </button>
+                    <button id="download-xml-button" name="download-xml" type="submit" value="true">
+                        download results as xml <i class="fa fa-download"></i>
+                    </button>
                     {{download_status|safe}}
                     <a id="download-link-id" class="download-link"
-                        href="{{ url_for('static', filename='download/search_results.txt') }}"
+                        href="static/download/{{ file_name_download }}"
                         download="search_results" hidden>
                     </a>
                 </div>

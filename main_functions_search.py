@@ -342,9 +342,9 @@ def phoneme_search(pattern, order_id, asc_desc, limit, offset):
 
 def save(save_path, file_name, results, pattern):
     if os.name == "nt":
-        file = open(save_path + f"\\{file_name}.txt", "w", encoding="utf-8")
+        file = open(save_path + f"\\{file_name}", "w", encoding="utf-8")
     else:
-        file = open(save_path + f"/{file_name}.txt", "w", encoding="utf-8")
+        file = open(save_path + f"/{file_name}", "w", encoding="utf-8")
 
     file.write("\nnumber of results: " + str(len(results)))
     file.write("\nsearch pattern: " + pattern + "\n\n")

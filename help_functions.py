@@ -405,6 +405,192 @@ def length_sorting(results, sorting):
 
 # syllablificate
 
+def add_syl(syl):
+    syl += "."
+    return syl
+
+
+def cut(word:str, place:int):
+    place = place * (-1)
+    syl = word[place:-1] + word[-1]
+    syl_add = add_syl(syl)
+    word = word.removesuffix(syl)
+    #print(word)
+    return word, syl_add
+
+
+def syllabificate_armenian(results):
+    V = ['ի', 'u', 'ե', 'ո', 'ը', 'է', 'ա']
+
+    C = [
+        'պ', 'բ', 'փ', 'տ', 'դ', 'թ', 'կ',
+        'գ', 'ք', 'մ', 'ն', 'ռ', 'ր', 'ս',
+        'զ', 'շ', 'ժ', 'խ', 'հ', 'ֆ', 'վ',
+        'ւ', 'յ', 'լ', 'ղ', 'ծ', 'ձ', 'ց',
+        'ճ', 'ջ', 'չ'
+        ]
+
+    F = ['ս', 'զ', 'շ', 'ժ', 'խ', 'հ', 'ֆ']
+
+    P = ['պ', 'բ', 'փ', 'տ', 'դ', 'թ', 'կ', 'գ', 'ք']
+
+    # stop, fricatives, affricates
+    T = [
+        'պ', 'բ', 'փ', 'տ', 'դ', 'թ', 'կ', 'գ', 'ք', 'ծ', 'ձ',
+        'ց', 'ճ', 'ջ', 'չ', 'ս', 'զ', 'շ', 'ժ', 'խ', 'հ', 'ֆ'
+        ]
+
+    N = ['մ', 'ն']
+
+    W = ['վ', 'ւ', 'յ']
+
+    R = ['ռ', 'ր', 'լ', 'ղ', 'մ', 'ն', 'վ', 'ւ', 'յ'] # r, glide, lateral, nasal
+
+    L = ['ռ', 'ր', 'լ', 'ղ']
+
+    A = ['ծ', 'ձ', 'ց', 'ճ', 'ջ', 'չ']
+
+    syllab_results = []
+    for word in results:
+        word  = re.sub("ու", "u", word)
+        syllab = []
+        #print("syllab", syllab)
+        while len(word) > 0:
+            #print("in loop", syllab)
+            try:
+                if word[-4] in C and word[-3] in V and word[-2] in C and word[-1] in C:
+                    if word[-2] in W:
+                        if word[-1] in N or word[-1] in L:
+                            pass #match
+                            word_syl = cut(word=word, place=4)
+                            word = word_syl[0]
+                            syllab.append(word_syl[1])
+                            continue
+                        else:
+                            pass #no match
+                    elif word[-2] in R and word[-1] in T:
+                        #match
+                        word_syl = cut(word=word, place=4)
+                        word = word_syl[0]
+                        syllab.append(word_syl[1])
+                        continue
+                    elif word[-2] in F:
+                        if word[-1] in P or word[-1] in A:
+                            #match
+                            word_syl = cut(word=word, place=4)
+                            word = word_syl[0]
+                            syllab.append(word_syl[1])
+                            continue
+                        else:
+                            pass #no match
+                    elif word[-2] in L and word[-1] in N:
+                        #match
+                        word_syl = cut(word=word, place=4)
+                        word = word_syl[0]
+                        syllab.append(word_syl[1])
+                        continue
+                    else:
+                        pass #no match
+                if word[-4] in C and word[-3] in 'ե' and word[-2] in 'ա' and word[-1] in C:
+                    #match
+                    word_syl = cut(word=word, place=4)
+                    word = word_syl[0]    
+                    syllab.append(word_syl[1])
+                    continue
+            except IndexError:
+                pass
+
+            try:
+                if word[-3] in C and word[-2] in V and word[-1] in C:
+                    #match
+                    word_syl = cut(word=word, place=3)
+                    word = word_syl[0]
+                    syllab.append(word_syl[1])
+                    continue
+            except IndexError:
+                pass
+
+            try:
+                if word[-2] in C and word[-1] in V:
+                    #match
+                    word_syl = cut(word=word, place=2)
+                    word = word_syl[0]
+                    syllab.append(word_syl[1])
+                    continue
+            except IndexError:
+                pass
+
+            # 2. Stufe
+            try:
+                if word[-3] in V and word[-2] in C and word[-1] in C:
+                    if word[-2] in W:
+                        if word[-1] in N or word[-1] in L:
+                            #match
+                            word_syl = cut(word=word, place=3)
+                            word = word_syl[0]
+                            syllab.append(word_syl[1])
+                            continue
+                        else:
+                            #no match
+                            pass
+                    elif word[-2] in F:
+                        if word[-1] in P or word[-1] in A:
+                            #match
+                            word_syl = cut(word=word, place=3)
+                            word = word_syl[0]
+                            syllab.append(word_syl[1])
+                            continue
+                    elif word[-2] in R and word[-1] in T:
+                        #match
+                        word_syl = cut(word=word, place=3)
+                        word = word_syl[0]
+                        syllab.append(word_syl[1])
+                        continue
+                    elif word[-2] in L and word[-1] in N:
+                        #match
+                        word_syl = cut(word=word, place=3)
+                        word = word_syl[0]
+                        syllab.append(word_syl[1])
+                        continue
+            except IndexError:
+                pass
+
+            try:
+                if word[-2] in V and word[-1] in C:
+                    #match
+                    word_syl = cut(word=word, place=2)
+                    word = word_syl[0]
+                    syllab.append(word_syl[1])
+                    continue
+            except IndexError:
+                pass
+
+            # 3. Stufe
+            try:
+                #print("try third", word)
+                if word[-2] in C and word[-1] in C:
+                    #match
+                    word_syl = cut(word, 2)
+                    word = word_syl[0]
+                    #print("CC\n\n", word)
+                    syllab.append(word_syl[1])
+                    continue
+            except IndexError:
+                pass
+            
+            # rest match
+            if word[-1] in C or word[-1] in V:
+                #print("resr")
+                word_syl = cut(word=word, place=1)
+                word = word_syl[0]
+                syllab.append(word_syl[1])
+
+        syllab_str = "".join(reversed(syllab))
+        syllab_str  = re.sub("u", "ու", syllab_str)
+        syllab_results.append("<div class='syllable-lemma'>" + syllab_str.removesuffix(".") + "</div>")
+
+    return syllab_results
+
 def syllabificate(results):
     V = [
         "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",

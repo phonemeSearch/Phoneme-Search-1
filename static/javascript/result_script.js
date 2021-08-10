@@ -58,8 +58,9 @@ if (language === "Latin") {
     translitCheck.setAttribute("disabled", "disabled");
 }
 
-if (language != "Greek") {
-    document.getElementById("show-syllable-check").setAttribute("disabled", "disabled")
+if (["Armenian", "Greek"].includes(language)) {
+    console.log("syllab");
+    document.getElementById("show-syllable-check").removeAttribute("disabled");
 }
     /*const orderSection = document.getElementById("order-section-id");
     const syllableContainer = document.createElement("div");

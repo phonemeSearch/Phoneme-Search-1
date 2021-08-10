@@ -79,7 +79,10 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
         for num in number:
             number = num[0]
 
-        syllables = hf.syllabificate(results)
+        if lang == "armenian":
+            syllables = hf.syllabificate_armenian(results)
+        else:
+            syllables = hf.syllabificate(results)
         marked_results = mark_pattern(pattern=pattern, language=language, results=results, xml=False)
         results = marked_results
         results_tup = (results, transliteration, syllables, pattern, number)

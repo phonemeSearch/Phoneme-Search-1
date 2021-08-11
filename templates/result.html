@@ -47,17 +47,17 @@
                 </div>
                 <hr>
                 <div id="word-container">
-                    <div id="results-container">
+                    <div id="results-container" class="word-result-container">
                         {%for word in results[0]%}
                         {{word|safe}}
                         {%endfor%}
                     </div>
-                    <div id="transliteration-container">
+                    <div id="transliteration-container" class="word-result-container">
                         {%for word in results[1]%}
                         <div class="translit">{{word|safe}}</div>
                         {%endfor%}
                     </div>
-                    <div id="syllabification-container">
+                    <div id="syllabification-container" class="word-result-container">
                         {%for word in results[2]%}
                         {{word|safe}}
                         {%endfor%}

@@ -167,6 +167,10 @@ Result-Section-Related
     justify-content: space-between;
 }
 
+.result:nth-child(odd), .translit:nth-child(odd), .syllable-lemma:nth-child(odd) {
+    background-color: rgb(50, 50, 50);
+}
+
 .syllable-lemma {
     margin-bottom: 5px;
 }

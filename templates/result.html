@@ -9,104 +9,103 @@
 </head>
 
 <body>
-    <a id="back-link" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
-    <form method="GET" action="/search_result">
-        <main>
-            <section class="info-section">
-                <div class="info">language:
-                    <span id="searched-lang" class="info-content">
-                        {%if language == "1"%}
-                        Greek
-                        {%elif language == "2"%}
-                        Vedic
-                        {%elif language == "3"%}
-                        Latin
-                        {%elif language == "4"%}
-                        Armenian
-                        {%endif%}
-                    </span>
+    <aside>
+        <ol>
+            <li><a class="side" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
+            <li><a class="side" href="/">Start</a></li>
+            <li><a class="side" href="/search/description">Help</a></li>
+        </ol>
+    </aside>
+    <main>
+        <form method="GET" action="/search_result">
+        <section class="info-section">
+            <div class="info">language:
+                <span id="searched-lang" class="info-content">
+                    {%if language == "1"%}
+                    Greek
+                    {%elif language == "2"%}
+                    Vedic
+                    {%elif language == "3"%}
+                    Latin
+                    {%elif language == "4"%}
+                    Armenian
+                    {%endif%}
+                </span>
+            </div>
+            <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>
+            <div class="info"> number of words: <span id="result-number" class="info-content">{{number}}</span></div>
+        </section>
+        <section class="result-section">
+            <button id="last-btn" class="next-results-btn" type="submit" name="page" value="last">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+            <div class="result-text">
+                <div id="page-container" class="page">
+                    <span class="first-page"></span>
+                    page <span id="page-num-visible">{{page_num}}</span> of {{pages|safe}}
+                    <span class="last-page">
                 </div>
-                <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>
-                <div class="info"> number of words: <span id="result-number" class="info-content">{{number}}</span></div>
-            </section>
-            <section class="result-section">
-                <button id="last-btn" class="next-results-btn" type="submit" name="page" value="last">
-                    <i class="fa fa-chevron-left"></i>
-                </button>
-                <div class="result-text">
-                    <div id="page-container" class="page">
-                        <span class="first-page"></span>
-                        page <span id="page-num-visible">{{page_num}}</span> of {{pages|safe}}
-                        <span class="last-page">
+                <hr>
+                <div id="word-container">
+                    <div id="results-container">
+                        {%for word in results[0]%}
+                        {{word|safe}}
+                        {%endfor%}
                     </div>
-                    <hr>
-                    <div id="word-container">
-                        <div id="results-container">
-                            {%for word in results[0]%}
-                            {{word|safe}}
-                            {%endfor%}
-                        </div>
-                        <div id="transliteration-container">
-                            {%for word in results[1]%}
-                            <div class="translit">{{word|safe}}</div>
-                            {%endfor%}
-                        </div>
-                        <div id="syllabification-container">
-                            {%for word in results[2]%}
-                            {{word|safe}}
-                            {%endfor%}
-                        </div>
+                    <div id="transliteration-container">
+                        {%for word in results[1]%}
+                        <div class="translit">{{word|safe}}</div>
+                        {%endfor%}
+                    </div>
+                    <div id="syllabification-container">
+                        {%for word in results[2]%}
+                        {{word|safe}}
+                        {%endfor%}
                     </div>
                 </div>
-                <button id="next-btn" class="next-results-btn" type="submit" name="page" value="next">
-                    <i class="fa fa-chevron-right"></i>
-                </button>
-            </section>
-            <section id="order-section-id" class="order-section">
+            </div>
+            <button id="next-btn" class="next-results-btn" type="submit" name="page" value="next">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+        </section>
+        <section id="order-section-id" class="order-section">
+            <div class="order-container">
                 <h2>sort alphabetical</h2>
                 {{switch_html|safe}}
-                <hr>
-                <div id="translit-container">
-                    <label for="translit-check">
-                        <input id="translit-check" type="checkbox" value="true">
-                        show transliteration
-                    </label>
-                </div>
-                <div id="syllable-container">
-                    <label for="show-syllable-check">
-                        <input id="show-syllable-check" type="checkbox" disabled="disabled">
-                        show syllables
-                    </label>
-                </div>
-                <hr>
-                <div id="download-container">
-                    <span>
-                        Downloads
-                        <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
-                    </span>
-                    <button id="download-button" name="download" type="submit" value="true">
-                        download results as txt <i class="fa fa-download"></i>
-                    </button>
-                    <button id="download-xml-button" name="download-xml" type="submit" value="true">
-                        download results as xml <i class="fa fa-download"></i>
-                    </button>
-                    {{download_status|safe}}
-                    <a id="download-link-id" class="download-link"
-                        href="static/download/{{ file_name_download }}"
-                        download="search_results" hidden>
-                    </a>
-                </div>
-            </section>
-        </main>
-
+            </div>
+            <hr>
+            <div class="order-container">
+                <label for="translit-check">
+                    <input id="translit-check" type="checkbox" value="true">
+                    show transliteration
+                </label>
+                <label for="syllable-check">
+                    <input id="syllable-check" type="checkbox" disabled="disabled">
+                    show syllables
+                </label>
+            </div>
+            <hr>
+            <div class="order-container">
+                <span>
+                    Downloads
+                    <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
+                </span>
+                <button id="download-txt-button" class="download-button" name="download" type="submit" value="true">
+                    download results as txt <i class="fa fa-download"></i>
+                </button>
+                <button id="download-xml-button" class="download-button" name="download-xml" type="submit" value="true">
+                    download results as xml <i class="fa fa-download"></i>
+                </button>
+            </div>
+        </section>
         <input name="search-input" value="{{user_pattern}}" hidden>
         <input name="choose-language" value="{{language}}" hidden>
         <input name="accent-sensitive" value="{{accent_sensitive}}" hidden>
         <input name="offset" value="{{offset}}" hidden>
         <input name="asc-desc" value="{{asc_desc}}" hidden>
         <input name="page-num" value="{{page_num}}" hidden>
-
-    </form>
+        </form>
+    </main>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>
 </body>
 

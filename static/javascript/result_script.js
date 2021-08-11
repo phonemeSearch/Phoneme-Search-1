@@ -34,24 +34,6 @@ document.getElementById("descending-check").addEventListener("change", () => {
     document.getElementById("order-form").submit();
 });
 
-// download txt-file
-if (document.getElementById("download-status")) {
-        console.log("download");
-        const downloadLink = document.getElementById("download-link-id");
-        var hrefAtt = downloadLink.getAttribute("href");
-        var ending
-        if (hrefAtt.includes(".xml")) {
-            ending = "xml";
-        }else {
-            ending = "txt";
-        };
-        var pattern = document.getElementById("pattern").innerText;
-        var result_number = document.getElementById("result-number").innerText;
-        var fileName = `${language}_${pattern}_${result_number}.${ending}`
-        downloadLink.setAttribute("download", fileName);
-        downloadLink.click();
-}
-
 
 if (language === "Latin") {
     translitCheck = document.getElementById("translit-check");
@@ -60,7 +42,7 @@ if (language === "Latin") {
 
 if (["Armenian", "Greek"].includes(language)) {
     console.log("syllab");
-    document.getElementById("show-syllable-check").removeAttribute("disabled");
+    document.getElementById("syllable-check").removeAttribute("disabled");
 }
     /*const orderSection = document.getElementById("order-section-id");
     const syllableContainer = document.createElement("div");
@@ -75,15 +57,15 @@ if (["Armenian", "Greek"].includes(language)) {
     syllableContainer.append(showSyllableCheck, syllableLabel);
     orderSection.insertBefore(syllableContainer, downloadContainer);
 */
-document.getElementById("show-syllable-check").addEventListener("change", () => {
+document.getElementById("syllable-check").addEventListener("change", () => {
     var container = document.getElementById("syllabification-container");
     if (syllableVisibility === "unvisible") {
         syllableVisibility = "visible";
         console.log("listener");
-        container.style.display = "block";
+        container.style.visibility = "visible";
     } else if (syllableVisibility === "visible") {
         syllableVisibility = "unvisible";
-        container.style.display = "none";
+        container.style.visibility = "hidden";
     };
 });
 
@@ -92,9 +74,9 @@ document.getElementById("translit-check").addEventListener("change", () => {
     if (translitVisibility === "unvisible") {
         translitVisibility = "visible";
         console.log("listener");
-        container.style.display = "block";
+        container.style.visibility = "visible";
     } else if (translitVisibility === "visible") {
         translitVisibility = "unvisible";
-        container.style.display = "none";
+        container.style.visibility = "hidden";
     };
 });

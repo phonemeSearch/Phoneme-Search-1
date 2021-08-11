@@ -5,137 +5,9 @@ import json
 from base64 import b64encode
 import sqlite3
 import main_functions_search as mf
-from backend import mark_pattern
+
 
 # data structures
-
-greek_search_info = \
-    ("\n"
-     "Single Phonemes:\n"
-     "a:  α\n"
-     "e:  ε\n"
-     "ē:  η\n"
-     "i:  ι\n"
-     "o:  ο\n"
-     "ō:  ω\n"
-     "y:  υ\n"
-     "u:  ου\n"
-     "a:  ά\n"
-     "e:  έ\n"
-     "i:  ί\n"
-     "o:  ό\n"
-     "ō:  ώ\n"
-     "y:  ύ\n"
-     "u:  όυ\n"
-     "ē:  ή\n"
-     "i:  ι\n"
-     "p:  π\n"
-     "b:  β\n"
-     "ph: φ\n"
-     "t:  τ\n"
-     "d:  δ\n"
-     "th: θ\n"
-     "k:  κ\n"
-     "g:  γ\n"
-     "kh: χ\n"
-     "z:  ζ\n"
-     "m:  μ\n"
-     "n:  ν\n"
-     "l:  λ\n"
-     "r:  ρ\n"
-     "s:  σ\n"
-     "s:  ς\n"
-     "ps: ψ\n"
-     "p:  π\n"
-     "b:  β\n"
-     "ph: φ\n"
-     "t:  τ\n"
-     "d:  δ\n"
-     "th: θ\n"
-     "k:  κ\n"
-     "g:  γ\n"
-     "ks: ξ\n"
-     "\n"
-     "Phoneme classes:\n"
-     "A: alveolar\n"
-     "L: labial\n"
-     "K: velar\n"
-     "J: palatal\n"
-     "G: laryngeal\n"
-     "P: plosive\n"
-     "R: approximant\n"
-     "W: sonorant\n"
-     "N: nasal\n"
-     "F: fricative\n"
-     ">: voiced\n"
-     "#: aspirated\n"
-     "<: voiceless\n"
-     "%: not aspirated\n"
-     "C: consonant\n"
-     "V: vowel\n"
-     "\n"
-     "Wildcards:\n"
-     "*: 0 or more characters\n"
-     "|: marks end of lemma\n"
-     "\n"
-     "Input options:\n"
-     "\n"
-     "- 'a', 'b', 'kh', 'k': Lower case letters correspond to a single phoneme,\n"
-     "  e.g.: 'a' = 'α', 'b' = 'β', 'kh' = 'χ', 'k' = 'κ' (full key above)\n"
-     "\n"
-     "- 'P+L+>', 'A': The capital letters correspond to phoneme classes (full key above). These classes \n"
-     "  can be connected with '+', e.g. 'P+L+>' means plosive + labial + voiced.\n"
-     "  You can choose one value of the features (manner, place, voice, aspiration) at the same time.\n"
-     "  Thus, such connections could contain only up to four members, e.g. P+L+>+#.\n"
-     "  'V' stands for vowel and C for consonant. These keys cannot be mixed with other ones.\n"
-     "\n"
-     "- '(abP+L)': If you want to allow a specific combination of phonemes at a certain place, you have to put\n"
-     "   them in parenthesis. The same input rules as declared above apply within the brackets, too.\n")
-vedic_search_info = \
-    ("\n"
-     "Key:\n"
-     "\n"
-     "Single phoneme input:\n"
-     "The characters of the Latin transcription are used.\n"
-     "\n"
-     "Phoneme classes:\n"
-     "A: alveolar\n"
-     "L: labial\n"
-     "K: velar\n"
-     "J: palatal\n"
-     "H: laryngeal\n"
-     "X: retroflex\n"
-     "P: plosive\n"
-     "R: approximant\n"
-     "W: glide\n"
-     "N: nasal\n"
-     "F: fricative\n"
-     ">: voiced\n"
-     "\"#: aspirated\"\n"
-     "\"_: one_char\n"
-     "<: voiceless\n"
-     "%: non_aspirated\n"
-     "V: vowel\n"
-     "C: consonant\n"
-     "\n"
-     "Wildcards:\n"
-     "*: 0 or more characters\n"
-     "|: marks end of lemma\n"
-     "\n"
-     "Eingabemöglichkeiten:\n"
-     "\n"
-     "- 'a', 'b', 'kh', 'k': Lower case letters correspond to a single phoneme.\n"
-     "\n"
-     "- 'P+L+>', 'A': The capital letters correspond to phoneme classes (full key above). These classes \n"
-     "  can be connected with '+', e.g. 'P+L+>' means plosive + labial + voiced.\n"
-     "  You can choose one value of the features (manner, place, voice, aspiration) at the same time.\n"
-     "  Thus, such connections could contain only up to four members, e.g. P+L+>+#.\n"
-     "  'V' stands for vowel and 'C' for consonant. These keys cannot be mixed with other ones.\n"
-     "\n"
-     "- '(abP+L)': If you want to allow a specific combination of phonemes at a certain place, you have to put\n"
-     "   them in parenthesis. The same input rules as declared above apply within the parenthesis, too.\n")
-latin_search_info = ""
-current_search_info = ""
 
 #subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
 
@@ -149,7 +21,6 @@ def get_language_info(language, accent):
     global digraphs
     global following_digraph
     global ambiguous
-    global current_search_info
     global lang
 
     lang = language
@@ -208,7 +79,7 @@ def get_language_info(language, accent):
                             "ώ": ["ῶ", "ὤ", "ὥ", "ὦ", "ὧ"],
                             "ου": ["οὐ","οὑ"],  
                             "υ": ["ὐ", "ὑ", "υ"],
-                            "h": ["ἁ","ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ"]
+                            "h": ["ἁ", "ἃ", "ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ"]
                         }
 
         vedic_ambiguous = {}
@@ -247,25 +118,21 @@ def get_language_info(language, accent):
         digraphs = greek_digraphs
         following_digraph = following_digraph_greek
         ambiguous = greek_ambiguous
-        current_search_info = greek_search_info
 
     elif language == "vedic":
         digraphs = vedic_digraphs
         following_digraph = following_digraph_vedic
         ambiguous = vedic_ambiguous
-        current_search_info = vedic_search_info
    
     elif language == "latin":
         digraphs = latin_digraphs
         following_digraph = following_digraph_latin
         ambiguous = latin_ambiguous
-        current_search_info = latin_search_info
 
     elif language == "armenian":
         digraphs = armenian_digraphs
         following_digraph = following_digraph_armenian
         ambiguous = armenian_ambiguous
-        current_search_info = ""
 
     prepare_path()
 
@@ -273,11 +140,7 @@ def get_language_info(language, accent):
 def prepare_path():
     global path
     path = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.name == "nt":
-        path = os.path.join(path, r"database\PhonemeSearch.db")
-        
-    else:
-        path = os.path.join(path, r"database/PhonemeSearch.db")
+    path = os.path.join(path, "database", "PhonemeSearch.db")
 
 
 # functions for main_functions_search
@@ -359,7 +222,43 @@ def built_url_to_dictionaries(language, results, index):
     
     elif language == "4":
         url = ""
+
     return url
+
+
+# mark pattern
+# wraps searched pattern of lemmas in span elements to mark them with css
+
+def mark_pattern (pattern, results, language, xml):
+    marked_list = []
+    for index in range(len(results)):
+        matches = re.finditer(pattern, results[index])
+        marked = results[index]
+        for match in matches:
+
+            group = match.group(0)
+            if group in digraphs:
+                after = join_digraph(group)
+                mark_re = f"(?<!§){group}(?!({'|'.join(after)}))"
+            elif group in following_digraph:
+                before = follows_digraph(group)
+                mark_re = f"(?<![{before}]){group}(?!\w?%)"
+            else:
+                mark_re = f"{group}(?!\w?%)"
+
+            marked = re.sub(mark_re, f"§{group}%", marked, 1)
+
+        marked = re.sub("%", "</span>", marked)
+        marked = re.sub("§", "<span class='pattern'>", marked)
+        marked = f"<span class='word'>{marked}</span>"
+        
+        if xml is False:
+            url = built_url_to_dictionaries(language, results, index)
+            marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
+
+        marked = f"<div class='result'>{marked}</div>"
+        marked_list.append(marked)
+    return marked_list
 
 
 # order functions
@@ -420,7 +319,7 @@ def cut(word:str, place:int):
 
 
 def syllabificate_armenian(results):
-    V = ['ի', 'u', 'ե', 'ո', 'ը', 'է', 'ա']
+    V = ['ի', 'u', 'ե', 'ո', 'ը', 'է', 'ա', 'օ']
 
     C = [
         'պ', 'բ', 'փ', 'տ', 'դ', 'թ', 'կ',
@@ -455,7 +354,12 @@ def syllabificate_armenian(results):
         word  = re.sub("ու", "u", word)
         syllab = []
         #print("syllab", syllab)
+        i = 0
         while len(word) > 0:
+            i += 1
+            if i == 100:
+                print(word, "except")
+                raise IndexError
             #print("in loop", syllab)
             try:
                 if word[-4] in C and word[-3] in V and word[-2] in C and word[-1] in C:
@@ -567,12 +471,10 @@ def syllabificate_armenian(results):
 
             # 3. Stufe
             try:
-                #print("try third", word)
                 if word[-2] in C and word[-1] in C:
                     #match
                     word_syl = cut(word, 2)
                     word = word_syl[0]
-                    #print("CC\n\n", word)
                     syllab.append(word_syl[1])
                     continue
             except IndexError:
@@ -580,7 +482,6 @@ def syllabificate_armenian(results):
             
             # rest match
             if word[-1] in C or word[-1] in V:
-                #print("resr")
                 word_syl = cut(word=word, place=1)
                 word = word_syl[0]
                 syllab.append(word_syl[1])
@@ -591,7 +492,7 @@ def syllabificate_armenian(results):
 
     return syllab_results
 
-def syllabificate(results):
+def syllabificate_greek(results):
     V = [
         "α", "ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ",
         "ο", "ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ",
@@ -608,13 +509,11 @@ def syllabificate(results):
         "ψ", "χ", "φ", "ξ", "λ"
         ]
 
-    #print(results)
     syllable_lem = []
     numCount = 0
     for lemma in results:
         numCount += 1
 
-        #print("Nummer: ", numCount)
         lemma = re.sub(("ου"), "u", lemma)
         lemma = re.sub(("όυ"), "ú", lemma)
         lemma = re.sub(("ού"), "ù", lemma)
@@ -629,10 +528,7 @@ def syllabificate(results):
         syllables = ""
         
         for char in lemma:
-            #print(index, char)
-            #print(syllables)
             if char in V:
-                #print("Vow")
                 pass
             try:
                 lemma[index+1]
@@ -648,13 +544,10 @@ def syllabificate(results):
                 break
 
             if point:
-                #print("Point")
-                #print(syllables)
                 point = False
                 syllables += char + "."
 
             elif char in C:
-                #print("Cons")
                 syllables += char
             elif char in V:
                 if lemma[index+1] in V and lemma[index+2] in V:
@@ -690,6 +583,9 @@ def syllabificate(results):
     return syllable_lem
 
 
+# if any download button is pressed function is called
+# gets all possible results from DB and saves them into txt resp xml file
+
 def download(pattern, user_pattern, language, kind):
     languages = ["greek", "vedic", "latin", "armenian"]
     language = languages[language-1]
@@ -706,21 +602,21 @@ def download(pattern, user_pattern, language, kind):
     print(search_command)
     cursor.execute(search_command)
     results = cursor.fetchall()
-    
     connection.close()
-
     results = [result[0] for result in results]
-    if kind == "xml":
-        results = mark_pattern(pattern, results, language, xml=True)
-        file_name = "save_results.xml"
-    else:
-        file_name = "save_results.txt"
 
-    path = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.name == "nt":
-        path_os = "\\static\\download"
-    else:
-        path_os = "/static/download"
-
-    mf.save(save_path=path + path_os, file_name=file_name, results=results, pattern=user_pattern)
-    return file_name
+    # format string
+    num_str = str(len(results))
+    if kind == "txt":
+        response_str = "\nnumber of results: " + num_str
+        response_str += "\nsearch pattern: " + results[3] + "\n\n"
+        response_str += "\n".join(results)
+        mimetype = "text/plain"
+        filename = f"{language}_{user_pattern}_{num_str}.txt"
+    elif kind == "xml":
+        response_str = mark_pattern(pattern, results, language, xml="True")
+        response_str = "".join(response_str)
+        response_str = f"<results language='{language}' pattern='{user_pattern}' number='{num_str}'>{response_str}</results>"
+        mimetype = "application/xml"
+        filename = f"{language}_{user_pattern}_{str(len(results))}.xml"
+    return (response_str, mimetype, filename)

@@ -1,47 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 import main_functions_search as mf
 import help_functions as hf
-import re
 import os
 import sqlite3
 from math import ceil
 
 
 app = Flask(__name__)
-
-# wraps searched pattern of lemmas in span elements to mark them with css
-# calls 
-def mark_pattern (pattern, results, language, xml):
-    marked_list = []
-    for index in range(len(results)):
-        matches = re.finditer(pattern, results[index])
-        marked = results[index]
-        for match in matches:
-
-            group = match.group(0)
-            if group in hf.digraphs:
-                after = hf.join_digraph(group)
-                mark_re = f"(?<!§){group}(?!({'|'.join(after)}))"
-            elif group in hf.following_digraph:
-                before = hf.follows_digraph(group)
-                mark_re = f"(?<![{before}]){group}(?!\w?%)"
-            else:
-                mark_re = f"{group}(?!\w?%)"
-
-            marked = re.sub(mark_re, f"§{group}%", marked, 1)
-
-        marked = re.sub("%", "</span>", marked)
-        marked = re.sub("§", "<span class='pattern'>", marked)
-        marked = f"<span class='word'>{marked}</span>"
-        
-        if xml is False:
-            url = hf.built_url_to_dictionaries(language, results, index)
-            marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
-
-        marked = f"<div class='result'>{marked}</div>"
-        marked_list.append(marked)
-    return marked_list
-
 
 # uses mf to get search results
 def get_results(user_search, accent_sensitive, language, order_id, asc_desc, limit, offset):
@@ -52,7 +17,6 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
         user_results = mf.connect_search_related_fcts(search_string=user_search, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
         results = [word[0] for word in user_results[0]]
         transliteration = [word[1] for word in user_results[0]]
-        #user_pattern = user_results[1]
         pattern = user_results[2]
         
         if os.name == "nt":
@@ -82,8 +46,8 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
         if lang == "armenian":
             syllables = hf.syllabificate_armenian(results)
         else:
-            syllables = hf.syllabificate(results)
-        marked_results = mark_pattern(pattern=pattern, language=language, results=results, xml=False)
+            syllables = hf.syllabificate_greek(results)
+        marked_results = hf.mark_pattern(pattern=pattern, language=language, results=results, xml=False)
         results = marked_results
         results_tup = (results, transliteration, syllables, pattern, number)
         return results_tup
@@ -226,18 +190,20 @@ def result_page():
 
     results = get_results(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
     # returns tuple(results, transliteration, syllables, pattern, number of results)
+    
     if page_num > ceil(results[4]/25):
         page_num -= 1
         offset -= 25
     
     if download == "true" or xml_download == "true":
-        kind = ""
-        if xml_download == "true":
-            kind="xml"
-        elif download == "true":
-            kind="txt"
-        file_name = hf.download(pattern=results[3], user_pattern=user_search, language=int(language), kind=kind)
-        download_status = "<input id='download-status' type='checkbox' value='download' checked hidden>"
+        if download == "true":
+            kind = "txt"
+        elif xml_download == "true":
+            kind = "xml"
+
+        response = hf.download(pattern=results[3], user_pattern=user_search, language=int(language), kind=kind)
+        return Response(response[0], mimetype=f"{response[1]}", headers={"Content-Disposition": f"attatchment; filename={response[2]}"})
+
     else:
         file_name = ""
         

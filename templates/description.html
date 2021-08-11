@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <a class="back" href="/"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a>
-  <h1>How it works</h1>
-  <div class="link-container"><a class="search-link" href="/search">search <i class="fa fa-chevron-right"></i><i class="fa fa-chevron-right"></i></a></div>
+  <aside>
+    <ol>
+        <li><a class="side" href="/"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
+        <li><a class="side" href="/search/description">Help</a></li>
+        <li><a class="side" href="/search">Search</a></li>
+    </ol>
+  </aside>
   <main>
+    <h1>How it works</h1>
     <section class="search-description">
     <div>Search Page</div>
     <h2 id="input-methods">Input Methods</h2>
@@ -73,8 +78,8 @@
   </p>
   <h2 id="download">Downloads</h2>
   <p>
-    You can download your search results as a txt-file. A download with mark-up may become available, too.
-    The file name has following pattern: Language_Pattern_Number. At first stands the language which in was searched followed
+    You can download your search results as a txt-file or with xml-markup.
+    The file name has following pattern: language_number_pattern. At first stands the language which in was searched followed
     by the given search pattern and lastly the number of results. In the file are all found forms and additionally the language and the number.
   </p>
 </section>

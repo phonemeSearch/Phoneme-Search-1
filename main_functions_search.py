@@ -172,65 +172,64 @@ def convert_to_non_latin_alphabet(search) -> list:
 # as long as plus_true is True or cluster key is given sql-cmd is built
 # captures list index out of range error to examine end of list
 # if plus_true is False and there's no key or end of list sql-cmd is executed
-def cluster_key_cmd(char, index, phoneme):
-    # set select phonemes command
-    select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
-    
+def cluster_key_cmd(char):
     if char == "+":
-        select_phonemes_cmd += " AND "
-    
-    else:
-        try:
-            follow_char = phoneme[index + 1]
-            if follow_char == "+":
-                plus_true = True
-            else:
-                plus_true = False
-        except IndexError:
-            plus_true = False
+        cmd_part = " AND "
+        #return cmd_part
 
+    else:
         select_value_kind_cmd = f"SELECT value, kind FROM search_key_{language} " \
                                 f"WHERE key = '{char}'"
-
+        
         value_kind = sql_fetch_entries(command=select_value_kind_cmd)
+        print(value_kind)
         value_kind = value_kind[0]
+        
         current_value = value_kind[0]
         current_kind = value_kind[1]
-        select_phonemes_cmd += f"{current_kind} = '{current_value}'"
+        cmd_part = f"{current_kind} = '{current_value}'"
+        print(cmd_part)
 
-        if plus_true is False:
-            phonemes = sql_fetch_entries(command=select_phonemes_cmd)
-            select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
-            
-            return phonemes
-        
+        #select_phonemes_cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+    return cmd_part
+
 
 def convert_key_to_grapheme(connected) -> list:
     search = []
     group = []
+    cluster = False
+    cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
     is_digraph = False
     connected_index = -1
     for phoneme in connected:
+        print(cmd)
         connected_index += 1
         phoneme_index = -1
         length = len(phoneme) - 1
         for char in phoneme:
             phoneme_index += 1
-            if is_digraph is True:
-                is_digraph = False
-            elif char in consonants or char in vowels:
-                if phoneme_index == length:
-                    pass
-                elif char in hf.digraphs:
-                    digraph_return = \
-                        hf.handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
-                    char = digraph_return[0]
-                    is_digraph = digraph_return[1]  #bool
-                group.append(char)
-            
-            # special characters
-            else:
-                if char == "h":
+            if char in ["|", "V", "C", "h"] or char in consonants or char in vowels:
+                if cluster is True:
+                    phoneme_cluster = sql_fetch_entries(cmd)
+                    for phoneme in phoneme_cluster:
+                        group.append(phoneme[0])
+                    cluster = False
+                    cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+
+                if is_digraph is True:
+                    is_digraph = False
+                elif char in consonants or char in vowels:
+                    if phoneme_index == length:
+                        pass
+                    elif char in hf.digraphs:
+                        digraph_return = \
+                            hf.handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
+                        char = digraph_return[0]
+                        is_digraph = digraph_return[1]  #bool
+                    group.append(char)
+                
+                # special characters
+                elif char == "h":
                     group.append(char)
                 elif char == "V":
                     for vow in vowels:
@@ -245,13 +244,18 @@ def convert_key_to_grapheme(connected) -> list:
                         group.append("^")
                     else:
                         group.append("$")
-
-                else:  
-                    phoneme_cluster = cluster_key_cmd(char, phoneme_index, phoneme)
-                    if phoneme_cluster:
-                        for phoneme in phoneme_cluster:
-                            group.append(phoneme[0])
-                    
+            else:
+                print(char)  
+                cmd += cluster_key_cmd(char)
+                cluster = True      
+        
+        if cluster is True:
+            phoneme_cluster = sql_fetch_entries(cmd)
+            for phoneme in phoneme_cluster:
+                group.append(phoneme[0])
+            print(phoneme_cluster)
+            cluster = False
+            cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
         group = list(set(group))
         group = hf.digraphs_to_begin(group)
         search.append(group)

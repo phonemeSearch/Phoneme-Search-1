@@ -69,13 +69,12 @@ env.bak/
 venv.bak/
 
 # save directories
-saved searches/
-*.txt
-*.xml
 
 
 #database
 fill_in_database/
 
 #test
-test.py
+#test.py
+*.txt
+*.xml

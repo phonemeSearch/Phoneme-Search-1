@@ -11,11 +11,24 @@ import main_functions_search as mf
 
 #subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
 
+# KEINE veränderlichen GLOBALS!
 digraphs = {}
 following_digraph = []
 ambiguous = {}
 path = ""
 lang = ""
+
+languages = ["greek", "vedic", "latin", "armenian"]
+
+
+def open_file(path, filename, enc, mode, data):
+    with open(file=os.path.join(path, filename), encoding=enc, mode=mode) as file:
+        if mode == "r":
+            data = file.read()
+            return data
+        elif mode == "w":
+            file.write(data)
+        
 
 def get_language_info(language, accent):
     global digraphs
@@ -59,12 +72,21 @@ def get_language_info(language, accent):
 
     following_digraph_latin = ["u"]
 
-    armenian_digraphs = {"ո": ["ւ"]}
+    armenian_digraphs = {
+                        "ո": ["ւ"],
+                        "p": ["`"],
+                        "t": ["`"],
+                        "k": ["`"],
+                        "c": ["`"],
+                        "č": ["`"]
+                        }
+
     following_digraph_armenian = ["ւ"]
 
     if accent == "on":   
         greek_ambiguous = {
                             "σ": ["ς"],
+                            "ρ": ["ῥ"],
                             "α": ["ἀ", "ἁ"],
                             "ά": ["ἄ", "ἅ", "ἇ", "ἆ", "ᾶ"],
                             "ο": ["ὀ", "ὁ"],
@@ -91,13 +113,14 @@ def get_language_info(language, accent):
     else:
         greek_ambiguous = {
                             "σ": ["ς"],
+                            "ρ": ["ῥ"],
                             "α": ["ά", "ά", "ᾶ", "ἀ", "ἁ", "ἂ","ἃ","ἇ","ἆ", "ἄ", "ἅ"],
                             "ο": ["ό", "ό", "ὀ", "ὁ", "ὂ", "ὃ", "ὄ", "ὅ"], 
                             "ε": ["έ", "ἐ", "ἑ", "ἒ", "ἓ", "ἔ", "ἕ"],
                             "η": ["ή", "ή", "ῆ", "ἠ", "ἡ", "ἦ", "ἧ", "ἢ", "ἣ", "ἤ", "ἥ"],
                             "ι": ["ῖ", "ί", "ί", "ἰ", "ἱ", "ἲ", "ἳ", "ἶ", "ἷ", "ἴ", "ἵ"],
                             "ω": ["ώ", "ώ", "ῶ", "ὠ", "ὡ", "ὢ", "ὣ", "ὦ", "ὧ", "ὤ", "ὥ"],
-                            "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ", "ού", "οὔ", "οὕ"],  # partly not yet in database, database transskript of 'hou'
+                            "ου": ["όυ","ού","οῦ","οὐ","οὑ","οὖ", "οὗ", "ού", "οὔ", "οὕ"],
                             "υ": ["ύ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ὔ", "ὕ"], 
                             "h": ["ἁ", "ἃ","ἇ", "ὁ", "ὃ", "ἑ", "ἓ", "ἡ", "ἧ", "ἣ", "ἱ", "ἳ", "ἷ", "ὡ", "ὣ", "ὧ", "οὑ", "οὗ", "οὔ", "οὕ"]
                             }  
@@ -192,15 +215,38 @@ def digraphs_to_begin(group):
     return sorted_group
 
 
+# functions for backend
+
 # built url
+
+def get_result_number(language, pattern):
+    conn = sqlite3.connect(os.path.join("database", "PhonemeSearch.db"))
+    cur = conn.cursor()
+    conn.create_function("REGEXP", 2, regexp)
+
+    extract = "lemma"
+    if language == "vedic":
+        extract = "transliteration"
+
+    count_command = \
+    f"SELECT COUNT(*) FROM {language} WHERE {extract} REGEXP '{pattern}'"
+    cur.execute(count_command)
+    number = cur.fetchall()
+    for num in number:
+        print(num[0])
+        number = num[0]
+    print(number)
+        
+    return number
+
 
 def built_url_to_dictionaries(language, results, index):
     lemma = results[index]
-    if language == "1" or language == "3":
-        #url = f"https://lsj.gr/wiki/{results[index]}"
+    if language == "greek" or language == "latin":
         url = f"https://logeion.uchicago.edu/{lemma}"
+        alt_url = f"https://lsj.gr/wiki/{lemma}"
     
-    elif language == "2":
+    elif language == "vedic":
 
         json_obj = {
             "input": f"{lemma}",
@@ -219,11 +265,13 @@ def built_url_to_dictionaries(language, results, index):
         encoded_jsn = b64encode(bytes_json)
         str_code = encoded_jsn.decode("utf-8")
         url = f"https://vedaweb.uni-koeln.de/rigveda/results/{str_code}"
-    
-    elif language == "4":
-        url = ""
+        alt_url = None
 
-    return url
+    elif language == "armenian":
+        url = f"http://www.nayiri.com/imagedDictionaryBrowser.jsp?dictionaryId=26&dt=HY_HY&query={lemma}"
+        alt_url = f"https://calfa.fr/search?query={lemma}"
+    
+    return url, alt_url
 
 
 # mark pattern
@@ -254,7 +302,13 @@ def mark_pattern (pattern, results, language, xml):
         
         if xml is False:
             url = built_url_to_dictionaries(language, results, index)
-            marked = f"<a class='external-link' href='{url}'>{marked}<i class='fa fa-external-link'></i></a>"
+            main_url = url[0]
+            #alt_url = url[1]
+            alt = ""
+            #if alt_url:
+                #alt = f"<a class='external-link' href='{alt_url}'><span class='alt-link-descr'>alternative</span><i class='fa fa-external-link'></i></a>"
+
+            marked = f"<a class='external-link' href='{main_url}'>{marked}<i class='fa fa-external-link'></i></a>{alt}"
 
         marked = f"<div class='result'>{marked}</div>"
         marked_list.append(marked)
@@ -589,17 +643,18 @@ def syllabificate_greek(results):
 def download(pattern, user_pattern, language, kind):
     languages = ["greek", "vedic", "latin", "armenian"]
     language = languages[language-1]
+
+    extract = "lemma"
+    if language in ["vedic"]:
+        extract = "transliteration"
+
     search_command = \
-    f"SELECT lemma FROM {language} WHERE lemma REGEXP '{pattern}' "
+    f"SELECT lemma FROM {language} WHERE {extract} REGEXP '{pattern}' "
     
-    if os.name == "nt":
-        connection = sqlite3.connect("database\\PhonemeSearch.db")
-    else:
-        connection = sqlite3.connect("database/PhonemeSearch.db")
-        
+    connection = sqlite3.connect(os.path.join("database", "PhonemeSearch.db"))    
     cursor = connection.cursor()
     connection.create_function("REGEXP", 2, regexp)
-    print(search_command)
+    
     cursor.execute(search_command)
     results = cursor.fetchall()
     connection.close()

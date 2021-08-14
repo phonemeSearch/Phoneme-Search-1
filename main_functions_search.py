@@ -32,12 +32,11 @@ def prepare_language_characteristics(language_index, accent) -> list:
 
     hf.get_language_info(language, accent)
     path_main = os.path.dirname(os.path.abspath(sys.argv[0]))
-    if os.name == "nt":
-        path_main = os.path.join(path_main, r"database\PhonemeSearch.db")
-    else:
-        path_main = os.path.join(path_main, r"database/PhonemeSearch.db")
-
+    path_main = os.path.join(path_main, "database", "PhonemeSearch.db")
+    
     allowed = ["(", ")", "+"]
+    if language == "armenian":
+        allowed.extend("`")
 
     for kind in ["vowel", "consonant"]:
         kind_entries = sql_fetch_entries(command=f"SELECT grapheme FROM {language}_{kind}")
@@ -63,24 +62,31 @@ def check_validity(search_string, allowed) -> bool:
     user_pattern = search_string
     false_input = []
     aspirated_greek = ["k", "p", "t"] # characters which can be followed by 'h' in Greek
+    aspirated_armenian = ["k", "p", "t", "c", "č"] # characters which can be followed by '`' in Armenian
     allowed_aspirated = []
     index = -1
 
     for char in search_string:
         index += 1
 
-        if char == "h":
-            if language == "greek":
+        if language == "greek":
+            if char == "h":
                 allowed_aspirated = aspirated_greek
                 if search_string[index - 1] not in allowed_aspirated and index != 0:
-                    false_input.append("No allowed usage of 'h'!")
+                    false_input.append("h")
 
         elif language == "latin":
             if char in [char for char in allowed if char != "u"]:
                 if search_string[index - 1] == "q": 
-                    false_input.append("No allowed usage of 'q'!")
+                    false_input.append("q")
 
-        elif char not in allowed:
+        elif language == "armenian":
+            if char == "`":
+                allowed_aspirated = aspirated_armenian
+                if search_string[index - 1] not in allowed_aspirated:
+                    false_input.append("`")
+
+        if char not in allowed:
             false_input.append(char)
 
         elif char == "|":
@@ -88,9 +94,10 @@ def check_validity(search_string, allowed) -> bool:
                 pass
             else:
                 false_input.append(char)
-                print("no allowed usage of '|'!")
+                print("|")
                 
     if len(false_input) > 0:
+        print(false_input)
         return False
     else:
         return True
@@ -208,7 +215,7 @@ def convert_key_to_grapheme(connected) -> list:
         length = len(phoneme) - 1
         for char in phoneme:
             phoneme_index += 1
-            if char in ["|", "V", "C", "h"] or char in consonants or char in vowels:
+            if char in ["|", "V", "C", "h", "`"] or char in consonants or char in vowels:
                 if cluster is True:
                     phoneme_cluster = sql_fetch_entries(cmd)
                     for phoneme in phoneme_cluster:
@@ -319,12 +326,15 @@ def phoneme_search(pattern, order_id, asc_desc, limit, offset):
     global user_pattern
     
     selection = "lemma"
+    extract = "lemma"
     # sql access
-    if language in ["armenian"]:
+    if language in ["armenian", "vedic", "greek"]:
         selection = "lemma, transliteration"
+    if language in ["vedic"]:
+        extract = "transliteration"
          
     search_command = \
-    f"SELECT {selection} FROM {language} WHERE lemma REGEXP '{pattern}' " \
+    f"SELECT {selection} FROM {language} WHERE {extract} REGEXP '{pattern}' " \
     f"ORDER BY {order_id} {asc_desc} " \
     f"LIMIT {limit} OFFSET {offset}"
 
@@ -337,48 +347,14 @@ def phoneme_search(pattern, order_id, asc_desc, limit, offset):
     
     connection.close()
 
-    if language in ["armenian"]:
+    if language in ["armenian", "greek"]:
         results = [(result[0], result[1]) for result in results]
+    elif language in ["vedic"]:
+        results = [(result[1], result[0]) for result in results]
     else:
         results = [(result[0], "") for result in results]
-
+    print(results)
     return results, user_pattern, pattern
-
-def save(save_path, file_name, results, pattern):
-    if os.name == "nt":
-        file = open(save_path + f"\\{file_name}", "w", encoding="utf-8")
-    else:
-        file = open(save_path + f"/{file_name}", "w", encoding="utf-8")
-
-    file.write("\nnumber of results: " + str(len(results)))
-    file.write("\nsearch pattern: " + pattern + "\n\n")
-    file.write("\n".join(results))
-    file.close() 
-
-
-def save_result(results, pattern) -> str:
-    file_name = ""
-    exists = True
-    save_path = path_main.removesuffix("\\database\\PhonemeSearch.db")
-    save_path = save_path + f"\\saved searches\\{language}"
-    while exists:
-        if os.path.exists(save_path) == False:
-            os.makedirs(save_path)
-            
-        try:
-            file_name = input("Please set a file name.\n""input: ")
-            file_exists = open(save_path + f"\\{file_name}.txt", encoding="utf-8")
-            overwrite = input("File already exists. Do you want to overwrite it?\n"
-                                "1) yes\n"
-                                "any key) no\n")
-            if overwrite == "1":
-                exists = False
-            file_exists.close()
-        except FileNotFoundError:
-            exists = False
-
-    save(save_path=save_path, file_name=file_name, results=results, pattern=pattern)
-    return f"Search saved as {file_name}.txt."
 
 
 def connect_search_related_fcts(search_string, order_id, asc_desc, limit, offset):

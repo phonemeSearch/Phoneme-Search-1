@@ -78,3 +78,5 @@ fill_in_database/
 #test.py
 *.txt
 *.xml
+
+data/

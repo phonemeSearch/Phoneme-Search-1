@@ -187,6 +187,11 @@ Result-Section-Related
     color: rgb(150, 150, 200);
 }
 
+.alt-link-descr {
+    font-size: 18px;
+    display: inline-block;
+    margin-left: 1em;
+}
 
 
 /*

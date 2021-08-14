@@ -2,14 +2,15 @@ from flask import Flask, render_template, request, Response
 import main_functions_search as mf
 import help_functions as hf
 import os
-import sqlite3
 from math import ceil
 
 
 app = Flask(__name__)
 
+
 # uses mf to get search results
 def get_results(user_search, accent_sensitive, language, order_id, asc_desc, limit, offset):
+
     user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
     check = mf.check_validity(search_string=user_search, allowed=user_allowed)
 
@@ -18,41 +19,23 @@ def get_results(user_search, accent_sensitive, language, order_id, asc_desc, lim
         results = [word[0] for word in user_results[0]]
         transliteration = [word[1] for word in user_results[0]]
         pattern = user_results[2]
-        
-        if os.name == "nt":
-            #todo path join
-            conn = sqlite3.connect("database\\PhonemeSearch.db")
-        else:
-            conn = sqlite3.connect("database/PhonemeSearch.db")
-        
-        if language == "1":
-            lang = "greek"
-        elif language == "2":
-            lang = "vedic"
-        elif language == "3":
-            lang = "latin"
-        elif language == "4":
-            lang = "armenian"
 
-        cur = conn.cursor()
-        conn.create_function("REGEXP", 2, hf.regexp)
-        count_command = \
-        f"SELECT COUNT(*) FROM {lang} WHERE lemma REGEXP '{pattern}'"
-        cur.execute(count_command)
-        number = cur.fetchall()
-        for num in number:
-            number = num[0]
+        language = hf.languages[int(language)-1]
+    
+        number = hf.get_result_number(language, pattern)
 
-        if lang == "armenian":
+        if language == "armenian":
             syllables = hf.syllabificate_armenian(results)
         else:
             syllables = hf.syllabificate_greek(results)
+
         marked_results = hf.mark_pattern(pattern=pattern, language=language, results=results, xml=False)
         results = marked_results
-        results_tup = (results, transliteration, syllables, pattern, number)
-        return results_tup
+
+        return results, transliteration, syllables, pattern, number
+    
     else:
-        return "an unexpected error occurred"
+        return False
 
 
 @app.route('/')
@@ -86,6 +69,8 @@ def result_page():
     accent_sensitive = request.args.get("accent-sensitive")
     offset = int(request.args.get("offset")) if request.args.get("offset") is not None else 0
 
+    print(user_search)
+
     asc_desc = "ASC"
     reverse_checked = ""
     descending_checked = ""
@@ -114,6 +99,8 @@ def result_page():
         asc_desc = "ASC"
         order_id = "id"
 
+
+    # eigene Funktion
     reverse = request.args.get("reverse")
     descending = request.args.get("descending")
     length_asc = request.args.get("length-asc")
@@ -190,7 +177,9 @@ def result_page():
 
     results = get_results(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
     # returns tuple(results, transliteration, syllables, pattern, number of results)
-    
+    if results is False:
+        return render_template("error.html")
+    print(results)
     if page_num > ceil(results[4]/25):
         page_num -= 1
         offset -= 25

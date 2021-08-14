@@ -35,7 +35,7 @@ const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 INITIAL CALLS
 */
 
-renderKey();
+newKey(language = "1");
 generateKeyboard(language = "1");
 
 
@@ -131,6 +131,154 @@ document.getElementById("plus-button").addEventListener("click", () => {
 ================================================================================================ 
 Functions
 */
+
+function getLanguage () {
+    language = document.getElementById("choose-languag-id").value;
+    return language;
+};
+
+
+function newKey (language) {
+
+    var placeDict = {"B": "labial", "D": "labiodental", "A": "alveolar", "S": "postalveolar", "X": "retroflex", "J": "palatal", "K": "velar", "H": "glottal"};
+    var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral"};
+
+    const greekVow = {'y': 'vowel', 'a': 'vowel', 'e': 'vowel', 'ē': 'vowel', 'y': 'vowel', 'o': 'vowel', 'ō': 'vowel', 'i': 'vowel', 'a': 'vowel', 'u': 'vowel'}
+    const greekCon = {
+                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                    'ph': ['plosive', 'labial', 'voiceless', 'asp'],
+                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                    'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
+                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                    'kh': ['plosive', 'velar', 'voiceless', 'asp'],
+                    'ks': ['affricate', 'velar', 'voiceless', 'notAsp'],
+                    'z': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
+                    'n': ['nasal', 'labial', 'voice', 'notAsp'],
+                    'm': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                    'ps': ['affricate', 'labial', 'voiceless', 'notAsp']
+                };
+
+    conTable = document.getElementById("con-table");
+
+    i = 0
+    for (var [man_key, man_value] of Object.entries(manner)) {
+        console.log(man_value);
+        i++;
+        var tableRoll = document.createElement("tr");
+        tableRoll.innerHTML = `<td><span class="manner">${man_value}</span><span class="user-key">${man_key}</span></td>`;
+
+        for (var [placeKey, place] of Object.entries(placeDict)) {
+            console.log(place);
+            var td_nv_na = document.createElement("td");
+            var td_nv_a = document.createElement("td");
+            var td_v_na = document.createElement("td");
+            var td_v_a = document.createElement("td");
+            td_nv_na.setAttribute("class", "phoneme");
+            td_nv_a.setAttribute("class", "phoneme");
+            td_v_na.setAttribute("class", "phoneme");
+            td_v_a.setAttribute("class", "phoneme");
+          
+            for (var [con, feature] of Object.entries(greekCon)){
+
+                console.log(con);
+                if (feature.includes(man_value) && feature.includes(place) && feature.includes("voiceless") && feature.includes("notAsp")) {
+                    td_nv_na.innerText = con;
+                 
+                } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voiceless") && feature.includes("asp")) {
+                    td_nv_a.innerText = con;
+                
+                } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voice") && feature.includes("notAsp")) {
+                    td_v_na.innerText = con;
+                 
+                } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voice") && feature.includes("asp")) {
+                    td_v_a.innerText = con;
+                 
+                };
+          
+            };
+            tableRoll.append(td_nv_na);
+            tableRoll.append(td_nv_a);
+            tableRoll.append(td_v_na);
+            tableRoll.append(td_v_a);
+        };
+     
+        conTable.append(tableRoll);
+
+    };
+
+    /*
+    const voiceRoll = document.createElement("tr");
+    voiceRoll.setAttribute("class", "voice_roll");
+    const aspRoll = document.createElement("tr");
+    aspRoll.setAttribute("class", "asp_roll");
+    voiceFirst = document.createElement("td");
+    aspFirst = document.createElement("td");
+    voiceFirst.innerText = "voice";
+    aspFirst.innerText = "aspiration";
+    voiceRoll.append(voiceFirst);
+    aspRoll.append(aspFirst);
+
+    const keyTable = document.createElement("table");
+    keyTable.setAttribute("class", "key-con-table");
+    var headRoll = document.createElement("tr");
+    headLang = document.createElement("th");
+    headLang.innerText = language;
+    headRoll.append(headLang);
+
+    for (var [pla_key, pla_value] of Object.entries(place)) {
+        var tableCell = document.createElement("td")
+        tableCell.innerHTML = `<span class="place">${pla_value}</span><span class="user-key">${pla_key}</span>`;
+        headRoll.append(tableCell);
+    };
+
+    keyTable.append(headRoll);
+    
+    console.log(place.length)
+    for (var [pla_key, pla_value] of Object.entries(place)) {
+        console.log("voice loop");
+        let spanNoVoice = document.createElement("span");
+        let spanVoice = document.createElement("span");
+        spanNoVoice.innerText = "-v";
+        spanVoice.innerText = "+v";
+        
+        var voiceCell = document.createElement("td");
+        voiceCell.append(spanNoVoice);
+        voiceRoll.append(voiceCell);
+
+        var voiceCell = document.createElement("td");
+        voiceCell.append(spanVoice);
+        voiceRoll.append(voiceCell);
+        
+        let spanNoAsp = document.createElement("span");
+        let spanAsp = document.createElement("span");
+        spanNoAsp.innerText = "-asp";
+        spanAsp.innerText = "+asp";
+        
+        let aspCell = document.createElement("td");
+        aspCell.append(spanNoAsp);
+        aspCell.append(spanAsp);
+
+        aspRoll.append(aspCell);
+    };
+
+ 
+
+    keyTable.append(voiceRoll);
+    keyTable.append(aspRoll);
+ 
+    const keyCon = document.getElementById("key-container");
+    keyCon.append(keyTable);
+*/
+
+   
+
+};
 
 // renders HTML for key tables
 function renderKey () {
@@ -524,14 +672,14 @@ function wrongInputHandling(key, pressed, fieldId) {
     var allowed;
 
     const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u',
-                          'u', 'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's', 's',
+                          'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u', 'é', 'á', 'ḗ', 'ṓ',' ý', 'í',
+                        'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's',
                           'ps', 'h', 'Enter'
                         ];
     const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
                           'R', 'V', 'W', 'X', 'Z', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
                           'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
-                          'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', 'Enter'
+                          'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', "ñ", "ṅ", "m̐", 'ḥ', 'Enter'
                         ];
     
     const latinAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
@@ -540,14 +688,14 @@ function wrongInputHandling(key, pressed, fieldId) {
                         ];
 
     const armenianAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
-                             'R', 'V', 'H', 'Q', 'Z', "'", 'a', 'e', 'ē', 'ǝ', 'i', 'o', 'u',
+                             'R', 'V', 'H', 'Q', 'Z', "`", 'a', 'e', 'ē', 'ǝ', 'i', 'o', 'u',
                              'p', 'b', 't', 'd', 'ṭ', 'ḍ', 'k', 'g', 'c', 'j', 'v', 'y', 'm', 'n', 'l', 'r', 'ṙ', 's', 'h', 'š',
                              'ž', 'ł', 'č', 'ǰ', 'f', 'Enter'
                             ];
 
     const greekFollows = {"h": ["p", "t", "k"]};
     const greekInitial = ["h"];
-    const armenianFollows = {"'": ["p", "t", "k", "c", "č"], "h": ["p"]};
+    const armenianFollows = {"`": ["p", "t", "k", "c", "č"]};
     var follows;
     var initial;
 
@@ -594,6 +742,20 @@ function wrongInputHandling(key, pressed, fieldId) {
         wrongInput(message, fieldId);
     }
 }
+
+/*
+document.getElementById("start-button").addEventListener("click", () => {
+    var inputFieldCont = document.getElementById("user-input").innerText
+    if (inputFieldCont.includes("`")) {
+        var cleanInput = inputFieldCont.replace(/`/g, ";");
+        inputFieldCont.innerText = cleanInput;
+    };
+});
+*/
+
+
+
+
 
 
 /*const phonemesGreek = {

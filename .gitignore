@@ -79,4 +79,6 @@ fill_in_database/
 *.txt
 *.xml
 
+test/
+
 data/

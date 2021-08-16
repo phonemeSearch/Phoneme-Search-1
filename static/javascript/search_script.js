@@ -671,7 +671,7 @@ function wrongInputHandling(key, pressed, fieldId) {
     }
     var allowed;
 
-    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
+    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P', 'B',
                           'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u', 'é', 'á', 'ḗ', 'ṓ',' ý', 'í',
                         'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's',
                           'ps', 'h', 'Enter'

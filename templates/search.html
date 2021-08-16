@@ -7,16 +7,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <aside>
-        <ol>
-            <li><a class="side" href="/"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
-            <li><a class="side" href="/search/description">Help</a></li>
-            <li><a class="side" href="/search">Search</a></li>
-        </ol>
-    </aside>
+    <header>
+            <a class="navigation" href="/">Home</a>
+            <a class="navigation" href="/description">Help</a>
+            <a id="indicator" class="navigation" href="/search">Search</a>
+    </header>
     <main>
         <section id="input-section" class="search-section">
-            <form id="search-form" action="/search_result" method="get">
+            <form id="search-form" action="/search/results" method="get">
                 <div class="form-part-container">
                     <label for="choose-language-id">language</label>
                     <select id="choose-language-id" name="choose-language" required="required">
@@ -27,15 +25,15 @@
                     </select>
                     <label for='accent-check'>accent-sensitive</label>
                     <input id = "accent-check" class="sensitive-check" type="checkbox" name='accent-sensitive'>
-                    <a class="help-link" href="/search/description#accent-sensitive"><span class="superscript">?</span></a>
+                    <a class="help" href="/description#accent-sensitive"><span class="superscript">?</span></a>
                 </div>
                 <div id="user-input-container" class="form-part-container">
                     <input id="user-input" class="text-field" type="text" name="search-input" placeholder="search pattern"/>
                     <button id="start-button" type="submit" name="submit-button" value="start">start</button>
-                    <a class="help-link" href="/search/description#input-methods"><span class="superscript">?</span></a>
+                    <a class="help" href="/description#input-methods"><span class="superscript">?</span></a>
                 </div>
                 <button id= plus-button class="plus-minus-button" type="button">+</button><label for="plus-button">add phoneme</label>
-                <a class="help-link" href="/search/description#secondary-input"><span class="superscript">?</span></a>
+                <a class="help" href="/description#secondary-input"><span class="superscript">?</span></a>
             </form>
         </section>
         <section id="expand-keyboard-section" class="search-section">

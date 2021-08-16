@@ -1,85 +1,16 @@
-
-
-/*
-
-Contents
-
-    Global
-
-    Section
-
-    Result-Section-Related
-
-    Container
-
-    Button
-
-    Anchor
-    
-    Hover
-    
-    Disabled
-    
-    Unordered
-
-    Toggles
-
-*/
-
-
+@import "main.css";
 
 /*
 =================================================================
 
 Global 
 */
-html {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    padding: 0;
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    gap: 5%;
-    margin: 0 5% 0 0;
-    font-size: 20px;
-    font-family: sans-serif;
-    background-color: rgb(50, 50, 50);
-    color:rgb(230, 230, 230);
-}
-
-main {
-    align-self: center;
-    height: 80%;
-}
-
-aside {
-    height: 100vh;
-    width: 10em;
-    background-color: rgb(40, 40, 40);
-}
-
-ol {
-    margin: 0;
-    padding-left: 1em;
-    list-style: none;
-}
-
-ol > :first-child {
-    margin-top: 2em;
-}
-
-li {
-    margin-bottom: 0.7em;
-}
 
 form {
     height: 100%;
     display: grid;
     grid-template-columns: 2.5fr 1fr;
-    grid-template-rows: 1fr 4fr;
+    grid-template-rows: auto 4fr;
     column-gap: 0.7em;
     row-gap: 0.7em;
 } 
@@ -106,10 +37,6 @@ Section
 section {
     display: flex;
     flex-direction: column;
-    padding: 1em 4% 1em 4%;
-    background-color: rgb(60, 60, 60);
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
-    border-radius: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .info-section {
@@ -125,8 +52,7 @@ section {
     grid-column-end: 2;
     grid-row-start: 1;
     grid-row-end: 3;
-    overflow: auto;
-    padding: 1em 0 1em 0;
+    padding: 1em 0.5em 1em 0.5em;
     flex-direction: row;
     gap: 0;
     justify-content: space-between;
@@ -146,9 +72,6 @@ Result-Section-Related
 
 .result-text {
     width: 80%;
-    /*display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;*/
 }
 
 .result {
@@ -168,7 +91,7 @@ Result-Section-Related
 }
 
 .result:nth-child(odd), .translit:nth-child(odd), .syllable-lemma:nth-child(odd) {
-    background-color: rgb(50, 50, 50);
+    background-color: var(--grey1);
 }
 
 .syllable-lemma {
@@ -180,18 +103,13 @@ Result-Section-Related
 }
 
 .pattern:nth-child(odd) {
-    color: rgb(200, 150, 150)
+    color: var(--red1);
 }
 
 .pattern:nth-child(even) {
-    color: rgb(150, 150, 200);
+    color: var(--blue1);
 }
 
-.alt-link-descr {
-    font-size: 18px;
-    display: inline-block;
-    margin-left: 1em;
-}
 
 
 /*
@@ -203,10 +121,6 @@ Container
 #page-container {
     width: 100%;
     text-align: center;
-}
-
-#results-container {
-    
 }
 
 #transliteration-container {
@@ -248,20 +162,12 @@ Container
 Button 
 */
 
-button {
-    overflow: hidden;
-    font-size: 18px;
-    text-align: left;
-    color: rgb(230, 230, 230);
-    background-color: rgb(60, 60, 60);
-    border: none
+.next-results-btn {
+    border: none;
 }
 
-.length-btn {
-    display: inherit;
-    margin: 0;
-    background-color: rgb(60, 60, 60);
-    border: none;
+.next-results-btn:hover {
+    background-color: var(--grey2);
 }
 
 
@@ -273,23 +179,15 @@ Anchor
 */
 
 a {
-    color:rgb(230, 230, 230);
+    color:var(--white2);
     text-decoration: none;
 }
 
-a.back {
-    display: block;
-    margin-top: 2em;
-    margin-bottom: 1em;
-    width: 2em;
-    color: rgb(230, 230, 230);
-}
-
-a.help-link {
+a.help {
     color: rgb(150, 150, 150);
 }
 
-a.help-link > * {
+a.help > * {
     vertical-align: super;
     font-size: 14px;
 }
@@ -302,21 +200,13 @@ a.help-link > * {
 Hover 
 */
 
-button:hover {
-    color: white;
-    cursor: pointer;
-}
-
-a:hover {
-    color: white;
-}
 
 a:hover .pattern:nth-child(odd) {
-    color: rgb(250, 200, 200);
+    color: var(--red2);
 }
 
 a:hover .pattern:nth-child(even) {
-    color: rgb(200, 200, 250);
+    color: var(--blue2);
 }
 
 
@@ -328,7 +218,7 @@ Disabled
 */
 
 button:disabled {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--grey2);
     color: rgb(100, 100, 100);
     border: 2px solid rgb(100, 100, 100);
     cursor: auto;   
@@ -353,11 +243,11 @@ Unordered
 }
 
 .info {
-    color: rgb(150, 150, 150);
-    }
+    color: var(--grey5);
+}
 
 .info-content {
-    color: rgb(230, 230, 230);
+    color: var(--white2);
 }
 
 .switch-label {
@@ -391,7 +281,7 @@ Toggles
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgb(50, 50, 50);
+    background-color: var(--grey1);
     border-radius: 1em;
     -webkit-transition: .4s;
     transition: .4s;
@@ -404,14 +294,14 @@ Toggles
     width: 13px;
     left: 2px;
     bottom: 2px;
-    background-color: rgb(230, 230, 230);
+    background-color: var(--white2);
     border-radius: 50%;
     -webkit-transition: .4s;
     transition: .4s;
   }
   
   input:checked + .slider {
-    background-color: rgb(150, 150, 200);
+    background-color: var(--blue1);
   }
 
   input:disabled + .slider {

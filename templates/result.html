@@ -9,15 +9,13 @@
 </head>
 
 <body>
-    <aside>
-        <ol>
-            <li><a class="side" href="/search"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
-            <li><a class="side" href="/">Start</a></li>
-            <li><a class="side" href="/search/description">Help</a></li>
-        </ol>
-    </aside>
+    <header>    
+        <a class="navigation" href="/">Home</a>
+        <a class="navigation" href="/description">Help</a>
+        <a class="navigation" href="/search">Search</a>
+    </header>
     <main>
-        <form method="GET" action="/search_result">
+        <form method="GET" action="/search/results">
         <section class="info-section">
             <div class="info">language:
                 <span id="searched-lang" class="info-content">
@@ -88,7 +86,7 @@
             <div class="order-container">
                 <span>
                     Downloads
-                    <a class="help-link" href="/search/description#download"><span class="superscript">?</span></a>
+                    <a class="help" href="/description#download"><span class="superscript">?</span></a>
                 </span>
                 <button id="download-txt-button" class="download-button" name="download" type="submit" value="true">
                     download results as txt <i class="fa fa-download"></i>

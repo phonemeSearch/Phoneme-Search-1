@@ -7,13 +7,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <aside>
-    <ol>
-        <li><a class="side" href="/"><i class="fa fa-chevron-left"></i><i class="fa fa-chevron-left"></i></a></li>
-        <li><a class="side" href="/search/description">Help</a></li>
-        <li><a class="side" href="/search">Search</a></li>
-    </ol>
-  </aside>
+  <header>
+    <a class="navigation" href="/">Home</i></a>
+    <a id="indicator" class="navigation" href="/description">Help</a>
+    <a class="navigation" href="/search">Search</a>
+  </header>
   <main>
     <h1>How it works</h1>
     <section class="search-description">
@@ -69,7 +67,7 @@
     </p>
     <h2 id="result-order">Result Order</h2>
     <p>
-      The search results are presented as pages with a maximum of 25 matches per page. There are arrow symbols to navigate through the result pages. On the right side is some basic information about the results,
+      The search results are presented as pages with a maximum of 25 matches per page. There are arrow symbols to navigate through the result pages. On the right navigation is some basic information about the results,
       at first the pattern you gave and below the number of matches. Below that are some buttons to modify the result order. Currently you can order the results alphabetical ascending and descending,
       reverse alphabetical ascending (seen from the end of the word) and by length ascending and descending. Default is alphabetical ascending. Other possibilities to order the results are in progress.
       The given pattern is marked in the resulting words. If the pattern is found more than once the marking colors alternate from red to blue to provide a better overview. They have no further meaning.

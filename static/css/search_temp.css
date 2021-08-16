@@ -1,3 +1,4 @@
+@import "main.css";
 
 /*
 
@@ -34,20 +35,6 @@ Contents
 
 1 Global 
 */
-html {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    /*display: grid;
-    grid-template-columns: 1fr 6fr;*/
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    font-family: sans-serif;
-    background-color: rgb(50, 50, 50);
-}
 
 main {
     height: 100%;
@@ -56,29 +43,7 @@ main {
     column-gap: 0.7em;
     row-gap: 0.7em;
     box-sizing: border-box;
-    padding: 3em 3em 3em 13em;
-    color: rgb(230, 230, 230);
-}
-
-aside {
-    position: fixed;
-    height: 100vh;
-    width: 10em;
-    background-color: rgb(40, 40, 40);
-}
-
-ol {
-    margin: 0;
-    padding-left: 1em;
-    list-style: none;
-}
-
-ol > :first-child {
-    margin-top: 2em;
-}
-
-li {
-    margin-bottom: 0.7em;
+    color: var(--white2);
 }
 
 
@@ -94,9 +59,9 @@ section {
     height: auto;
     padding: 0.5em 4% 0.5em 4%;
     overflow: auto;
-    background-color: rgb(60, 60, 60);
+    background-color: var(--grey2);
     border-radius: 0.5em;
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
+    box-shadow: 2px 2px 6px 4px var(--black);
 }
 
 #key-section {
@@ -136,7 +101,7 @@ select which has an individual margin*/
 }
 
 .user-key {
-    color: rgb(200, 100, 100);
+    color: var(--red3);
 }
 
 #add-phoneme-container {
@@ -176,8 +141,8 @@ select {
     margin-right: 2em;
     width: 6em;
     font-size: 20px;
-    background-color: rgb(60, 60, 60);
-    color: rgb(230, 230, 230);
+    background-color: var(--grey2);
+    color: var(--white2);
     border: 2px solid;
     border-radius: 0.2em;
 }
@@ -186,24 +151,24 @@ select {
     /*width: 85%;*/
     flex-grow: 1;
     font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
+    background-color: var(--grey3);
+    color: var(--white2);
     border: 2px solid;
 }
 
 .text-field-wrong {
     flex-grow: 1;
     font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid rgb(100, 50, 50);
+    background-color: var(--grey3);
+    color: var(--white2);
+    border: 2px solid var(--red1);
 }
 
 #add-input-field {
     flex-grow: 1;
     font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
+    background-color: var(--grey3);
+    color: var(--white2);
     border: 2px solid;
 }
 
@@ -214,15 +179,6 @@ select {
 
 5 Button 
 */
-
-button {
-    overflow: hidden;
-    font-size: 20px;
-    background-color: rgb(80, 80, 80);
-    color: rgb(230, 230, 230);
-    border: 2px solid;
-    border-radius: 0.2em;
-}
 
     /*
     --------------------------------------------------------------
@@ -265,16 +221,11 @@ button {
 6 Anchor 
 */
 
-a {
-    text-decoration: none;
-    color:rgb(230, 230, 230);
-}
-
-a.help-link {
+a.help {
     color: rgb(150, 150, 150);
 }
 
-a.help-link > * {
+a.help > * {
     vertical-align: super;
     font-size: 14px;
 }
@@ -310,7 +261,7 @@ tr {
 }
 
 tr:nth-child(even){
-    background-color: rgb(60, 60, 60);
+    background-color: var(--grey2);
 }
 
 tr:nth-child(odd) {
@@ -351,7 +302,7 @@ th:first-child, td:first-child {
 */
 
 .key:active {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--grey2);
     border-color: rgb(170, 170, 170);
 }
 
@@ -364,21 +315,8 @@ th:first-child, td:first-child {
 */
 
 select:hover {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--grey4);
     cursor: pointer;
-}
-
-button:hover {
-    background-color: rgb(100, 100, 100);
-    cursor: pointer;
-}
-
-a:hover {
-    color: white;
-}
-
-svg:hover {
-    fill: rgb(100, 100, 100);
 }
 
 
@@ -390,7 +328,7 @@ svg:hover {
 */
 
 button:disabled {
-    background-color: rgb(60, 60, 60);
+    background-color: var(--grey2);
     color: rgb(100, 100, 100);
     border: 2px solid rgb(100, 100, 100);
     cursor: auto;
@@ -411,7 +349,7 @@ button:disabled {
 .wrong-message {
     width: 100%;
     margin-top: 0.2em;
-    color: rgb(200, 100, 100);
+    color: var(--red3);
 }
 
 .key-info {

@@ -6,25 +6,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/welcome_temp.css') }}"/>
 </head>
 <body>
-    <h1>Phoneme Search</h1>
+    <header>
+        <a id="indicator" class="navigation" href="/">Home</i></a>
+        <a class="navigation" href="/description">Help</a>
+        <a class="navigation" href="/search">Search</a>
+    </header>
     <main>
         <section>
             <p>
-            This application provides a phoneme search in ancient Indo-European languages. It is grapheme based. You can enter your search
-            pattern as individual phonemes and combine them with useful abbreviations of important phoneme features. Thereby finding the exact
-            pattern you want with less effort. A detailed description
-            of how the search application works can be found <a href="/search/description">here</a>.</p>
+                This application provides a phoneme search in ancient Indo-European languages. It is grapheme based. You can enter your search
+                pattern as individual phonemes and combine them with useful abbreviations of important phoneme features. Thereby finding the exact
+                pattern you want with less effort. A detailed description of how the search application works can be found
+                <a class="link" href="/description">here</a>.
+            </p>
             <button id="open-search" class="button" onclick="location.href = '/search';">Open Phoneme Search</button>
         </section>
     </main>
     <footer>
-        <section>
-            <p>This website was created during my work at the Chair of Comparative Linguistics at the Julius-Maximilians-University of Würzburg.</p>
-            <ol id="data_origin">
-                Origin of word data
-                <li>Greek, Latin: <a href="http://www.perseus.tufts.edu/hopper/">Perseus Digital Library</a></li>
-            </ol>
-        </section>
+        <p>This website was created during my work at the <a class="link" href="https://www.phil.uni-wuerzburg.de/vgsp/startseite/">Chair of Comparative Linguistics</a> at the Julius-Maximilians-University Würzburg.</p>
     </footer>
 </body>
 </html>

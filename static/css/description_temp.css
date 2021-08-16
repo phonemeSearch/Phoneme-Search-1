@@ -1,3 +1,4 @@
+@import "main.css";
 
 /*
 
@@ -19,40 +20,12 @@ Contents
 1 Element Styles
 */
 
-html {
-    padding: 0;
-    margin: 0;
-}
-
-body {
-    padding: 0;
-    margin: 0;
-    display: grid;
-    grid-template-columns: 1fr 6fr;
-    font-size: 20px;
-    font-family: sans-serif;
-    background-color: rgb(50, 50, 50);
-    color: rgb(230, 230, 230);
-}
-
 main {
-    padding: 0 5% 0 5%;
-    height: 100vh;
-    overflow: auto;
+    padding: 2% 5% 5% 5%;
 }
 
 section {
     margin-bottom: 1em;
-    padding: 1em 2em 1em 2em;
-    background-color: rgb(60, 60, 60);
-    box-shadow: 2px 2px 6px 4px rgb(40, 40, 40);
-    border-radius: 0.5em 0.5em 0.5em 0.5em;
-}
-
-aside {
-    height: 100vh;
-    width: 10em;
-    background-color: rgb(40, 40, 40);
 }
 
 ol {
@@ -70,7 +43,7 @@ li {
 }
 
 h1 {
-    color: rgb(150, 150, 200);
+    color: var(--blue1);
     margin-bottom: 1em;
 }
 
@@ -79,7 +52,7 @@ h2 {
     margin-bottom: 0.5em;
     font-size: 20px;
     font-weight: normal;
-    color: rgb(150, 150, 200);
+    color: var(--blue1);
 }
 
 p {
@@ -95,11 +68,6 @@ p {
 2 Class Styles
 
 */
-
-a {
-    text-decoration: none;
-    color: rgb(230, 230, 230);
-}
 
 .link-container {
     display: flex;
@@ -117,7 +85,7 @@ a.search-link {
 
 a.dict-link {
     display: inline;
-    color: rgb(150, 150, 200);
+    color: var(--blue1);
     text-decoration: underline;
 }
 
@@ -129,14 +97,4 @@ a.dict-link {
 3 Hover Styles
 
 */
-
-a:hover {
-    color: white;
-}
-
-.dict-link:hover {
-    color: rgb(200, 200, 250);
-    text-decoration: underline;
-}
-
 

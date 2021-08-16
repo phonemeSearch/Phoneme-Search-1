@@ -277,7 +277,14 @@ def built_url_to_dictionaries(language, results, index):
 # mark pattern
 # wraps searched pattern of lemmas in span elements to mark them with css
 
+
 def mark_pattern (pattern, results, language, xml):
+    if xml is False:
+        tags = ["span class='pattern'", "span", "span class='word'", "span"]
+    else:
+        tags = ["pattern", "pattern", "word", "word"]
+        
+    #tags = []
     marked_list = []
     for index in range(len(results)):
         matches = re.finditer(pattern, results[index])
@@ -296,21 +303,19 @@ def mark_pattern (pattern, results, language, xml):
 
             marked = re.sub(mark_re, f"§{group}%", marked, 1)
 
-        marked = re.sub("%", "</span>", marked)
-        marked = re.sub("§", "<span class='pattern'>", marked)
-        marked = f"<span class='word'>{marked}</span>"
+        marked = re.sub("%", f"</{tags[1]}>", marked)
+        marked = re.sub("§", f"<{tags[0]}>", marked)
+        marked = f"<{tags[2]}>{marked}</{tags[3]}>"
         
         if xml is False:
             url = built_url_to_dictionaries(language, results, index)
             main_url = url[0]
             #alt_url = url[1]
             alt = ""
-            #if alt_url:
-                #alt = f"<a class='external-link' href='{alt_url}'><span class='alt-link-descr'>alternative</span><i class='fa fa-external-link'></i></a>"
 
             marked = f"<a class='external-link' href='{main_url}'>{marked}<i class='fa fa-external-link'></i></a>{alt}"
-
-        marked = f"<div class='result'>{marked}</div>"
+            marked = f"<div class='result'>{marked}</div>"
+            print(marked)
         marked_list.append(marked)
     return marked_list
 

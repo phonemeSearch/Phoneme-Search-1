@@ -15,7 +15,7 @@
         <a class="navigation" href="/search">Search</a>
     </header>
     <main>
-        <form method="GET" action="/search/results">
+        <form id="result-form" method="GET" action="/search/results">
         <section class="info-section">
             <div class="info">language:
                 <span id="searched-lang" class="info-content">
@@ -34,14 +34,15 @@
             <div class="info"> number of words: <span id="result-number" class="info-content">{{number}}</span></div>
         </section>
         <section class="result-section">
-            <button id="last-btn" class="next-results-btn" type="submit" name="page" value="last">
+            <button id="last-btn" class="next-results-btn" type="button" name="skip-btn">
                 <i class="fa fa-chevron-left"></i>
             </button>
             <div class="result-text">
                 <div id="page-container" class="page">
-                    <span class="first-page"></span>
-                    page <span id="page-num-visible">{{page_num}}</span> of {{pages|safe}}
-                    <span class="last-page">
+                    page
+                    <input id="page-input" name="user-num" pattern="(?!0)[0-9]{1,6}" type="text" value="{{page_num}}" required>
+                    of
+                    <span id='pages'>{{pages|safe}}</span>
                 </div>
                 <hr>
                 <div id="word-container">
@@ -62,7 +63,7 @@
                     </div>
                 </div>
             </div>
-            <button id="next-btn" class="next-results-btn" type="submit" name="page" value="next">
+            <button id="next-btn" class="next-results-btn" type="button" name="skip-btn">
                 <i class="fa fa-chevron-right"></i>
             </button>
         </section>
@@ -88,10 +89,10 @@
                     Downloads
                     <a class="help" href="/description#download"><span class="superscript">?</span></a>
                 </span>
-                <button id="download-txt-button" class="download-button" name="download" type="submit" value="true">
+                <button id="download-txt-button" class="download-button" type="button">
                     download results as txt <i class="fa fa-download"></i>
                 </button>
-                <button id="download-xml-button" class="download-button" name="download-xml" type="submit" value="true">
+                <button id="download-xml-button" class="download-button" type="button">
                     download results as xml <i class="fa fa-download"></i>
                 </button>
             </div>
@@ -99,9 +100,11 @@
         <input name="search-input" value="{{user_pattern}}" hidden>
         <input name="choose-language" value="{{language}}" hidden>
         <input name="accent-sensitive" value="{{accent_sensitive}}" hidden>
-        <input name="offset" value="{{offset}}" hidden>
+        <input id="curr-offset" name="offset" value="{{offset}}" hidden>
         <input name="asc-desc" value="{{asc_desc}}" hidden>
-        <input name="page-num" value="{{page_num}}" hidden>
+        <input id="curr-page" name="page-num" value="{{page_num}}" hidden>
+        <input id="skip-direction" name="page-skip" value="{{page_skip}}" hidden>
+        <input id="download-input" name="download" value="{{download}}" hidden>
         </form>
     </main>
     <script type="text/javascript" src=" {{ url_for('static', filename='javascript/result_script.js') }}"></script>

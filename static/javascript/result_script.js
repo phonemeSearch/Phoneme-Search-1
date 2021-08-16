@@ -4,14 +4,18 @@
 var syllableVisibility = "unvisible";
 var translitVisibility = "unvisible";
 var language = document.getElementById("searched-lang").innerText;
+var resultForm = document.getElementById("result-form");
 
 console.log(language);
 
 const nextButton = document.getElementById("next-btn");
 const lastButton = document.getElementById("last-btn");
 var pages = document.getElementById("pages").innerText;
-var pageNum = document.getElementById("page-num-visible").innerText;
+var pageNum = document.getElementById("page-input").value;
 
+
+//document.getElementById("skip-direction").value = "";
+//console.log(document.getElementById("skip-direction").value);
 
 if (parseInt(pageNum) === parseInt(pages)) {
     nextButton.setAttribute("disabled", "disabled");
@@ -33,7 +37,6 @@ document.getElementById("reverse-check").addEventListener("change", () => {
 document.getElementById("descending-check").addEventListener("change", () => {
     document.getElementById("order-form").submit();
 });
-
 
 if (language === "Latin") {
     translitCheck = document.getElementById("translit-check");
@@ -79,4 +82,55 @@ document.getElementById("translit-check").addEventListener("change", () => {
         translitVisibility = "unvisible";
         container.style.visibility = "hidden";
     };
+});
+
+resultForm.addEventListener("submit", () => {
+    console.log("user text");
+    var pageNum = document.getElementById("pages").innerText;
+    pageNum = parseInt(pageNum);
+    var currentPage = document.getElementById("curr-page");
+    var userNum = document.getElementById("page-input").value;
+    currentPage.value = userNum;
+    userNum = parseInt(userNum);
+    console.log(userNum, pageNum);
+    if (userNum <= pageNum) {
+        userNum = (userNum-1)*25;
+        console.log(userNum);
+        var currentOffset = document.getElementById("curr-offset");
+        currentOffset.value = userNum;
+        console.log(currentOffset.value);
+        //document.getElementById("skip-direction").value = "false";
+        document.getElementById("result-form").submit();
+    } else {
+
+    };
+});
+
+nextButton.addEventListener("click", () => {
+    console.log("next");
+    var skipDirection = document.getElementById("skip-direction");
+    skipDirection.value = "next";
+    console.log("btn val", skipDirection.value);
+    resultForm.submit();
+});
+
+lastButton.addEventListener("click", () => {
+    console.log("last");
+    var skipDirection = document.getElementById("skip-direction");
+    skipDirection.value = "last";
+    console.log("btn val", skipDirection.value);
+    resultForm.submit();
+});
+
+document.getElementById("download-txt-button").addEventListener("click", () => {
+    console.log("down txt")
+    var downInput = document.getElementById("download-input");
+    downInput.value = "txt";
+    resultForm.submit();
+});
+
+document.getElementById("download-xml-button").addEventListener("click", () => {
+    var downInput = document.getElementById("download-input");
+    downInput.value = "xml";
+    resultForm.submit();
 });

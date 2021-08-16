@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response#, session
 import main_functions_search as mf
 import help_functions as hf
 import os
@@ -9,18 +9,19 @@ app = Flask(__name__)
 
 
 # uses mf to get search results
-def get_results(user_search, accent_sensitive, language, order_id, asc_desc, limit, offset):
+def get_results(language_str_i, accent, user_pattern, order_id, asc_desc, limit, offset):
 
-    user_allowed = mf.prepare_language_characteristics(language_index=int(language), accent=accent_sensitive)
-    check = mf.check_validity(search_string=user_search, allowed=user_allowed)
+    #language = hf.languages[int(language)-1]
+    language = hf.languages[int(language_str_i)-1]
+
+    allowed = hf.get_allowed_con_vow(language=language)[0]
+    check = mf.check_validity(language, user_pattern=user_pattern, allowed=allowed)
 
     if check:
-        user_results = mf.connect_search_related_fcts(search_string=user_search, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
+        user_results = mf.connect_search_related_fcts(language, accent, user_pattern=user_pattern, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
         results = [word[0] for word in user_results[0]]
         transliteration = [word[1] for word in user_results[0]]
         pattern = user_results[2]
-
-        language = hf.languages[int(language)-1]
     
         number = hf.get_result_number(language, pattern)
 
@@ -56,27 +57,25 @@ def description():
 @app.route('/search/results', methods=['GET'])
 def result_page():
     submit = request.args.get("submit-button")
-    download = request.args.get("download")
-    xml_download = request.args.get("download-xml")
+    download = request.args.get("download-input")
     page_num = int(request.args.get("page-num")) if request.args.get("page-num") is not None else 0
-    page = request.args.get("page") if request.args.get("page") is not None else 0
-    download_status = ""
-    order_id = ""
-
-    # get search data
-    user_search = request.args.get("search-input")
+    page = request.args.get("page-skip") if request.args.get("page-skip") is not None else 0
+    user_pattern = request.args.get("search-input")
     language = request.args.get("choose-language")
     accent_sensitive = request.args.get("accent-sensitive")
     offset = int(request.args.get("offset")) if request.args.get("offset") is not None else 0
 
-    print(user_search)
+    order_id = "" 
 
+    # get search data
     asc_desc = "ASC"
     reverse_checked = ""
     descending_checked = ""
     length_asc_checked = ""
     length_desc_checked = ""
     limit = 25
+
+    # download, page_num, page(pageskip), order_id, user_pattern, language,accent_sensitiive, offset, reverse, descending, length_asc, length_desc 
 
     if submit == "start":
         print("start")
@@ -86,7 +85,6 @@ def result_page():
         asc_desc = "ASC"
 
     elif page == "next" or page == "last":
-        print("page", type(offset))
         if page == "last":
             if page_num == 1:
                 pass
@@ -96,6 +94,7 @@ def result_page():
         elif page == "next":
             page_num += 1
             offset += 25
+        
         asc_desc = "ASC"
         order_id = "id"
 
@@ -175,22 +174,29 @@ def result_page():
     </span>
     """
 
-    results = get_results(user_search=user_search, accent_sensitive=accent_sensitive, language=language, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
-    # returns tuple(results, transliteration, syllables, pattern, number of results)
+    results = get_results(   # returns tuple(results, transliteration, syllables, pattern, number of results) or False
+        language_str_i=language,
+        accent=accent_sensitive,
+        user_pattern=user_pattern,
+        order_id=order_id,
+        asc_desc=asc_desc,
+        limit=limit,
+        offset=offset)
+   
     if results is False:
         return render_template("error.html")
-    print(results)
+
     if page_num > ceil(results[4]/25):
         page_num -= 1
         offset -= 25
-    
-    if download == "true" or xml_download == "true":
-        if download == "true":
+    print(download)
+    if download == "xml" or download == "txt":
+        if download == "txt":
             kind = "txt"
-        elif xml_download == "true":
+        elif download == "xml":
             kind = "xml"
 
-        response = hf.download(pattern=results[3], user_pattern=user_search, language=int(language), kind=kind)
+        response = hf.download(pattern=results[3], user_pattern=user_pattern, language=int(language), kind=kind)
         return Response(response[0], mimetype=f"{response[1]}", headers={"Content-Disposition": f"attatchment; filename={response[2]}"})
 
     else:
@@ -199,18 +205,19 @@ def result_page():
     return render_template(
         'result.html',
         results=(results[0], results[1],results[2]),
-        user_pattern=user_search,
+        user_pattern=user_pattern,
         number=results[4],
         language=language,
-        pages=f"<span id='pages'>{ceil(results[4]/25)}</span>",
+        pages=f"{ceil(results[4]/25)}",
         switch_html=switch_html,
-        download_status=download_status,
+        download="false",
         file_name_download=file_name,
         page_num=page_num,
         offset=offset,
+        page_skip="false",
         accent_sensitive=accent_sensitive
     )
 
 
 if __name__ == '__main__':
-    app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True)
+    app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True, threaded=True)

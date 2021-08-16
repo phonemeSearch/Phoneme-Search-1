@@ -15,10 +15,23 @@ import main_functions_search as mf
 digraphs = {}
 following_digraph = []
 ambiguous = {}
-path = ""
+path_help = os.path.dirname(os.path.abspath(sys.argv[0]))
+path_help = os.path.join(path_help, "database", "PhonemeSearch.db")
+
 lang = ""
 
 languages = ["greek", "vedic", "latin", "armenian"]
+
+
+def sql_fetch_entries(command, path, regex) -> list:
+    connection = sqlite3.connect(path)
+    cursor = connection.cursor()
+    if regex:
+         connection.create_function("REGEXP", 2, regexp)
+    cursor.execute(command)
+    entries = cursor.fetchall()
+    connection.close()
+    return entries
 
 
 def open_file(path, filename, enc, mode, data):
@@ -28,7 +41,31 @@ def open_file(path, filename, enc, mode, data):
             return data
         elif mode == "w":
             file.write(data)
-        
+
+
+def get_allowed_con_vow(language):
+    consonants = []
+    vowels = []
+    
+    allowed = ["(", ")", "+"]
+    if language == "armenian":
+        allowed.extend("`")
+
+    for kind in ["vowel", "consonant"]:
+        cmd = f"SELECT grapheme FROM {language}_{kind}"
+        kind_entries = sql_fetch_entries(cmd, path_help, False)
+        if kind == "vowel":
+            vowels.extend([grapheme[0] for grapheme in kind_entries])
+        elif kind == "consonant":
+            consonants.extend([grapheme[0] for grapheme in kind_entries])
+
+    cmd = f"SELECT key FROM search_key_{language}"
+    key_entries = sql_fetch_entries(cmd, path_help, False)
+    allowed.extend([key[0] for key in key_entries])
+    allowed.extend(vowels + consonants)
+    
+    return allowed, consonants, vowels
+
 
 def get_language_info(language, accent):
     global digraphs
@@ -159,6 +196,8 @@ def get_language_info(language, accent):
 
     prepare_path()
 
+    return digraphs, ambiguous, following_digraph
+
 
 def prepare_path():
     global path
@@ -220,22 +259,16 @@ def digraphs_to_begin(group):
 # built url
 
 def get_result_number(language, pattern):
-    conn = sqlite3.connect(os.path.join("database", "PhonemeSearch.db"))
-    cur = conn.cursor()
-    conn.create_function("REGEXP", 2, regexp)
 
     extract = "lemma"
     if language == "vedic":
         extract = "transliteration"
-
     count_command = \
     f"SELECT COUNT(*) FROM {language} WHERE {extract} REGEXP '{pattern}'"
-    cur.execute(count_command)
-    number = cur.fetchall()
+
+    number = sql_fetch_entries(count_command, path_help, True)
     for num in number:
-        print(num[0])
         number = num[0]
-    print(number)
         
     return number
 
@@ -315,7 +348,7 @@ def mark_pattern (pattern, results, language, xml):
 
             marked = f"<a class='external-link' href='{main_url}'>{marked}<i class='fa fa-external-link'></i></a>{alt}"
             marked = f"<div class='result'>{marked}</div>"
-            print(marked)
+            
         marked_list.append(marked)
     return marked_list
 
@@ -373,7 +406,7 @@ def cut(word:str, place:int):
     syl = word[place:-1] + word[-1]
     syl_add = add_syl(syl)
     word = word.removesuffix(syl)
-    #print(word)
+
     return word, syl_add
 
 
@@ -417,7 +450,6 @@ def syllabificate_armenian(results):
         while len(word) > 0:
             i += 1
             if i == 100:
-                print(word, "except")
                 raise IndexError
             #print("in loop", syllab)
             try:

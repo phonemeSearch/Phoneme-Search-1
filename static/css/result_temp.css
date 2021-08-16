@@ -110,7 +110,9 @@ Result-Section-Related
     color: var(--blue1);
 }
 
-
+#page-input {
+    width: 40px;
+}
 
 /*
 =================================================================

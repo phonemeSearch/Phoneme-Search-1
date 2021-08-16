@@ -201,10 +201,16 @@ def cluster_key_cmd(char):
     return cmd_part
 
 
+def add_cluster(group, cmd):
+    phoneme_cluster = sql_fetch_entries(cmd)
+    for phoneme in phoneme_cluster:
+        group.append(phoneme[0])
+    return group
+
 def convert_key_to_grapheme(connected) -> list:
     search = []
     group = []
-    cluster = False
+    cluster_end = False
     cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
     is_digraph = False
     connected_index = -1
@@ -215,54 +221,47 @@ def convert_key_to_grapheme(connected) -> list:
         length = len(phoneme) - 1
         for char in phoneme:
             phoneme_index += 1
-            if char in ["|", "V", "C", "h", "`"] or char in consonants or char in vowels:
-                if cluster is True:
-                    phoneme_cluster = sql_fetch_entries(cmd)
-                    for phoneme in phoneme_cluster:
-                        group.append(phoneme[0])
-                    cluster = False
-                    cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+            if cluster_end:
+                cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
 
-                if is_digraph is True:
-                    is_digraph = False
-                elif char in consonants or char in vowels:
-                    if phoneme_index == length:
-                        pass
-                    elif char in hf.digraphs:
-                        digraph_return = \
-                            hf.handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
-                        char = digraph_return[0]
-                        is_digraph = digraph_return[1]  #bool
-                    group.append(char)
-                
-                # special characters
-                elif char == "h":
-                    group.append(char)
-                elif char == "V":
-                    for vow in vowels:
-                        group.append(vow)
-                elif char == "C":
-                    for con in consonants:
-                        group.append(con)
-                elif char == "*":
-                    group.append("(\\w*?)")
-                elif char == "|":
-                    if connected_index == 0:
-                        group.append("^")
-                    else:
-                        group.append("$")
+            if is_digraph is True:
+                is_digraph = False
+            elif char in consonants or char in vowels:
+                if phoneme_index == length:
+                    pass
+                elif char in hf.digraphs:
+                    digraph_return = \
+                        hf.handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
+                    char = digraph_return[0]
+                    is_digraph = digraph_return[1]  #bool
+                group.append(char)
+            
+            # special characters
+            elif char == "h":
+                group.append(char)
+            elif char == "V":
+                for vow in vowels:
+                    group.append(vow)
+            elif char == "C":
+                for con in consonants:
+                    group.append(con)
+            elif char == "*":
+                group.append("(\\w*?)")
+            elif char == "|":
+                if connected_index == 0:
+                    group.append("^")
+                else:
+                    group.append("$")
             else:
-                print(char)  
                 cmd += cluster_key_cmd(char)
-                cluster = True      
-        
-        if cluster is True:
-            phoneme_cluster = sql_fetch_entries(cmd)
-            for phoneme in phoneme_cluster:
-                group.append(phoneme[0])
-            print(phoneme_cluster)
-            cluster = False
-            cmd = f"SELECT grapheme FROM {language}_consonant WHERE "
+                try:
+                    if phoneme[phoneme_index + 1] != "+" and char != "+":
+                        group = add_cluster(group, cmd)
+                        cluster_end = True
+                except IndexError:
+                        group = add_cluster(group, cmd)
+                        cluster_end = True
+                
         group = list(set(group))
         group = hf.digraphs_to_begin(group)
         search.append(group)

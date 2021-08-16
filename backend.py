@@ -48,12 +48,12 @@ def search():
     return render_template('search.html')
 
 
-@app.route('/search/description')
+@app.route('/description')
 def description():
     return render_template('description.html')
 
 
-@app.route('/search_result', methods=['GET'])
+@app.route('/search/results', methods=['GET'])
 def result_page():
     submit = request.args.get("submit-button")
     download = request.args.get("download")

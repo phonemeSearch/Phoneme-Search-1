@@ -70,3 +70,14 @@ document.getElementById("translit-check").addEventListener("change", () => {
         container.style.visibility = "hidden";
     };
 });
+
+document.getElementById("page-form").addEventListener("submit", (event)=>{
+    userPage = parseInt(document.getElementById("page-input").value);
+    pages = parseInt(document.getElementById("pages").innerText);
+
+    if (userPage > pages) {
+        event.preventDefault();
+    } else {
+        document.getElementById("page-form").submit();
+    }
+});

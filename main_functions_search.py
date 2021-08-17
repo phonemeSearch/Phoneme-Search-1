@@ -25,10 +25,11 @@ def check_validity(language, user_pattern, allowed) -> bool:
 
     for char in user_pattern:
         index += 1
-
+        print(language)
         if language == "greek":
+            allowed_aspirated = aspirated_greek
+            print(allowed_aspirated)
             if char == "h":
-                allowed_aspirated = aspirated_greek
                 if user_pattern[index - 1] not in allowed_aspirated and index != 0:
                     false_input.append("h")
 

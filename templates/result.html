@@ -34,34 +34,34 @@
                     <span id='pages'>{{pages|safe}}</span>
                 </div>
             </form>
-            <hr>
             <!--new FORM-->
             <form id="skip-form" action="/search/results" method="get">
-            <button id="last-btn" class="next-results-btn" type="submit" name="skip-btn" value="last">
+                <button id="last-btn" class="next-results-btn" type="submit" name="skip-btn" value="last">
                 <i class="fa fa-chevron-left"></i>
-            </button>
-            <div class="result-text">
-                <div id="word-container">
-                    <div id="results-container" class="word-result-container">
-                        {%for word in results[0]%}
-                        {{word|safe}}
-                        {%endfor%}
-                    </div>
-                    <div id="transliteration-container" class="word-result-container">
-                        {%for word in results[1]%}
-                        <div class="translit">{{word|safe}}</div>
-                        {%endfor%}
-                    </div>
-                    <div id="syllabification-container" class="word-result-container">
-                        {%for word in results[2]%}
-                        {{word|safe}}
-                        {%endfor%}
+                </button>
+                <div class="result-text">
+                    <hr>
+                    <div id="word-container">
+                        <div id="results-container" class="word-result-container">
+                            {%for word in results[0]%}
+                            {{word|safe}}
+                            {%endfor%}
+                        </div>
+                        <div id="transliteration-container" class="word-result-container">
+                            {%for word in results[1]%}
+                            <div class="translit">{{word|safe}}</div>
+                            {%endfor%}
+                        </div>
+                        <div id="syllabification-container" class="word-result-container">
+                            {%for word in results[2]%}
+                            {{word|safe}}
+                            {%endfor%}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button id="next-btn" class="next-results-btn" type="submit" name="skip-btn" value="next">
-                <i class="fa fa-chevron-right"></i>
-            </button>
+                <button id="next-btn" class="next-results-btn" type="submit" name="skip-btn" value="next">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
         </form>
         </section>
         <section id="order-section-id" class="order-section">
@@ -69,7 +69,35 @@
                 <!--new FORM-->
                 <form id="switch-form" class="order-container" action="/search/results" method="get">
                     <h2>sort alphabetical</h2>
-                    {{switch_html|safe}}
+                    <span>
+                        <label class="switch" for='reverse-check'>
+                            <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse-check' value='checked' onChange='this.form.submit();' {{reverse_checked}}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="switch-label">reverse</span>
+                        </span>
+                    <span>
+                        <label class="switch" for='descending-check'>
+                            <input id='descending-check' class='alphabet-check' type='checkbox' name='descending-check' value='checked' onChange='this.form.submit();' {{descending_checked}}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="switch-label">descending</span>
+                    </span>
+                    <h2>sort by word length</h2>
+                    <span>
+                        <label class="switch" for='length-asc'>
+                            <input id='length-asc' class='alphabet-check' type='checkbox' name='lasc-check' value='checked' onChange='this.form.submit();' {{length_asc_checked}}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="switch-label">ascending</span>
+                    </span>
+                    <span>
+                        <label class="switch" for='length-desc'>
+                            <input id='length-desc' class='alphabet-check' type='checkbox' name='ldesc-check' value='checked' onChange='this.form.submit();' {{length_desc_checked}}>
+                            <span class="slider"></span>
+                        </label>
+                        <span class="switch-label">descending</span>
+                    </span>
                 </form>
             <!--/div-->
             <hr>

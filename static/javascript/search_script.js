@@ -30,12 +30,14 @@ const featuresArmenian = {
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
 
+languages = ["greek", "vedic", "latin", "armenian"];
+
 /*
 ================================================================================================ 
 INITIAL CALLS
 */
 
-newKey(language = "1");
+newKey();
 generateKeyboard(language = "1");
 
 
@@ -56,12 +58,12 @@ var chooseDropdown = document.getElementById("choose-language-id");
 // render key by change
 chooseDropdown.addEventListener("change", () => {
     console.log("change key")
-    const oldContainer = document.getElementById("key-container");
+    const oldContainer = document.getElementById("generate-body");
     if (oldContainer) {
         console.log("key container exists")
         oldContainer.remove();
     };
-    renderKey();
+    newKey();
 });
 
 // generate keyboard by change
@@ -133,16 +135,31 @@ Functions
 */
 
 function getLanguage () {
-    language = document.getElementById("choose-languag-id").value;
+    language = document.getElementById("choose-language-id").value;
     return language;
+};
+
+
+function fillField (innerText, con){
+    if(innerText !== "") {
+        innerText += ", ";    
+    };
+    
+    return innerText += con;
+    
 };
 
 
 function newKey (language) {
 
-    var placeDict = {"B": "labial", "D": "labiodental", "A": "alveolar", "S": "postalveolar", "X": "retroflex", "J": "palatal", "K": "velar", "H": "glottal"};
-    var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral"};
+    language = getLanguage()
 
+    var placeDict = {"B": "labial", "D": "labiodental", "Q": "labiovelar", "A": "alveolar", "S": "postalveolar", "X": "retroflex", "J": "palatal", "K": "velar", "H": "glottal"};
+    if (language === "4") {
+        var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "trill", "ɾ": "flap", "L": "lateral"};
+    } else {
+        var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral"};
+    }
     const greekVow = {'y': 'vowel', 'a': 'vowel', 'e': 'vowel', 'ē': 'vowel', 'y': 'vowel', 'o': 'vowel', 'ō': 'vowel', 'i': 'vowel', 'a': 'vowel', 'u': 'vowel'}
     const greekCon = {
                     'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
@@ -156,14 +173,111 @@ function newKey (language) {
                     'kh': ['plosive', 'velar', 'voiceless', 'asp'],
                     'ks': ['affricate', 'velar', 'voiceless', 'notAsp'],
                     'z': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
-                    'n': ['nasal', 'labial', 'voice', 'notAsp'],
-                    'm': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                    'm': ['nasal', 'labial', 'voice', 'notAsp'],
                     'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
                     'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
                     's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
-                    'ps': ['affricate', 'labial', 'voiceless', 'notAsp']
-                };
+                    'ps': ['affricate', 'labial', 'voiceless', 'notAsp'],
+                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+               };
 
+    const vedicVowel = ['a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u', 'ù', 'ú']
+    const vedicCon = {
+                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                    'ph': ['plosive', 'labial', 'voiceless', 'asp'],
+                    'bh': ['plosive', 'labial', 'voice', 'asp'],
+                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                    'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
+                    'dh': ['plosive', 'alveolar', 'voice', 'asp'],
+                    'ṭ': ['plosive', 'retroflex', 'voiceless', 'notAsp'],
+                    'ṭh': ['plosive', 'retroflex', 'voiceless', 'asp'],
+                    'ḍ': ['plosive', 'retroflex', 'voice', 'notAsp'],
+                    'ḍh': ['plosive', 'retroflex', 'voice', 'asp'],
+                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                    'kh': ['plosive', 'velar', 'voiceless', 'asp'],
+                    'gh': ['plosive', 'velar', 'voice', 'asp'],
+                    'c': ['affricate', 'palatal', 'voiceless', 'notAsp'],
+                    'ch': ['affricate', 'palatal', 'voiceless', 'asp'],
+                    'j': ['affricate', 'palatal', 'voice', 'notAsp'],
+                    'v': ["glide", "labiodental", 'voice', 'notAsp'],
+                    'y': ["glide", "palatal", 'voice', 'notAsp'],
+                    'm': ['nasal', 'labial', 'voice', 'notAsp'], 
+                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                    'ṇ': ['nasal', 'retroflex', 'voice', 'notAsp'],
+                    "ñ": ['nasal', 'palatal', 'voice', 'notAsp'],
+                    "ṅ": ['nasal', 'velar', 'voice', 'notAsp'],
+                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                    'ṣ': ['fricative', 'retroflex', 'voiceless', 'notAsp'],
+                    'ś': ['fricative', 'palatal', 'voiceless', 'notAsp'],
+                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+    };
+
+    const latinCon = {
+                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                    'qu': ['plosive', 'labiovelar', 'voice', 'notAsp'],
+                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                    'v': ["glide", "labiodental", 'voice', 'notAsp'],
+                    'm': ['nasal', 'labial', 'voice', 'notAsp'], 
+                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                    'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
+                    'x': ["affricate", 'velar', 'voiceless', 'notAsp'],
+                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+    };
+
+    const armenianCon = {
+        'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+        'b': ['plosive', 'labial', 'voice', 'notAsp'],
+        'p`': ['plosive', 'labial', 'voiceless', 'asp'],
+        't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+        'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+        't`': ['plosive', 'alveolar', 'voiceless', 'asp'],
+        'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+        'g': ['plosive', 'velar', 'voice', 'notAsp'],
+        'k`': ['plosive', 'velar', 'voiceless', 'asp'],
+        'n': ['nasal', 'labial', 'voice', 'notAsp'],
+        'm': ['nasal', 'alveolar', 'voice', 'notAsp'],
+        'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+        'r': ['flap', 'alveolar', 'voiceless', 'notAsp'],
+        'ṙ': ['trill', 'alveolar', 'voiceless', 'notAsp'],
+        's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+        'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+        'm': ['nasal', 'labial', 'voice', 'notAsp'],
+        'v': ["glide", "labiodental", 'voice', 'notAsp'],
+        'w': ["glide", "labiodental", 'voice', 'notAsp'],
+        'y': ["glide", "palatal", 'voice', 'notAsp'],
+        'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+        'ł': ['lateral', 'velar', 'voiceless', 'notAsp'],
+        'š': ['fricative', 'postalveolar', 'voiceless', 'notAsp'],
+        'ž': ['fricative', 'postalveolar', 'voice', 'notAsp'],
+        'x': ['fricative', 'velar', 'voiceless', 'notAsp'],
+        'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
+        'c': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
+        'j': ['affricate', 'alveolar', 'voice', 'notAsp'],
+        'c`': ['affricate', 'alveolar', 'voiceless', 'asp'],
+        'č': ['affricate', 'postalveolar', 'voiceless', 'notAsp'],
+        'ǰ': ['affricate', 'postalveolar', 'voice', 'notAsp'],
+        'č`': ['affricate', 'postalveolar', 'voiceless', 'asp'],
+        'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+    };
+
+    cons = [greekCon, vedicCon, latinCon, armenianCon];
+    langCon = cons[parseInt(language)-1];
+
+    tbody = document.createElement("tbody");
+    tbody.setAttribute("id", "generate-body");
     conTable = document.getElementById("con-table");
 
     i = 0
@@ -184,21 +298,21 @@ function newKey (language) {
             td_v_na.setAttribute("class", "phoneme");
             td_v_a.setAttribute("class", "phoneme");
           
-            for (var [con, feature] of Object.entries(greekCon)){
+            for (var [con, feature] of Object.entries(langCon)){
 
                 console.log(con);
                 if (feature.includes(man_value) && feature.includes(place) && feature.includes("voiceless") && feature.includes("notAsp")) {
-                    td_nv_na.innerText = con;
+                    td_nv_na.innerText = fillField(td_nv_na.innerText, con)
                  
                 } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voiceless") && feature.includes("asp")) {
-                    td_nv_a.innerText = con;
+                    td_nv_a.innerText = fillField(td_nv_a.innerText, con);
                 
                 } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voice") && feature.includes("notAsp")) {
-                    td_v_na.innerText = con;
+                    td_v_na.innerText = fillField(td_v_na.innerText, con);
                  
                 } else if (feature.includes(man_value) && feature.includes(place) && feature.includes("voice") && feature.includes("asp")) {
-                    td_v_a.innerText = con;
-                 
+                    td_v_a.innerText = fillField(td_v_a.innerText, con);
+                
                 };
           
             };
@@ -207,368 +321,12 @@ function newKey (language) {
             tableRoll.append(td_v_na);
             tableRoll.append(td_v_a);
         };
-     
-        conTable.append(tableRoll);
-
+        tbody.append(tableRoll);    
     };
-
-    /*
-    const voiceRoll = document.createElement("tr");
-    voiceRoll.setAttribute("class", "voice_roll");
-    const aspRoll = document.createElement("tr");
-    aspRoll.setAttribute("class", "asp_roll");
-    voiceFirst = document.createElement("td");
-    aspFirst = document.createElement("td");
-    voiceFirst.innerText = "voice";
-    aspFirst.innerText = "aspiration";
-    voiceRoll.append(voiceFirst);
-    aspRoll.append(aspFirst);
-
-    const keyTable = document.createElement("table");
-    keyTable.setAttribute("class", "key-con-table");
-    var headRoll = document.createElement("tr");
-    headLang = document.createElement("th");
-    headLang.innerText = language;
-    headRoll.append(headLang);
-
-    for (var [pla_key, pla_value] of Object.entries(place)) {
-        var tableCell = document.createElement("td")
-        tableCell.innerHTML = `<span class="place">${pla_value}</span><span class="user-key">${pla_key}</span>`;
-        headRoll.append(tableCell);
-    };
-
-    keyTable.append(headRoll);
-    
-    console.log(place.length)
-    for (var [pla_key, pla_value] of Object.entries(place)) {
-        console.log("voice loop");
-        let spanNoVoice = document.createElement("span");
-        let spanVoice = document.createElement("span");
-        spanNoVoice.innerText = "-v";
-        spanVoice.innerText = "+v";
-        
-        var voiceCell = document.createElement("td");
-        voiceCell.append(spanNoVoice);
-        voiceRoll.append(voiceCell);
-
-        var voiceCell = document.createElement("td");
-        voiceCell.append(spanVoice);
-        voiceRoll.append(voiceCell);
-        
-        let spanNoAsp = document.createElement("span");
-        let spanAsp = document.createElement("span");
-        spanNoAsp.innerText = "-asp";
-        spanAsp.innerText = "+asp";
-        
-        let aspCell = document.createElement("td");
-        aspCell.append(spanNoAsp);
-        aspCell.append(spanAsp);
-
-        aspRoll.append(aspCell);
-    };
-
- 
-
-    keyTable.append(voiceRoll);
-    keyTable.append(aspRoll);
- 
-    const keyCon = document.getElementById("key-container");
-    keyCon.append(keyTable);
-*/
-
-   
-
+    conTable.append(tbody);
 };
 
 // renders HTML for key tables
-function renderKey () {
-    var language = document.getElementById("choose-language-id").value;
-    const oldContainer = document.getElementById("key-container");
-    if (oldContainer) {
-        console.log("key container exists")
-        oldContainer.remove();
-    };
-    const section = document.getElementById("key-section");
-    const keyContainer = document.createElement("div");
-    keyContainer.setAttribute("id", "key-container");
-    section.append(keyContainer);
-    console.log(language);
-    if (language === "1") {
-        
-        keyContainer.innerHTML =
-            `<table class="key-con-table">
-                <tr>
-                    <th class="head-roll"><span class="feature">Greek</span></th>
-                    <th><span class="feature">labial<span><div class="user-key">key: L</div></th>
-                    <th><span class="feature">alveolar</span><div class="user-key">key: A</div></th>
-                    <th><span class="feature">velar</span><div class="user-key">key: K</div></th>
-                </tr>
-                <tr>
-                    <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
-                </tr>
-                <tr>
-                    <td><span class="feature">-voice</span><div class="user-key">key: P+&lt;</div></td>
-                    <td>p</td>
-                    <td>t</td>
-                    <td>k</td>
-                </tr>
-                <tr>
-                    <td><span class="feature">+voice</span><div class="user-key">key: P+&gt;</div></td>
-                    <td>b</td>
-                    <td>d</td>
-                    <td>g</td>
-                </tr>
-                <tr>
-                    <td><span class="feature">+aspirate</span><div class="user-key">key: P+#</div></td>
-                    <td>ph</td>
-                    <td>th</td>
-                    <td>kh</td>
-                </tr>
-                <tr><td class="phoneme-category"><span class="feature">affricate</span><div class="user-key">key: Z</div></td></tr>
-                <tr>
-                    <td></td>
-                    <td>ps</td>
-                    <td>z</td>
-                    <td>ks</td>
-                </tr>
-                <tr><td class="phoneme-category"><span class="feature">non plosives</span></td></tr>
-                <tr>
-                    <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
-                    <td>m</td>
-                    <td>n</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
-                    <td></td>
-                    <td>l r</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><span class="feature">fricative</span><div class="user-key">key: F</div></td>
-                    <td></td>
-                    <td>s</td>
-                    <td></td>
-                </tr>
-            </table>
-            <table class="key-vow-table">
-                <tr>
-                    <th></th>
-                    <th>front</th>
-                    <th>mid</th>
-                    <th>back</th>
-                </tr>
-                <tr>
-                    <td>high</td>
-                    <td>i í, y ý</td>
-                    <td></td>
-                    <td>u ú</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>e é, ē ḗ</td>
-                    <td></td>
-                    <td>o ó, ō ṓ</td>
-                </tr>
-                <tr>
-                    <td>low</td>
-                    <td></td>
-                    <td>a á</td>
-                    <td></td>
-                </tr>
-            </table>`;
-    } else if (language === "2") {
-        keyContainer.innerHTML = 
-        `<table class="key-con-table">
-        <tr>
-            <th><span class="feature">Vedic</span></th>
-            <th>labial</th>
-            <th>alveolar</th>
-            <th>retroflex</th>
-            <th>palatal</th>
-            <th>velar</th>
-        </tr>
-        <tr>
-        <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
-        <td class="user-key">key: L</td>
-        <td class="user-key">key: A</td>
-        <td class="user-key">key: X</td>
-        <td class="user-key">key: J</td>
-        <td class="user-key">key: K</td>
-        </tr>
-        <tr>
-            <td><span class="feature">-voice -aspirate</span><div class="user-key">key: P+&lt;+%</div></td>
-            <td>p</td>
-            <td>t</td>
-            <td>ṭ</td>
-            <td></td>
-            <td>k</td>
-        </tr>
-        <tr>
-            <td><span class="feature">-voice +aspirate</span><div class="user-key">key: P+&lt;+#</div></td>
-            <td>ph</td>
-            <td>th</td>
-            <td>ṭh</td>
-            <td></td>
-            <td>kh</td>
-        </tr>
-        <tr>
-            <td><span class="feature">+voice -aspirate</span><div class="user-key">key: P+&gt;+%</div></td>
-            <td>b</td>
-            <td>d</td>
-            <td>ḍ</td>
-            <td></td>
-            <td>g</td>
-        </tr>
-        <tr>
-            <td><span class="feature">+voice +aspirate</span><div class="user-key">key: P+&gt;+#</div></td>
-            <td>bh</td>
-            <td>dh</td>
-            <td>ḍh</td>
-            <td></td>
-            <td>gh</td>
-        </tr>
-        <tr>
-            <td class="phoneme-category"><span class="feature">affricates</span><div class="user-key">key: Z</div></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">-voice -aspirate</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>c</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">-voice +aspirate</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>ch</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">+voice -aspirate</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>j</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="phoneme-category"><span class="feature">non plosives</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">glide</span><div class="user-key">key: W</div></td>
-            <td>v</td>
-            <td></td>
-            <td></td>
-            <td>y</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
-            <td>m</td>
-            <td>n</td>
-            <td>ṇ</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
-            <td></td>
-            <td>l r</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">fricative</span><div class="user-key">key: W</div></td>
-            <td></td>
-            <td>s</td>
-            <td>ṣ</td>
-            <td>ś</td>
-            <td></td>
-        </tr>
-    </table>`;
-    } else if (language === "3") {
-        keyContainer.innerHTML = 
-    `<table class="key-con-table">
-        <tr>
-            <th class="head-roll"><span class="feature">Latin</span></th>
-            <th><span class="feature">labial<span><div class="user-key">key: L</div></th>
-            <th><span class="feature">alveolar</span><div class="user-key">key: A</div></th>
-            <th><span class="feature">velar</span><div class="user-key">key: K</div></th>
-            <th><span class="feature">labiovelar</span><div class="user-key">key: Q</div></th>
-            <th><span class="feature">laryngeal</span><div class="user-key">key: H</div></th>
-        </tr>
-        <tr>
-            <td class="phoneme-category"><span class="feature">plosives</span><div class="user-key">key: P</div></td>
-        </tr>
-        <tr>
-            <td><span class="feature">-voice</span><div class="user-key">key: P+&lt;</div></td>
-            <td>p</td>
-            <td>t</td>
-            <td>k</td>
-            <td>qu</td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">+voice</span><div class="user-key">key: P+&gt;</div></td>
-            <td>b</td>
-            <td>d</td>
-            <td>g</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td class="phoneme-category"><span class="feature">non plosives</span></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">nasal</span><div class="user-key">key: N</div></td>
-            <td>m</td>
-            <td>n</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">approximant</span><div class="user-key">key: R</div></td>
-            <td></td>
-            <td>l r</td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td><span class="feature">fricative</span><div class="user-key">key: F</div></td>
-            <td>f</td>
-            <td>s</td>
-            <td></td>
-            <td></td>
-            <td>h</td>
-        </tr>
-    </table>`
-    } else if (language === "4") {
-        keyContainer.innerHTML = `coming soon`
-    };
-};
-
 
 // if key of virtual keyboard is pressed key is added to search input
 function printValue (val) {
@@ -585,10 +343,10 @@ function generateKeyboard(language) {
     var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"};
     var specialCharsVedic = {
         'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
-        'ṭ': "9", 'ṭh': "10", 'ḍ': "11", 'ḍh': "12", 'ṃ': "13",'ṇ': "14", 'ṣ': "15", 'ś': "16"
+        'ṭ': "9", 'ḍ': "11", 's': "12", 'ś': "13", 'ṣ': "14", 'ṇ': "15", "ṅ": "16", "ñ": "17", "ḥ": "18", 'ṃ': "19", "m̐": "20"
     };
     var specialCharsArmenian = {
-        'ē': "1", 'ǝ': "2", 'š': "3", 'ž': "4", 'ł': "5", 'č': "6", 'ǰ': "7", "ṙ": "8"
+        'ē': "1", 'ǝ': "2", 'š': "3", 'ž': "4", 'ł': "5", 'č': "6", 'ǰ': "7", "ṙ": "8", "`": "9"
     };
 
     noChars = null;
@@ -730,8 +488,13 @@ function wrongInputHandling(key, pressed, fieldId) {
             var value = follows[pressed];
             if (value.includes(lastChar)) {
                 console.log("allowed input");
+            } else if (initial.includes(pressed) && fieldValue.length === 0) {
+                console.log("allowed input");
             } else {
                 var message = `'${pressed}' only allowed after ${value.join(", ")}`;
+                if (initial.includes(pressed)) {
+                    message = message + ` or as initial phoneme`
+                };
                 key.preventDefault();
                 wrongInput(message, fieldId);
             };

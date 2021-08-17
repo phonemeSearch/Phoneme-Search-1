@@ -63,6 +63,7 @@ def result_page():
     submit = request.args.get("submit-button")
 
     if submit == "start":
+
         [session.pop(key) for key in list(session.keys())]
         
         # static values
@@ -74,34 +75,35 @@ def result_page():
         pattern = mf.get_pattern()
         session["pattern"] = pattern
         result_num = hf.get_result_number(session["language"], pattern)
+        session["result_num"] = result_num
         pages = ceil(result_num/25)
-        session["result_num"] = pages
+        session["pages"] = pages
         # default values
-        session["page_num"] = 1
-        session["offset"] = 0
+        session["page_num"] = "1"
+        session["offset"] = "0"
         session["order_id"] = "id"
-        asc_desc = "ASC"
+        #session["order_check"] = None
+        session["asc_desc"] = "ASC"
         file_name = ""
         reverse_checked = ""
         descending_checked = ""
         length_asc_checked = ""
         length_desc_checked = ""
-        switch_html = hf.get_switch_states(reverse_checked, descending_checked, length_asc_checked, length_desc_checked)
-
 
     else:
         download = request.args.get("download")
         page_skip = request.args.get("skip-btn")
         user_page = request.args.get("user-page")
-        reverse = request.args.get("reverse")
-        descending = request.args.get("descending")
-        length_asc = request.args.get("length-asc")
-        length_desc = request.args.get("length-desc")
+        reverse_check = request.args.get("reverse-check")
+        descending_check = request.args.get("descending-check")
+        lasc_check = request.args.get("lasc-check")
+        ldesc_check = request.args.get("ldesc-check")
 
         print("session", session)
         print(download)
         print(page_skip)
         print(user_page)
+        print(reverse_check, descending_check, lasc_check, ldesc_check)
 
         if download:
             if download == "xml":
@@ -117,18 +119,18 @@ def result_page():
         if page_skip:
             page_num = int(session["page_num"])
             offset = int(session["offset"])
+            pages = int(session["pages"])
             if page_skip == "last":
                 page_num -= 1
                 offset -= limit
-                if offset <= page_num:
-                    pass
             elif page_skip == "next":
                 page_num += 1
                 offset += limit
-                if offset >= 0:
-                    pass
-            session["offset"] = offset
-            session["page_num"] = page_num
+            if page_num >= pages or page_num < 1:    #prüfen
+                pass
+            else: 
+                session["offset"] = offset
+                session["page_num"] = page_num
         
         if user_page:
             offset = session["offset"]
@@ -137,37 +139,40 @@ def result_page():
             session["page_num"] = user_page 
 
         order_id = ""
+        asc_desc = ""
+
         reverse_checked = ""
         descending_checked = ""
         length_asc_checked = ""
         length_desc_checked = ""
-        if reverse == "true" or descending == "true":
+        
+        if reverse_check == "checked" or descending_check == "checked":
             length_asc_checked = "disabled"
             length_desc_checked = "disabled"
-            if reverse == "true":
+            if reverse_check == "checked":
                 order_id = "id_reverse"
                 reverse_checked = "checked"
             else: 
                 order_id = "id"
                 reverse_checked = ""
 
-            if descending == "true":
+            if descending_check == "checked":
                 asc_desc = "DESC"
                 descending_checked = "checked"
             else:
                 asc_desc = "ASC"
                 descending_checked = ""
 
-        elif length_asc == "true" or length_desc == "true":
+        elif lasc_check == "checked" or ldesc_check == "checked":
             reverse_checked = "disabled"
             descending_checked = "disabled"
-            if length_asc == "true":
+            if lasc_check == "checked":
                 length_desc_checked = "disabled"
                 order_id = "id_length"
                 asc_desc = "ASC"
                 length_asc_checked = "checked"
                 
-            if length_desc == "true":
+            if ldesc_check == "checked":
                 length_asc_checked = "disabled"
                 order_id = "id_length"
                 asc_desc = "DESC"
@@ -178,14 +183,14 @@ def result_page():
             asc_desc = "ASC"
 
         session["order_id"] = order_id
-        switch_html = hf.get_switch_states(reverse_checked, descending_checked, length_asc_checked, length_desc_checked)
+        session["asc_desc"] = asc_desc
 
     results = get_results(   # returns tuple(results, transliteration, syllables, pattern, number of results) or False
         language=session["language"],
         accent=session["accent_sensitive"],
         user_pattern=session["user_pattern"],
         order_id=session["order_id"],
-        asc_desc=asc_desc,
+        asc_desc=session["asc_desc"],
         limit=limit,
         offset=session["offset"])
    
@@ -199,11 +204,14 @@ def result_page():
         user_pattern=session["user_pattern"], #imp
         number=session["result_num"], #imp
         language=session["language"], #imp
-        pages=session["result_num"], #imp
-        switch_html=switch_html, #imp
+        pages=session["pages"], #imp
         file_name_download=file_name, #imp
         page_num=session["page_num"], #imp
-        accent_sensitive=session["accent_sensitive"] #imp
+        accent_sensitive=session["accent_sensitive"], #imp
+        reverse_checked=reverse_checked,
+        descending_checked=descending_checked,
+        length_asc_checked=length_asc_checked,
+        length_desc_checked=length_desc_checked
     )
 
 

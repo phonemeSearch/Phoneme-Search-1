@@ -148,7 +148,6 @@ select {
 }
 
 .text-field {
-    /*width: 85%;*/
     flex-grow: 1;
     font-size: 20px;
     background-color: var(--grey3);

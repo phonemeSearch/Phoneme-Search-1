@@ -18,7 +18,15 @@
         <section class="info-section">
             <div class="info">language:
                 <span id="searched-lang" class="info-content">
-                    {{language}}
+                    {% if language == "greek" %}
+                        Greek
+                    {% elif language == "vedic" %}
+                        Vedic
+                    {% elif language == "latin" %}
+                        Latin
+                    {% elif language == "armenian" %}
+                        Armenian
+                    {% endif %}
                 </span>
             </div>
             <div class="info">search pattern: <span id="pattern" class="info-content">{{user_pattern}}</span></div>

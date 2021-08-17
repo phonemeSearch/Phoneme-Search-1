@@ -9,16 +9,44 @@ import main_functions_search as mf
 
 # data structures
 
-#subst = {"α": "άᾶἀἁἂἃἇἆ", "η":  "ήῆἠἡἦἧἢἣ", "ι":  "ῖίἰἱἲἳἶἷ", "ο":  "όὀὁὂὃ", "υ": "ύῦὐὑὒὓὖὗ", "ω": "ώῶὠὡὢὣὦὧ"}
+def get_switch_states(reverse_checked, descending_checked, length_asc_checked, length_desc_checked):
+    switch_html = \
+        f"""
+        <span>
+            <label class="switch" for='reverse-check'>
+                <input id='reverse-check' class='alphabet-check' type='checkbox' name='reverse' value='true' onChange='this.form.submit();' {reverse_checked}>
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">reverse</span>
+            </span>
+        <span>
+            <label class="switch" for='descending-check'>
+                <input id='descending-check' class='alphabet-check' type='checkbox' name='descending' value='true' onChange='this.form.submit();' {descending_checked}>
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">descending</span>
+        </span>
+        <h2>sort by word length</h2>
+        <span>
+            <label class="switch" for='length-asc'>
+                <input id='length-asc' class='alphabet-check' type='checkbox' name='length-asc' value='true' onChange='this.form.submit();' {length_asc_checked}>
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">ascending</span>
+        </span>
+        <span>
+            <label class="switch" for='length-desc'>
+                <input id='length-desc' class='alphabet-check' type='checkbox' name='length-desc' value='true' onChange='this.form.submit();' {length_desc_checked}>
+                <span class="slider"></span>
+            </label>
+            <span class="switch-label">descending</span>
+        </span>
+        """
+    return switch_html
 
-# KEINE veränderlichen GLOBALS!
-digraphs = {}
-following_digraph = []
-ambiguous = {}
+
 path_help = os.path.dirname(os.path.abspath(sys.argv[0]))
 path_help = os.path.join(path_help, "database", "PhonemeSearch.db")
-
-lang = ""
 
 languages = ["greek", "vedic", "latin", "armenian"]
 
@@ -678,9 +706,7 @@ def syllabificate_greek(results):
 # gets all possible results from DB and saves them into txt resp xml file
 
 def download(pattern, user_pattern, language, kind):
-    languages = ["greek", "vedic", "latin", "armenian"]
-    language = languages[language-1]
-
+    
     extract = "lemma"
     if language in ["vedic"]:
         extract = "transliteration"

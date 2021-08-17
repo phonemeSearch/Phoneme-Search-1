@@ -1,6 +1,7 @@
 import help_functions as hf
 import os
 import sys
+from flask import session
 
 
 # language specific information
@@ -305,7 +306,26 @@ def phoneme_search(language, pattern, user_pattern, order_id, asc_desc, limit, o
     return results, user_pattern, pattern
 
 
+def get_pattern():
+    language = session["language"]
+    accent = session["accent_sensitive"]
+    user_pattern = session["user_pattern"]
+    
+    converted = (convert_string_to_list(search=user_pattern))
+    connected_list = connect_phoneme_groups(language, accent ,converted)
+    grapheme_list = convert_key_to_grapheme(language, connected_list)
+    regex_pattern = build_regex(language, accent, grapheme_list)
+    return regex_pattern
+
+
 def connect_search_related_fcts(language, accent, user_pattern, order_id, asc_desc, limit, offset):
+    #language = session["language"]
+    #accent = session["accent"]
+    #user_pattern = session["user_pattern"]
+    #order_id = session["order_id"]
+    #limit = session["limit"]
+    #offset = session["offset"]
+
     converted = (convert_string_to_list(search=user_pattern))
     connected_list = connect_phoneme_groups(language, accent ,converted)
     grapheme_list = convert_key_to_grapheme(language, connected_list)

@@ -6,13 +6,16 @@
 Global 
 */
 
-form {
+main {
     height: 100%;
     display: grid;
     grid-template-columns: 2.5fr 1fr;
     grid-template-rows: auto 4fr;
     column-gap: 0.7em;
-    row-gap: 0.7em;
+    row-gap: 0.7em;}
+
+form {
+    
 } 
 
 hr {
@@ -53,9 +56,6 @@ section {
     grid-row-start: 1;
     grid-row-end: 3;
     padding: 1em 0.5em 1em 0.5em;
-    flex-direction: row;
-    gap: 0;
-    justify-content: space-between;
 }
 
 
@@ -65,6 +65,15 @@ section {
 
 Result-Section-Related
 */
+
+#page-form {}
+
+#skip-form {
+    display: flex;
+    flex-direction: row;
+    gap: 0;
+    justify-content: space-between;
+}
 
 .result-text > hr {
     margin: 0.5em 0 0.5em 0 !important;
@@ -145,7 +154,7 @@ Container
     margin-top: 1em;
 }
 
-.order-container > :first-child {
+.order-container > :first-child{
     margin-top: 0 !important;
 }
 

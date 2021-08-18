@@ -42,7 +42,7 @@ if (language === "Latin") {
     translitCheck.setAttribute("disabled", "disabled");
 }
 
-if (["armenian", "greek"].includes(language)) {
+if (["Armenian", "Greek"].includes(language)) {
     console.log("syllab");
     document.getElementById("syllable-check").removeAttribute("disabled");
 }

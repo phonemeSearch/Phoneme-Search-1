@@ -188,7 +188,7 @@ def convert_key_to_grapheme(language, connected) -> list:
             elif char in consonants or char in vowels:
                 if phoneme_index == length:
                     pass
-                elif char in hf.digraphs:
+                elif char in hf.get_digraphs(language)[0]:
                     digraph_return = \
                         hf.handle_digraphs(digraph=char, current_list=phoneme, count=phoneme_index)
                     char = digraph_return[0]

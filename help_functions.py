@@ -202,12 +202,6 @@ def get_digraphs(language):
     return digraphs, following_digraph
 
 
-#def prepare_path():
- #   global path
-  #  path = os.path.dirname(os.path.abspath(sys.argv[0]))
-   # path = os.path.join(path, "database", "PhonemeSearch.db")
-
-
 # functions for main_functions_search
 
 # function for sqlite3 REGEXP

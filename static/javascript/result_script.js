@@ -1,8 +1,8 @@
 
 // VARIABLES
 
-var syllableVisibility = "unvisible";
-var translitVisibility = "unvisible";
+var syllableVisibility = "visible";
+var translitVisibility = "visible";
 var language = document.getElementById("searched-lang").innerText;
 //var resultForm = document.getElementById("result-form");
 
@@ -45,37 +45,50 @@ if (language === "Latin") {
 if (["Armenian", "Greek"].includes(language)) {
     console.log("syllab");
     document.getElementById("syllable-check").removeAttribute("disabled");
-}
+};
 
 document.getElementById("syllable-check").addEventListener("change", () => {
-    var container = document.getElementById("syllabification-container");
+    var syllabs = document.getElementsByClassName("syllab");
+    console.log("vis")
     if (syllableVisibility === "unvisible") {
         syllableVisibility = "visible";
-        console.log("listener");
-        container.style.visibility = "visible";
+        for (var i=0, max=syllabs.length; i<max; i++) {
+            syllabs[i].style.visibility = "visible";
+        };
     } else if (syllableVisibility === "visible") {
         syllableVisibility = "unvisible";
-        container.style.visibility = "hidden";
+        for (var i=0, max=syllabs.length; i<max; i++) {
+            syllabs[i].style.visibility = "hidden";
+        };
     };
 });
 
 document.getElementById("translit-check").addEventListener("change", () => {
-    var container = document.getElementById("transliteration-container");
+    var translits = document.getElementsByClassName("translit");
     if (translitVisibility === "unvisible") {
         translitVisibility = "visible";
-        console.log("listener");
-        container.style.visibility = "visible";
+        for (var i=0; i<=translits.length; i++) {
+            translits[i].style.visibility = "visible";
+        };
     } else if (translitVisibility === "visible") {
         translitVisibility = "unvisible";
-        container.style.visibility = "hidden";
+        for (var i=0; i<=translits.length; i++) {
+            translits[i].style.visibility = "hidden";
+        };
     };
 });
 
-document.getElementById("page-form").addEventListener("submit", (event)=>{
+const pageForm = document.getElementById("page-form")
+pageForm.addEventListener("submit", (event)=>{
     userPage = parseInt(document.getElementById("page-input").value);
     pages = parseInt(document.getElementById("pages").innerText);
 
     if (userPage > pages) {
+        /*document.getElementById("page-input").style.borderColor = "rgb(200, 100, 100)";
+        warning = document.createElement("span")
+        warning.setAttribute("id", "warning");
+        warning.innerText = `Page number too big, there are only ${pages} pages.`
+        pageForm.append(warning);*/
         event.preventDefault();
     } else {
         document.getElementById("page-form").submit();

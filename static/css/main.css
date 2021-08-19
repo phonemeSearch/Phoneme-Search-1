@@ -1,6 +1,6 @@
 /*
 
-global styles used for all templates (except error.html)
+global styles used in all templates
 
 */
 
@@ -71,8 +71,14 @@ a {
     color: var(--white2);
 }
 
-a.help { color: var(--grey5); }
+a.help {
+    color: rgb(150, 150, 150);
+}
 
+a.help > * {
+    vertical-align: super;
+    font-size: 14px;
+}
 a.link {
     text-decoration: underline;
     color: var(--blue1);

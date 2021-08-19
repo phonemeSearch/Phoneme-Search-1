@@ -19,6 +19,7 @@ def get_results(language, accent, user_pattern, order_id, asc_desc, limit, offse
 
     allowed = hf.get_allowed_con_vow(language=language)[0]
     check = mf.check_validity(language, user_pattern=user_pattern, allowed=allowed)
+    print(check)
 
     if check:
         user_results = mf.connect_search_related_fcts(language, accent, user_pattern=user_pattern, order_id=order_id, asc_desc=asc_desc, limit=limit, offset=offset)
@@ -28,15 +29,12 @@ def get_results(language, accent, user_pattern, order_id, asc_desc, limit, offse
     
         number = hf.get_result_number(language, pattern)
 
-        if language == "armenian":
-            syllables = hf.syllabificate_armenian(results)
-        else:
-            syllables = hf.syllabificate_greek(results)
+        syllab_results = hf.syllabificate(language, results)
 
         marked_results = hf.mark_pattern(pattern=pattern, language=language, results=results, xml=False)
         results = marked_results
 
-        return results, transliteration, syllables, pattern, number
+        return results, transliteration, syllab_results, pattern, number
     
     else:
         return False
@@ -68,10 +66,24 @@ def result_page():
         
         # static values
         session["user_pattern"] = request.args.get("search-input")
-        language_i = int(request.args.get("choose-language"))-1
-        session["language"] = hf.languages[language_i]
+        try:
+            language_i = int(request.args.get("choose-language"))
+            if language_i not in [1, 2, 3, 4]:
+                raise ValueError
+            session["language"] = hf.languages[language_i-1]
+        except ValueError:
+            return render_template("error.html")
+
+        session["allowed"] = hf.get_allowed_con_vow(session["language"])[0]
+        check = mf.check_validity(session["language"], session["user_pattern"], session["allowed"])
+        if not check:
+            return render_template("error.html")
+
         session["accent_sensitive"] = request.args.get("accent-sensitive")
-        session["allowed"] = hf.get_allowed_con_vow(session["language"])
+        print(session["accent_sensitive"])
+        if session["accent_sensitive"] not in [None, "on"]:
+            return render_template("error.html")
+
         pattern = mf.get_pattern()
         session["pattern"] = pattern
         result_num = hf.get_result_number(session["language"], pattern)
@@ -126,7 +138,7 @@ def result_page():
             elif page_skip == "next":
                 page_num += 1
                 offset += limit
-            if page_num >= pages or page_num < 1:    #prüfen
+            if page_num >= pages or page_num < 1:
                 pass
             else: 
                 session["offset"] = offset

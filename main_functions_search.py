@@ -100,7 +100,7 @@ def connect_phoneme_groups(language, accent, grouped_list) -> list:
         else:
             group_entry += group
             if grouped_list[index_count + 1] != "+":
-                if group in hf.get_language_info(language, accent)[0]:
+                if group in hf.get_digraphs(language)[0]:
                     digraph_return = \
                         hf.handle_digraphs(digraph=group, current_list=grouped_list, count=index_count)
                     group_entry = digraph_return[0]
@@ -252,11 +252,11 @@ def build_regex(language, accent, grapheme_string) -> str:
 
                 pattern_part = char
 
-                if char[0] in hf.get_language_info(language, accent)[1]:
+                if char[0] in hf.get_ambiguous(language):
                     pattern_part = hf.handle_ambiguous_phonemes(ambiguous_char=char)
                     pattern_part = f"({pattern_part})"
 
-                if char[0] in hf.get_language_info(language, accent)[0]:
+                if char[0] in hf.get_digraphs(language)[0]:
                   
                     try:
                         char[1]
@@ -265,7 +265,7 @@ def build_regex(language, accent, grapheme_string) -> str:
                         
                 
                 # checks if char can be part of digraph to construct lookahead 
-                elif char in hf.get_language_info(language, accent)[2]:
+                elif char in hf.get_digraphs(language)[1]:
                     before = hf.follows_digraph(follow_char=char)
                     pattern_part = f"(?<![{before}])" + char
                     

@@ -44,30 +44,25 @@
             </form>
             <!--new FORM-->
             <form id="skip-form" action="/search/results" method="get">
-                <button id="last-btn" class="next-results-btn" type="submit" name="skip-btn" value="last">
+                <button id="last-btn" class="skip-btn" type="submit" name="skip-btn" value="last">
                 <i class="fa fa-chevron-left"></i>
                 </button>
-                <div class="result-text">
+                <div class="result-container">
                     <hr>
-                    <div id="word-container">
-                        <div id="results-container" class="word-result-container">
-                            {%for word in results[0]%}
-                            {{word|safe}}
-                            {%endfor%}
+                    <div class="word-container">
+                        {%for i in range(25)%}
+                        {%set word = results[0]%}
+                        {%set trans = results[1]%}
+                        {%set syl = results[2]%}
+                        <div class="result">
+                        {{word[i]|safe}}
+                        <span class="translit">{{trans[i]|safe}}</span>
+                        <span class="syllab">{{syl[i]|safe}}</span>
                         </div>
-                        <div id="transliteration-container" class="word-result-container">
-                            {%for word in results[1]%}
-                            <div class="translit">{{word|safe}}</div>
-                            {%endfor%}
-                        </div>
-                        <div id="syllabification-container" class="word-result-container">
-                            {%for word in results[2]%}
-                            {{word|safe}}
-                            {%endfor%}
-                        </div>
+                        {%endfor%}
                     </div>
                 </div>
-                <button id="next-btn" class="next-results-btn" type="submit" name="skip-btn" value="next">
+                <button id="next-btn" class="skip-btn" type="submit" name="skip-btn" value="next">
                     <i class="fa fa-chevron-right"></i>
                 </button>
         </form>
@@ -111,11 +106,11 @@
             <hr>
             <div class="order-container">
                 <label for="translit-check">
-                    <input id="translit-check" type="checkbox" value="true">
+                    <input id="translit-check" type="checkbox" value="true" checked>
                     show transliteration
                 </label>
                 <label for="syllable-check">
-                    <input id="syllable-check" type="checkbox" disabled="disabled">
+                    <input id="syllable-check" type="checkbox" disabled="disabled" checked>
                     show syllables
                 </label>
             </div>

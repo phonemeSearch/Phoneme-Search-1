@@ -46,7 +46,7 @@
                             <th>language</th>
                             <th colspan="4">labial <div class="user-key">B</div></th>
                             <th colspan="4">labiodental <div class="user-key">D</div></th>
-                            <th colspan="4">labiovelar <div class="user-key">D</div></th>
+                            <th colspan="4">labiovelar <div class="user-key">Q</div></th>
                             <th colspan="4">alveolar <div class="user-key">A</div></th>
                             <th colspan="4">postalveolar <div class="user-key">S</div></th>
                             <th colspan="4">retroflex <div class="user-key">X</div></th>
@@ -58,38 +58,27 @@
                     <tbody>
                         <tr class="asp-voice-tr">
                             <td>voice</td>
+                            {% for i in range(9) %}
                             <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
-                            <td colspan="2"><span class="asp-voice">-</span></td><td colspan="2"><span class="asp-voice">+</span></td>
+                            {% endfor %}
                         </tr>
                         <tr class="asp-voice-tr">
                             <td>aspiration</td>
+                            {% for i in range(18) %}
                             <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
-                            <td><span class="asp-voice">-</span></td><td><span class="asp-voice">+</span></td>
+                            {% endfor %}
                         </tr>
                     </tbody>
+                </table>
+                <table id="vow-table">
+                    <thead>
+                        <tr>
+                            <th>language</th>
+                            <th>front</th>
+                            <th>mid</th>
+                            <th>back</th>
+                        </tr>
+                    </thead>
                 </table>
             </div>
         </section>

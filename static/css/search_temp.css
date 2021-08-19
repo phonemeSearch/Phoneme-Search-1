@@ -4,36 +4,17 @@
 
 Contents
 
-    1 Global
-
-    2 Section
-
-    3 Container
-
-    4 Form-Elements
-
-    5 Button
-
-    6 Anchor
-    
-    7 Table
-    
-    8 Active
-
-    9 Hover
-    
-    10 Disabled
-    
-    11 Unordered
+    Global
+    input section
+    keyboard section
+    table section
 
 */
-
-
 
 /*
 =================================================================
 
-1 Global 
+Global 
 */
 
 main {
@@ -45,14 +26,6 @@ main {
     box-sizing: border-box;
     color: var(--white2);
 }
-
-
-
-/*
-=================================================================
-
-2 Section
-*/
 
 section {
     box-sizing: border-box;
@@ -69,12 +42,26 @@ section {
     grid-column-end: 3;
 }
 
+a.help {
+    color: rgb(150, 150, 150);
+}
 
+a.help > * {
+    vertical-align: super;
+    font-size: 14px;
+}
+
+button:disabled {
+    background-color: var(--grey2);
+    color: rgb(100, 100, 100);
+    border: 2px solid rgb(100, 100, 100);
+    cursor: auto;
+}
 
 /*
 =================================================================
 
-3 Container 
+input section
 */
 
 .form-part-container {
@@ -91,52 +78,6 @@ select which has an individual margin*/
     margin-right: 0.2em;
 }
 
-.inner-key-container {
-    flex-grow: 1;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    column-gap: 2px;
-    row-gap: 2px;
-}
-
-.user-key {
-    color: var(--red3);
-}
-
-#add-phoneme-container {
-    margin-top: 0.2em;
-}
-
-#add-phoneme-container::after {
-    content: "?";
-    visibility: hidden;
-}
-
-#keyboard-container {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: 1em;
-    row-gap: 1em;
-}
-
-#key-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    column-gap: 0.5em;
-    row-gap: 1em;
-}
-
-
-
-/*
-=================================================================
-
-4 Form-Elements
-*/
-
 select {
     margin-right: 2em;
     width: 6em;
@@ -145,6 +86,11 @@ select {
     color: var(--white2);
     border: 2px solid;
     border-radius: 0.2em;
+}
+
+select:hover {
+    background-color: var(--grey4);
+    cursor: pointer;
 }
 
 .text-field {
@@ -160,7 +106,22 @@ select {
     font-size: 20px;
     background-color: var(--grey3);
     color: var(--white2);
-    border: 2px solid var(--red1);
+    border: 2px solid var(--red3);
+}
+
+.wrong-message {
+    width: 100%;
+    margin-top: 0.2em;
+    color: var(--red3);
+}
+
+#add-phoneme-container {
+    margin-top: 0.2em;
+}
+
+#add-phoneme-container::after {
+    content: "?";
+    visibility: hidden;
 }
 
 #add-input-field {
@@ -171,36 +132,11 @@ select {
     border: 2px solid;
 }
 
-
-
-/*
-=================================================================
-
-5 Button 
-*/
-
-    /*
-    --------------------------------------------------------------
-    classes
-    */
-
 .plus-minus-button {
     width: 5%;
     min-width: 40px;
     margin-right: 0.2em;
 }
-
-.key {
-    font-family: sans-serif;
-    font-size: 18px;
-    min-width: 50px;
-
-}
-
-    /*
-    --------------------------------------------------------------
-    ids
-    */
 
 #start-button {
     width: 10%;
@@ -212,43 +148,58 @@ select {
     min-width: 55px;
 }
 
-
-
 /*
 =================================================================
 
-6 Anchor 
+keyboard section
 */
 
-a.help {
-    color: rgb(150, 150, 150);
+#keyboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1em;
+    row-gap: 1em;
 }
 
-a.help > * {
-    vertical-align: super;
-    font-size: 14px;
-}
-
-
-
-/*
-=================================================================
-
-7 Table
-*/
-
-#con-table {
-    flex-grow: 3;
-    min-width: 500px;
-    font-size: 18px;
-    border: 2px solid;
-    border-spacing: 0;
-    border-radius: 0.2em;
-}
-
-.key-vow-table {
+.inner-key-container {
     flex-grow: 1;
-    min-width: 300px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    column-gap: 2px;
+    row-gap: 2px;
+}
+
+#key-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 0.5em;
+    row-gap: 1em;
+}
+
+/* keyboard button*/
+.key {
+    font-family: sans-serif;
+    font-size: 18px;
+    min-width: 50px;
+
+}
+
+.key:active {
+    background-color: var(--grey2);
+    border-color: rgb(170, 170, 170);
+}
+
+
+/*
+=================================================================
+
+table section
+*/
+
+table {
     font-size: 18px;
     border: 2px solid;
     border-spacing: 0;
@@ -259,12 +210,13 @@ tr {
     height: 2em;
 }
 
+/* alternating color tr colors */
 tr:nth-child(even){
     background-color: var(--grey2);
 }
 
 tr:nth-child(odd) {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--grey3);
 }
 
 th, td {
@@ -279,9 +231,15 @@ th:first-child, td:first-child {
     border-style: none solid none none;
 }
 
-.manner {
-    display: inline-block;
-    width: 5em;
+#con-table {
+    flex-grow: 3;
+    min-width: 500px;
+}
+
+#vow-table {
+    flex-grow: 1;
+    min-width: 300px;
+
 }
 
 .asp-voice-tr {
@@ -292,65 +250,13 @@ th:first-child, td:first-child {
     font-size: 12px;
 }
 
-
-
-/*
-=================================================================
-
-8 Active 
-*/
-
-.key:active {
-    background-color: var(--grey2);
-    border-color: rgb(170, 170, 170);
+/* to get some space between the elements */
+.manner {
+    display: inline-block;
+    width: 5em;
 }
 
-
-
-/*
-=================================================================
-
-9 Hover 
-*/
-
-select:hover {
-    background-color: var(--grey4);
-    cursor: pointer;
-}
-
-
-
-/*
-=================================================================
-
-10 Disabled 
-*/
-
-button:disabled {
-    background-color: var(--grey2);
-    color: rgb(100, 100, 100);
-    border: 2px solid rgb(100, 100, 100);
-    cursor: auto;
-}
-
-
-
-/*
-=================================================================
-
-11 Unordered
-*/
-
-.phoneme-category {
-    border: none;
-}
-
-.wrong-message {
-    width: 100%;
-    margin-top: 0.2em;
+.user-key {
     color: var(--red3);
 }
 
-.key-info {
-    font-size: 16px;
-}

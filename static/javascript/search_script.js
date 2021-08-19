@@ -1,43 +1,233 @@
 /*
 ================================================================================================ 
-Dictionaries
+DATA
 */
 
+function getLanguage () {
+    language = document.getElementById("choose-language-id").value;
+    return language;
+};
+
+language = getLanguage();
+
+
 const featuresGreek = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "Z": "affricate", "R": "approximant", "N": "nasal", "F": "fricative", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+    "B": "labial", "A": "alveolar", "K": "velar",
+    "N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "R": "rhotic",
+    "C": "consonant", "V": "vowel",
+    ">": "voiced", "#": "aspirated", "<": "voiceless", "%": "not aspirated"
 };
 
 const featuresVedic = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "R": "approximant", "W": "sonorant", "N": "nasal", "F": "fricative", "H": "laryngeal", "X": "retroflex", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+    "B": "labial", "D": "labiodental", "A": "alveolar", "X": "retroflex",  "J": "palatal", "K": "velar", "H": "glottal",
+    "N": "nasal", "P": "plosive", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral",
+    "C": "consonant", "V": "vowel",
+    ">": "voiced", "#": "aspirated", "<": "voiceless", "%": "not aspirated"
 };
 
 const featuresLatin = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal",
-    "P": "plosive", "Z": "affricate", "R": "approximant", "N": "nasal", "F": "fricative", "H": "laryngeal", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+    "B": "labial", "D": "labiodental", "Q": "labiovelar", "A": "alveolar", "J": "palatal", "K": "velar", "H": "glottal",
+    "N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic",
+    "C": "consonant", "V": "vowel",
+    ">": "voiced", "#": "aspirated", "<": "voiceless", "%": "not aspirated"
 };
 
 const featuresArmenian = {
-    "A": "alveolar", "L": "labial", "K": "velar", "J": "palatal", "O": "postalveolar", "X": "lateral", "Q": "trill", "R": "flap",
-    "W": "glide", "P": "plosive", "Z": "affricate", "N": "nasal", "F": "fricative", "H": "laryngeal", ">": "voiced",
-    "#": "aspirated", "<": "voiceless", "%": "not aspirated", "C": "consonant", "V": "vowel"
+    "B": "labial", "D": "labiodental", "A": "alveolar", "S": "postalveolar", "J": "palatal", "K": "velar", "H": "glottal",
+    "N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "trill", "ɾ": "flap", "L": "lateral",
+    "C": "consonant", "V": "vowel",
+    ">": "voiced", "#": "aspirated", "<": "voiceless", "%": "not aspirated"
 }
 
 const wildcards = {"*": "0 or more characters", "|": "marks end of lemma"};
 
 
-languages = ["greek", "vedic", "latin", "armenian"];
+// input validation
+
+const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P', 'B',
+'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u', 'é', 'á', 'ḗ', 'ṓ',' ý', 'í',
+'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's',
+'ps', 'h', 'Enter'
+];
+const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
+'R', 'V', 'W', 'X', 'Z', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
+'ù', 'ú', 'ū', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
+'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', "ñ", "ṅ", "m̐", 'ḥ', 'Enter'
+];
+
+const latinAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
+'R', 'V', 'H', 'Q', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p',
+'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'Enter'
+];
+
+const armenianAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
+   'R', 'V', 'H', 'Q', 'Z', "`", 'a', 'e', 'ē', 'ǝ', 'i', 'o', 'u',
+   'p', 'b', 't', 'd', 'ṭ', 'ḍ', 'k', 'g', 'c', 'j', 'v', 'y', 'm', 'n', 'l', 'r', 'ṙ', 's', 'h', 'š',
+   'ž', 'ł', 'č', 'ǰ', 'f', 'Enter'
+];
+
+const greekFollows = {"h": ["p", "t", "k"]};
+const greekInitial = ["h"];
+const armenianFollows = {"`": ["p", "t", "k", "c", "č"]};
+
+// key-table generating
+
+const placeCon = {"B": "labial", "D": "labiodental", "Q": "labiovelar", "A": "alveolar", "S": "postalveolar", "X": "retroflex", "J": "palatal", "K": "velar", "H": "glottal"};
+if (language === "4") {
+    var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "trill", "ɾ": "flap", "L": "lateral"};
+} else {
+    var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral"};
+}
+
+const placeVow = ['front', 'mid', 'back'];
+const pitch = ['high', '', 'low'];
+
+const greekVow = {'y': ['high', 'front'], 'a': ['low', 'mid'], 'e': ['', 'front'], 'ē': ['', 'front'], 'o': ['', 'back'], 'ō': ['', 'back'], 'i': ['high', 'front'], 'u': ['high', 'back']}
+const greekCon = {
+                'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                'ph': ['plosive', 'labial', 'voiceless', 'asp'],
+                't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
+                'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                'kh': ['plosive', 'velar', 'voiceless', 'asp'],
+                'ks': ['affricate', 'velar', 'voiceless', 'notAsp'],
+                'z': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
+                'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                'm': ['nasal', 'labial', 'voice', 'notAsp'],
+                'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                'ps': ['affricate', 'labial', 'voiceless', 'notAsp'],
+                'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+           };
+
+const vedicVow = {'a': ['low', 'mid'], 'á': ['low', 'mid'], 'à': ['low', 'mid'], 'ā': ['low', 'mid'], 'e': ['', 'front'], 'é': ['', 'front'],
+                    'è': ['', 'front'], 'i': ['high', 'front'], 'ì': ['high', 'front'], 'í': ['high', 'front'], 'ī': ['high', 'front'], 'o': ['', 'back'],
+                    'ò': ['', 'back'], 'u': ['high', 'back'], 'ù': ['high', 'back'], 'ú': ['high', 'back']
+                };
+const vedicCon = {
+                'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                'ph': ['plosive', 'labial', 'voiceless', 'asp'],
+                'bh': ['plosive', 'labial', 'voice', 'asp'],
+                't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
+                'dh': ['plosive', 'alveolar', 'voice', 'asp'],
+                'ṭ': ['plosive', 'retroflex', 'voiceless', 'notAsp'],
+                'ṭh': ['plosive', 'retroflex', 'voiceless', 'asp'],
+                'ḍ': ['plosive', 'retroflex', 'voice', 'notAsp'],
+                'ḍh': ['plosive', 'retroflex', 'voice', 'asp'],
+                'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                'kh': ['plosive', 'velar', 'voiceless', 'asp'],
+                'gh': ['plosive', 'velar', 'voice', 'asp'],
+                'c': ['affricate', 'palatal', 'voiceless', 'notAsp'],
+                'ch': ['affricate', 'palatal', 'voiceless', 'asp'],
+                'j': ['affricate', 'palatal', 'voice', 'notAsp'],
+                'v': ["glide", "labiodental", 'voice', 'notAsp'],
+                'y': ["glide", "palatal", 'voice', 'notAsp'],
+                'm': ['nasal', 'labial', 'voice', 'notAsp'], 
+                'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                'ṇ': ['nasal', 'retroflex', 'voice', 'notAsp'],
+                "ñ": ['nasal', 'palatal', 'voice', 'notAsp'],
+                "ṅ": ['nasal', 'velar', 'voice', 'notAsp'],
+                'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                'ṣ': ['fricative', 'retroflex', 'voiceless', 'notAsp'],
+                'ś': ['fricative', 'palatal', 'voiceless', 'notAsp'],
+                'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+};
+
+const latinVow = {};
+const latinCon = {
+                'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                'qu': ['plosive', 'labiovelar', 'voice', 'notAsp'],
+                't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                'v': ["glide", "labiodental", 'voice', 'notAsp'],
+                'm': ['nasal', 'labial', 'voice', 'notAsp'], 
+                'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
+                's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
+                'x': ["affricate", 'velar', 'voiceless', 'notAsp'],
+                'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+};
+
+const armenianVow = {};
+const armenianCon = {
+                'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
+                'b': ['plosive', 'labial', 'voice', 'notAsp'],
+                'p`': ['plosive', 'labial', 'voiceless', 'asp'],
+                't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
+                'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
+                't`': ['plosive', 'alveolar', 'voiceless', 'asp'],
+                'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
+                'g': ['plosive', 'velar', 'voice', 'notAsp'],
+                'k`': ['plosive', 'velar', 'voiceless', 'asp'],
+                'n': ['nasal', 'labial', 'voice', 'notAsp'],
+                'm': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                'r': ['flap', 'alveolar', 'voiceless', 'notAsp'],
+                'ṙ': ['trill', 'alveolar', 'voiceless', 'notAsp'],
+                's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
+                'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
+                'm': ['nasal', 'labial', 'voice', 'notAsp'],
+                'v': ["glide", "labiodental", 'voice', 'notAsp'],
+                'w': ["glide", "labiodental", 'voice', 'notAsp'],
+                'y': ["glide", "palatal", 'voice', 'notAsp'],
+                'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
+                'ł': ['lateral', 'velar', 'voiceless', 'notAsp'],
+                'š': ['fricative', 'postalveolar', 'voiceless', 'notAsp'],
+                'ž': ['fricative', 'postalveolar', 'voice', 'notAsp'],
+                'x': ['fricative', 'velar', 'voiceless', 'notAsp'],
+                'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
+                'c': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
+                'j': ['affricate', 'alveolar', 'voice', 'notAsp'],
+                'c`': ['affricate', 'alveolar', 'voiceless', 'asp'],
+                'č': ['affricate', 'postalveolar', 'voiceless', 'notAsp'],
+                'ǰ': ['affricate', 'postalveolar', 'voice', 'notAsp'],
+                'č`': ['affricate', 'postalveolar', 'voiceless', 'asp'],
+                'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
+};
+
+const cons = [greekCon, vedicCon, latinCon, armenianCon];
+const vows = [greekVow, vedicVow, latinVow, armenianVow];
+
+// keyboard generating
+/** 
+ * @specialCharsGreek 
+ */
+var specialCharsGreek = {
+    "á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"
+};
+
+var specialCharsVedic = {
+    'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'í': "6", 'ì': '7', 'ī': '8', 'ù': "9", 'ú': "10", 'ū': '11',
+    'ṭ': "12", 'ḍ': "13", 's': '14', 'ś': "15", 'ṣ': "16", 'ṇ': "17", "ṅ": "18", "ñ": "19", "ḥ": "20", 'ṃ': "21", "m̐": "22"
+};
+
+var specialCharsArmenian = {
+    'ē': "1", 'ǝ': "2", 'š': "3", 'ž': "4", 'ł': "5", 'č': "6", 'ǰ': "7", "ṙ": "8", "`": "9"
+};
+
 
 /*
 ================================================================================================ 
 INITIAL CALLS
 */
 
-newKey();
+renderKeyCon();
+renderKeyVow();
 generateKeyboard(language = "1");
 
 
@@ -54,28 +244,29 @@ document.getElementById("user-input").addEventListener("keypress", key => {
     wrongInputHandling(key, key.key, "user-input");
 });
 
-var chooseDropdown = document.getElementById("choose-language-id");
+const chooseDropdown = document.getElementById("choose-language-id");
 // render key by change
 chooseDropdown.addEventListener("change", () => {
     console.log("change key")
-    const oldContainer = document.getElementById("generate-body");
-    if (oldContainer) {
+    const formerCon = document.getElementById("con-body");
+    const formerVow = document.getElementById("vow-body");
+    //if (formerCon) {
         console.log("key container exists")
-        oldContainer.remove();
-    };
-    newKey();
+        formerCon.remove();
+        formerVow.remove();
+    //};
+    renderKeyCon();
+    renderKeyVow();
 });
 
 // generate keyboard by change
 chooseDropdown.addEventListener("change", () => {
-    var language = document.getElementById("choose-language-id").value;
-    const oldContainer = document.getElementById("keyboard-container");
-    if (oldContainer) {
+    const formerKeyboard = document.getElementById("keyboard-container");
+    if (formerKeyboard) {
         console.log("keyboard container exists")
-        oldContainer.remove();
+        formerKeyboard.remove();
     };
-
-    generateKeyboard(language);
+    generateKeyboard();
 });
 
 // removes value of input fields by change of language
@@ -83,7 +274,9 @@ chooseDropdown.addEventListener("change", () => {
     const userInput = document.getElementById("user-input");
     const addInput = document.getElementById("add-input-field");
     userInput.value = "";
-    addInput.value = "";
+    if (addInput) {
+        addInput.value = "";
+    };
 });
 
 
@@ -134,161 +327,32 @@ document.getElementById("plus-button").addEventListener("click", () => {
 Functions
 */
 
-function getLanguage () {
-    language = document.getElementById("choose-language-id").value;
-    return language;
-};
-
-
-function fillField (innerText, con){
+function fillField (innerText, phoneme){
     if(innerText !== "") {
         innerText += ", ";    
     };
     
-    return innerText += con;
-    
+    return innerText += phoneme;
 };
 
 
-function newKey (language) {
+function renderKeyCon () {
 
-    language = getLanguage()
+    let language = getLanguage();
 
-    var placeDict = {"B": "labial", "D": "labiodental", "Q": "labiovelar", "A": "alveolar", "S": "postalveolar", "X": "retroflex", "J": "palatal", "K": "velar", "H": "glottal"};
-    if (language === "4") {
-        var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "trill", "ɾ": "flap", "L": "lateral"};
-    } else {
-        var manner = {"N": "nasal", "P": "plosive", "Z": "affricate", "F": "fricative", "W": "glide", "R": "rhotic", "L": "lateral"};
-    }
-    const greekVow = {'y': 'vowel', 'a': 'vowel', 'e': 'vowel', 'ē': 'vowel', 'y': 'vowel', 'o': 'vowel', 'ō': 'vowel', 'i': 'vowel', 'a': 'vowel', 'u': 'vowel'}
-    const greekCon = {
-                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
-                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
-                    'ph': ['plosive', 'labial', 'voiceless', 'asp'],
-                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
-                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
-                    'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
-                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
-                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
-                    'kh': ['plosive', 'velar', 'voiceless', 'asp'],
-                    'ks': ['affricate', 'velar', 'voiceless', 'notAsp'],
-                    'z': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
-                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
-                    'm': ['nasal', 'labial', 'voice', 'notAsp'],
-                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
-                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
-                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
-                    'ps': ['affricate', 'labial', 'voiceless', 'notAsp'],
-                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
-               };
-
-    const vedicVowel = ['a', 'á', 'à', 'ā', 'e', 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u', 'ù', 'ú']
-    const vedicCon = {
-                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
-                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
-                    'ph': ['plosive', 'labial', 'voiceless', 'asp'],
-                    'bh': ['plosive', 'labial', 'voice', 'asp'],
-                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
-                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
-                    'th': ['plosive', 'alveolar', 'voiceless', 'asp'],
-                    'dh': ['plosive', 'alveolar', 'voice', 'asp'],
-                    'ṭ': ['plosive', 'retroflex', 'voiceless', 'notAsp'],
-                    'ṭh': ['plosive', 'retroflex', 'voiceless', 'asp'],
-                    'ḍ': ['plosive', 'retroflex', 'voice', 'notAsp'],
-                    'ḍh': ['plosive', 'retroflex', 'voice', 'asp'],
-                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
-                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
-                    'kh': ['plosive', 'velar', 'voiceless', 'asp'],
-                    'gh': ['plosive', 'velar', 'voice', 'asp'],
-                    'c': ['affricate', 'palatal', 'voiceless', 'notAsp'],
-                    'ch': ['affricate', 'palatal', 'voiceless', 'asp'],
-                    'j': ['affricate', 'palatal', 'voice', 'notAsp'],
-                    'v': ["glide", "labiodental", 'voice', 'notAsp'],
-                    'y': ["glide", "palatal", 'voice', 'notAsp'],
-                    'm': ['nasal', 'labial', 'voice', 'notAsp'], 
-                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
-                    'ṇ': ['nasal', 'retroflex', 'voice', 'notAsp'],
-                    "ñ": ['nasal', 'palatal', 'voice', 'notAsp'],
-                    "ṅ": ['nasal', 'velar', 'voice', 'notAsp'],
-                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
-                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
-                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
-                    'ṣ': ['fricative', 'retroflex', 'voiceless', 'notAsp'],
-                    'ś': ['fricative', 'palatal', 'voiceless', 'notAsp'],
-                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
-    };
-
-    const latinCon = {
-                    'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
-                    'b': ['plosive', 'labial', 'voice', 'notAsp'],
-                    'qu': ['plosive', 'labiovelar', 'voice', 'notAsp'],
-                    't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
-                    'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
-                    'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
-                    'g': ['plosive', 'velar', 'voice', 'notAsp'],
-                    'v': ["glide", "labiodental", 'voice', 'notAsp'],
-                    'm': ['nasal', 'labial', 'voice', 'notAsp'], 
-                    'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
-                    'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
-                    'r': ['rhotic', 'alveolar', 'voiceless', 'notAsp'],
-                    's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
-                    'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
-                    'x': ["affricate", 'velar', 'voiceless', 'notAsp'],
-                    'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
-    };
-
-    const armenianCon = {
-        'p': ['plosive', 'labial', 'voiceless', 'notAsp'],
-        'b': ['plosive', 'labial', 'voice', 'notAsp'],
-        'p`': ['plosive', 'labial', 'voiceless', 'asp'],
-        't': ['plosive', 'alveolar', 'voiceless', 'notAsp'],
-        'd': ['plosive', 'alveolar', 'voice', 'notAsp'],
-        't`': ['plosive', 'alveolar', 'voiceless', 'asp'],
-        'k': ['plosive', 'velar', 'voiceless', 'notAsp'],
-        'g': ['plosive', 'velar', 'voice', 'notAsp'],
-        'k`': ['plosive', 'velar', 'voiceless', 'asp'],
-        'n': ['nasal', 'labial', 'voice', 'notAsp'],
-        'm': ['nasal', 'alveolar', 'voice', 'notAsp'],
-        'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
-        'r': ['flap', 'alveolar', 'voiceless', 'notAsp'],
-        'ṙ': ['trill', 'alveolar', 'voiceless', 'notAsp'],
-        's': ['fricative', 'alveolar', 'voiceless', 'notAsp'],
-        'n': ['nasal', 'alveolar', 'voice', 'notAsp'],
-        'm': ['nasal', 'labial', 'voice', 'notAsp'],
-        'v': ["glide", "labiodental", 'voice', 'notAsp'],
-        'w': ["glide", "labiodental", 'voice', 'notAsp'],
-        'y': ["glide", "palatal", 'voice', 'notAsp'],
-        'l': ['lateral', 'alveolar', 'voiceless', 'notAsp'],
-        'ł': ['lateral', 'velar', 'voiceless', 'notAsp'],
-        'š': ['fricative', 'postalveolar', 'voiceless', 'notAsp'],
-        'ž': ['fricative', 'postalveolar', 'voice', 'notAsp'],
-        'x': ['fricative', 'velar', 'voiceless', 'notAsp'],
-        'f': ['fricative', 'labiodental', 'voiceless', 'notAsp'],
-        'c': ['affricate', 'alveolar', 'voiceless', 'notAsp'],
-        'j': ['affricate', 'alveolar', 'voice', 'notAsp'],
-        'c`': ['affricate', 'alveolar', 'voiceless', 'asp'],
-        'č': ['affricate', 'postalveolar', 'voiceless', 'notAsp'],
-        'ǰ': ['affricate', 'postalveolar', 'voice', 'notAsp'],
-        'č`': ['affricate', 'postalveolar', 'voiceless', 'asp'],
-        'h': ['fricative', 'glottal', 'voiceless', 'notAsp']
-    };
-
-    cons = [greekCon, vedicCon, latinCon, armenianCon];
-    langCon = cons[parseInt(language)-1];
+    const langCon = cons[parseInt(language)-1];
 
     tbody = document.createElement("tbody");
-    tbody.setAttribute("id", "generate-body");
+    tbody.setAttribute("id", "con-body");
     conTable = document.getElementById("con-table");
 
-    i = 0
     for (var [man_key, man_value] of Object.entries(manner)) {
-        console.log(man_value);
-        i++;
-        var tableRoll = document.createElement("tr");
+        //console.log(man_value);
+        let tableRoll = document.createElement("tr");
         tableRoll.innerHTML = `<td><span class="manner">${man_value}</span><span class="user-key">${man_key}</span></td>`;
 
-        for (var [placeKey, place] of Object.entries(placeDict)) {
-            console.log(place);
+        for (var [placeKey, place] of Object.entries(placeCon)) {
+            //console.log(place);
             var td_nv_na = document.createElement("td");
             var td_nv_a = document.createElement("td");
             var td_v_na = document.createElement("td");
@@ -300,7 +364,7 @@ function newKey (language) {
           
             for (var [con, feature] of Object.entries(langCon)){
 
-                console.log(con);
+                //console.log(con);
                 if (feature.includes(man_value) && feature.includes(place) && feature.includes("voiceless") && feature.includes("notAsp")) {
                     td_nv_na.innerText = fillField(td_nv_na.innerText, con)
                  
@@ -326,35 +390,65 @@ function newKey (language) {
     conTable.append(tbody);
 };
 
-// renders HTML for key tables
+
+function renderKeyVow() {
+
+    let language = getLanguage();
+    const langVow = vows[parseInt(language)-1];
+
+    var vowtbody = document.createElement("tbody");
+    vowtbody.setAttribute("id", "vow-body");
+    vowTable = document.getElementById("vow-table");
+
+    for (var i=0; i<pitch.length; i++) {
+        
+        pitch_value = pitch[i];
+        //console.log(pitch_value);
+
+        let tableRoll = document.createElement("tr");
+        tableRoll.innerHTML = `<td><span class="pitch">${pitch_value}</span></td>`;
+
+        for (var placei=0; placei<placeVow.length; placei++) {
+            let place = placeVow[placei];
+            console.log(placei);
+            console.log(place);
+            var td = document.createElement("td");
+            td.setAttribute("class", "phoneme");
+          
+            for (var [vow, feature] of Object.entries(langVow)){
+                //console.log(vow);
+                if (feature.includes(pitch_value) && feature.includes(place)) {
+                    td.innerText = fillField(td.innerText, vow);
+                };
+            };
+            tableRoll.append(td);
+        };
+        vowtbody.append(tableRoll);    
+    };
+    vowTable.append(vowtbody);
+};
+
 
 // if key of virtual keyboard is pressed key is added to search input
 function printValue (val) {
     document.getElementById('user-input').value += val;
 };
 // generates keyboard containing keys for key-characters and special characters in the respective language
-function generateKeyboard(language) {
+function generateKeyboard() {
     console.log(language)
     var keyIds = []
     var keyboardContainer = document.createElement("div");
     keyboardContainer.setAttribute("id", "keyboard-container");
     keyboardContainer.setAttribute("class", "expand-container");
     //var language = document.getElementById("choose-language-id").value;
-    var specialCharsGreek = {"á": "1", "é": "2", "ē": "3", "ō": "4", "ḗ": "5", "ṓ": "6", "ý": "7", "í": "8"};
-    var specialCharsVedic = {
-        'á': "1", 'à': "2", 'ā': "3",'é': "4", 'è': "5", 'ì': "6", 'í': "6", 'ī': "7", 'ù': "8", 'ú': "9",
-        'ṭ': "9", 'ḍ': "11", 's': "12", 'ś': "13", 'ṣ': "14", 'ṇ': "15", "ṅ": "16", "ñ": "17", "ḥ": "18", 'ṃ': "19", "m̐": "20"
-    };
-    var specialCharsArmenian = {
-        'ē': "1", 'ǝ': "2", 'š': "3", 'ž': "4", 'ł': "5", 'č': "6", 'ǰ': "7", "ṙ": "8", "`": "9"
-    };
 
-    noChars = null;
+
+    let noChars = {};
 
     greek = [featuresGreek, specialCharsGreek, wildcards];
     vedic = [featuresVedic, specialCharsVedic, wildcards];
     latin = [featuresLatin, noChars, wildcards];
-    armenian = [featuresArmenian, specialCharsArmenian, wildcards]
+    armenian = [featuresArmenian, specialCharsArmenian, wildcards];
 
     for (var count=0; count<=1; count++) {
         var kind;
@@ -368,17 +462,10 @@ function generateKeyboard(language) {
             kind = armenian[count];
         };
 
-        if (kind == null) {
-            console.log("null");
-            continue;
-        };
-
         innerContainer = document.createElement("div");
         innerContainer.setAttribute("class", "inner-key-container");
-        //console.log(kind);
+
         for (var [key, value] of Object.entries(kind)) {
-            //var spanKey = document.createElement("span");
-            //spanKey.setAttribute("class", "key-span");
             var btnKey = document.createElement("button");
             btnKey.innerText = key;
             btnKey.setAttribute("class", "key");
@@ -388,7 +475,9 @@ function generateKeyboard(language) {
             btnKey.setAttribute("id", `key${key}`);
             innerContainer.append(btnKey);
         }
-        keyboardContainer.append(innerContainer);
+        if (innerContainer.innerHTML) {
+            keyboardContainer.append(innerContainer);
+        };
     }
     document.getElementById("expand-keyboard-section").append(keyboardContainer);
 };
@@ -428,32 +517,6 @@ function wrongInputHandling(key, pressed, fieldId) {
         document.getElementById(fieldId).setAttribute("class", "text-field");
     }
     var allowed;
-
-    const greekAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'J', 'K', 'L', 'N', 'P', 'B',
-                          'R', 'V', 'Z', '|', 'y', 'a', 'e', 'ē', 'y', 'o', 'ō', 'i', 'a', 'o', 'ō', 'i', 'u', 'é', 'á', 'ḗ', 'ṓ',' ý', 'í',
-                        'p', 'b', 'ph', 't', 'd', 'th', 'k', 'g', 'kh', 'ks', 'z', 'm', 'n', 'l', 'r', 's',
-                          'ps', 'h', 'Enter'
-                        ];
-    const vedicAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', 'A', 'C', 'F', 'H', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'W', 'X', 'Z', '|', 'a', 'á', 'à', 'ā', "e", 'é', 'è', 'i', 'ì', 'í', 'ī', 'o', 'ò', 'u',
-                          'ù', 'ú', 'p', 'ph', 'b', 'bh', 't', 'th', 'd', 'dh', 'ṭ', 'ṭh', 'ḍ', 'ḍh', 'k', 'kh', 'g',
-                          'gh', 'c', 'ch', 'j', 'v', 'y', 'm', 'ṃ', 'n', 'ṇ', 'l', 'r', 's', 'ṣ', 'ś', 'h', "ñ", "ṅ", "m̐", 'ḥ', 'Enter'
-                        ];
-    
-    const latinAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
-                          'R', 'V', 'H', 'Q', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p',
-                          'q', 'r', 's', 't', 'u', 'v', 'x', 'y', 'z', 'Enter'
-                        ];
-
-    const armenianAllowed = ['(', ')', '+', '#', '%', '(', ')', '*', '<', '>', '|','A', 'C', 'F', 'J', 'K', 'L', 'N', 'P',
-                             'R', 'V', 'H', 'Q', 'Z', "`", 'a', 'e', 'ē', 'ǝ', 'i', 'o', 'u',
-                             'p', 'b', 't', 'd', 'ṭ', 'ḍ', 'k', 'g', 'c', 'j', 'v', 'y', 'm', 'n', 'l', 'r', 'ṙ', 's', 'h', 'š',
-                             'ž', 'ł', 'č', 'ǰ', 'f', 'Enter'
-                            ];
-
-    const greekFollows = {"h": ["p", "t", "k"]};
-    const greekInitial = ["h"];
-    const armenianFollows = {"`": ["p", "t", "k", "c", "č"]};
     var follows;
     var initial;
 
@@ -467,7 +530,7 @@ function wrongInputHandling(key, pressed, fieldId) {
     } else if (language === "2") {
         allowed = vedicAllowed;
         follows = {"": ""};
-        initial = [""]
+        initial = [""];
         lang = "Vedic";
     } else if (language === "3") {
         allowed = latinAllowed;
@@ -505,39 +568,3 @@ function wrongInputHandling(key, pressed, fieldId) {
         wrongInput(message, fieldId);
     }
 }
-
-/*
-document.getElementById("start-button").addEventListener("click", () => {
-    var inputFieldCont = document.getElementById("user-input").innerText
-    if (inputFieldCont.includes("`")) {
-        var cleanInput = inputFieldCont.replace(/`/g, ";");
-        inputFieldCont.innerText = cleanInput;
-    };
-});
-*/
-
-
-
-
-
-
-/*const phonemesGreek = {
-    "a": " α", "e": " ε", "ē": " η", "i": " ι", "o": " ο", "ō": " ω", "y": " υ", "u": " ου", "a": " ά", "é": " έ",
-    "i": " ί", "o": " ό", "ō": " ώ", "y": " ύ", "u": " όυ", "ē": " ή", "i": " ι", "p": " π", "b": " β", "ph": "φ",
-    "t": " τ", "d": " δ", "th": "θ", "k": " κ", "g": " γ", "kh": "χ", "z": " ζ", "m": " μ", "n": " ν", "l": " λ",
-    "r": " ρ", "s": " σ", "s": " ς", "ps": "ψ", "p": " π", "b": " β", "ph": "φ", "t": " τ", "d": " δ", "th": "θ",
-    "k": " κ", "g": " γ", "ks": "ξ"
-};
-
-if (language == "1") {
-            if (pressed == "h") {
-                fieldValue = document.getElementById(fieldId).value;
-                lastChar = fieldValue.slice(-1);
-                if ((lastChar != "p") && (lastChar != "k") && (lastChar != "t") && fieldValue.length != 0) {
-                    var message = `'h' only allowed after 'p', 'k', 't' or as first character`;
-                    key.preventDefault();
-                    wrongInput(message, fieldId);
-                }
-            }
-
-*/

@@ -5,6 +5,7 @@ import json
 from base64 import b64encode
 import sqlite3
 import main_functions_search as mf
+from flask import session
 
 
 # data structures
@@ -60,59 +61,8 @@ def get_allowed_con_vow(language):
     return allowed, consonants, vowels
 
 
-def get_language_info(language, accent):
-    global digraphs
-    global following_digraph
-    global ambiguous
-    global lang
-
-    lang = language
-
-    greek_digraphs = {
-                        "p": ["h", "s"],
-                        "k": ["h","s"],
-                        "t": ["h"],
-                        "ο": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
-                        "ό": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
-                        "ὀ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
-                        "ὁ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
-                        "ὂ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
-                        "ὃ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
-                    }
-
-    following_digraph_greek = ["h", "s", "υ", "υ" "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
-
-    vedic_digraphs = {
-                        "p": ["h"],
-                        "b": ["h"],
-                        "k": ["h"],
-                        "t": ["h"],
-                        "d": ["h"],
-                        "g": ["h"],
-                        "ṭ": ["h"],
-                        "ḍ": ["h"],
-                        "c": ["h"]
-                    }
-
-    following_digraph_vedic = ["h"]
-    
-    latin_digraphs = {
-                        "q": ["u"]
-                    }
-
-    following_digraph_latin = ["u"]
-
-    armenian_digraphs = {
-                        "ո": ["ւ"],
-                        "p": ["`"],
-                        "t": ["`"],
-                        "k": ["`"],
-                        "c": ["`"],
-                        "č": ["`"]
-                        }
-
-    following_digraph_armenian = ["ւ"]
-
+def get_ambiguous(language):
+    accent = session["accent_sensitive"]
     if accent == "on":   
         greek_ambiguous = {
                             "σ": ["ς"],
@@ -156,9 +106,9 @@ def get_language_info(language, accent):
                             }  
 
         vedic_ambiguous = {
-                            'a': ['á', 'à', 'ā'],
+                            'a': ['á', 'à'],
                             'e': ['é', 'è'],
-                            'i': ['ì', 'í', 'ī'],
+                            'i': ['ì', 'í'],
                             'o': ['ò'],
                             'u': ['ù', 'ú']
                             }
@@ -166,36 +116,96 @@ def get_language_info(language, accent):
         latin_ambiguous = {}
 
         armenian_ambiguous = {}
+    
+    if language == "greek":
+        ambiguous = greek_ambiguous
+
+    elif language == "vedic":
+        ambiguous = vedic_ambiguous
+   
+    elif language == "latin":
+        ambiguous = latin_ambiguous
+
+    elif language == "armenian":
+        ambiguous = armenian_ambiguous
+    
+    return ambiguous
+
+
+def get_digraphs(language):
+
+    greek_digraphs = {
+                        "p": ["h", "s"],
+                        "k": ["h","s"],
+                        "t": ["h"],
+                        "ο": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ό": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὀ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὁ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὂ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"],
+                        "ὃ": ["υ", "υ", "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
+                    }
+
+    following_digraph_greek = ["h", "s", "υ", "υ" "ύ", "ῦ", "ὐ", "ὑ", "ὒ", "ὓ", "ὖ", "ὗ", "ύ", "ὔ", "ὕ"]
+
+    vedic_digraphs = {
+                        "p": ["h"],
+                        "b": ["h"],
+                        "k": ["h"],
+                        "t": ["h"],
+                        "d": ["h"],
+                        "g": ["h"],
+                        "ṭ": ["h"],
+                        "ḍ": ["h"],
+                        "c": ["h"],
+                        "a": ["u"],
+                        "a": ["i"]
+                    }
+
+    following_digraph_vedic = ["h", "u", "I"]
+    
+    latin_digraphs = {
+                        "q": ["u"]
+                    }
+
+    following_digraph_latin = ["u"]
+
+    armenian_digraphs = {
+                        "ո": ["ւ"],
+                        "p": ["`"],
+                        "t": ["`"],
+                        "k": ["`"],
+                        "c": ["`"],
+                        "č": ["`"]
+                        }
+
+    following_digraph_armenian = ["ւ"]
 
     if language == "greek":
         digraphs = greek_digraphs
         following_digraph = following_digraph_greek
-        ambiguous = greek_ambiguous
 
     elif language == "vedic":
         digraphs = vedic_digraphs
         following_digraph = following_digraph_vedic
-        ambiguous = vedic_ambiguous
    
     elif language == "latin":
         digraphs = latin_digraphs
         following_digraph = following_digraph_latin
-        ambiguous = latin_ambiguous
 
     elif language == "armenian":
         digraphs = armenian_digraphs
         following_digraph = following_digraph_armenian
-        ambiguous = armenian_ambiguous
 
-    prepare_path()
+    #prepare_path()
 
-    return digraphs, ambiguous, following_digraph
+    return digraphs, following_digraph
 
 
-def prepare_path():
-    global path
-    path = os.path.dirname(os.path.abspath(sys.argv[0]))
-    path = os.path.join(path, "database", "PhonemeSearch.db")
+#def prepare_path():
+ #   global path
+  #  path = os.path.dirname(os.path.abspath(sys.argv[0]))
+   # path = os.path.join(path, "database", "PhonemeSearch.db")
 
 
 # functions for main_functions_search
@@ -207,10 +217,11 @@ def regexp(expr, item):
 
 
 def handle_digraphs(digraph, current_list, count):
+    language = session["language"]
     digraph_out = ""
     digraph_out += digraph
     is_digraph = False
-    following = digraphs.get(digraph)
+    following = get_digraphs(language)[0].get(digraph)
     for char in following:
         if current_list[count + 1] == char:
             is_digraph = True
@@ -219,20 +230,25 @@ def handle_digraphs(digraph, current_list, count):
 
 
 def handle_ambiguous_phonemes(ambiguous_char) -> str:
+    language = session["language"]
     ambiguous_out = ""
     ambiguous_out += ambiguous_char
+    ambiguous = get_ambiguous(language)
     for char in ambiguous.get(ambiguous_char):
         ambiguous_out += "|" + char
     return ambiguous_out
 
 
 def join_digraph(char):
-    following = "".join(digraphs.get(char))    
+    language = session["language"]
+    following = "".join(get_digraphs(language)[0].get(char))    
     return following
 
 
 def follows_digraph(follow_char):
+    language = session["language"]
     before = ""
+    digraphs = get_digraphs(language)[0]
     for digraph in digraphs:
         for char in digraphs.get(digraph):
             if char == follow_char:
@@ -305,6 +321,8 @@ def built_url_to_dictionaries(language, results, index):
 
 
 def mark_pattern (pattern, results, language, xml):
+    language = session["language"]
+
     if xml is False:
         tags = ["span class='pattern'", "span", "span class='word'", "span"]
     else:
@@ -318,10 +336,10 @@ def mark_pattern (pattern, results, language, xml):
         for match in matches:
 
             group = match.group(0)
-            if group in digraphs:
+            if group in get_digraphs(language)[0]:
                 after = join_digraph(group)
                 mark_re = f"(?<!§){group}(?!({'|'.join(after)}))"
-            elif group in following_digraph:
+            elif group in get_digraphs(language)[1]:
                 before = follows_digraph(group)
                 mark_re = f"(?<![{before}]){group}(?!\w?%)"
             else:
@@ -340,7 +358,7 @@ def mark_pattern (pattern, results, language, xml):
             alt = ""
 
             marked = f"<a class='external-link' href='{main_url}'>{marked}<i class='fa fa-external-link'></i></a>{alt}"
-            marked = f"<div class='result'>{marked}</div>"
+            marked = f"<span class='original'>{marked}</span>"
             
         marked_list.append(marked)
     return marked_list
@@ -533,7 +551,7 @@ def syllabificate_armenian(results):
 
         syllab_str = "".join(reversed(syllab))
         syllab_str  = re.sub("u", "ու", syllab_str)
-        syllab_results.append("<div class='syllable-lemma'>" + syllab_str.removesuffix(".") + "</div>")
+        syllab_results.append(syllab_str.removesuffix("."))
 
     return syllab_results
 
@@ -623,10 +641,34 @@ def syllabificate_greek(results):
         syllables = re.sub(("q"), "οὗ", syllables)
         syllables = re.sub(("w"), "ού", syllables)
 
-        syllable_lem.append("<div class='syllable-lemma'>" + syllables + "</div>")
+        syllable_lem.append(syllables)
         
     return syllable_lem
 
+
+def syllabificate_vedic(results):
+    return []
+
+
+def syllabificate_latin(results):
+    return []
+
+
+
+def syllabificate(language, results):
+    #unvisible = ""
+    if language == "greek":
+        syl_results = syllabificate_greek(results)
+    elif language == "vedic":
+        syl_results = syllabificate_vedic(results)
+        #unvisible = "hidden"
+    elif language == "latin":
+        syl_results = syllabificate_latin(results)
+        #unvisible = "hidden"
+    elif language == "armenian":
+        syl_results = syllabificate_armenian(results)
+     
+    return syl_results
 
 # if any download button is pressed function is called
 # gets all possible results from DB and saves them into txt resp xml file

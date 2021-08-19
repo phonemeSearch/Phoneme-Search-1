@@ -1,13 +1,12 @@
 import help_functions as hf
-import os
-import sys
+from os import getcwd, path
 from flask import session
 
 
 # language specific information
 languages = ["greek", "vedic", "latin", "armenian"]
-path_main = os.path.dirname(os.path.abspath(sys.argv[0]))
-path_main = os.path.join(path_main, "database", "PhonemeSearch.db")
+path_main = getcwd()
+path_main = path.join(path_main, "database", "PhonemeSearch.db")
 
 
 # checks if user string is a valid input

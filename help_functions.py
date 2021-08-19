@@ -1,24 +1,22 @@
-import re
-import os
-import sys
-import json
+from re import search, finditer, sub
+from os import path, getcwd
+from json import dumps
 from base64 import b64encode
-import sqlite3
-import main_functions_search as mf
+from sqlite3 import connect
 from flask import session
 
 
 # data structures
 
 
-path_help = os.path.dirname(os.path.abspath(sys.argv[0]))
-path_help = os.path.join(path_help, "database", "PhonemeSearch.db")
+path_help = getcwd()
+path_help = path.join(path_help, "database", "PhonemeSearch.db")
 
 languages = ["greek", "vedic", "latin", "armenian"]
 
 
 def sql_fetch_entries(command, path, regex) -> list:
-    connection = sqlite3.connect(path)
+    connection = connect(path)
     cursor = connection.cursor()
     if regex:
          connection.create_function("REGEXP", 2, regexp)
@@ -29,7 +27,7 @@ def sql_fetch_entries(command, path, regex) -> list:
 
 
 def open_file(path, filename, enc, mode, data):
-    with open(file=os.path.join(path, filename), encoding=enc, mode=mode) as file:
+    with open(file=path.join(path, filename), encoding=enc, mode=mode) as file:
         if mode == "r":
             data = file.read()
             return data
@@ -206,7 +204,7 @@ def get_digraphs(language):
 
 # function for sqlite3 REGEXP
 def regexp(expr, item):
-    find = re.search(expr, item)
+    find = search(expr, item)
     return find is not None
 
 
@@ -296,7 +294,7 @@ def built_url_to_dictionaries(language, results, index):
             "accents": False
         }
 
-        json_str = json.dumps(json_obj)
+        json_str = dumps(json_obj)
         bytes_json = bytes(json_str, "utf-8")
         encoded_jsn = b64encode(bytes_json)
         str_code = encoded_jsn.decode("utf-8")
@@ -325,7 +323,7 @@ def mark_pattern (pattern, results, language, xml):
     #tags = []
     marked_list = []
     for index in range(len(results)):
-        matches = re.finditer(pattern, results[index])
+        matches = finditer(pattern, results[index])
         marked = results[index]
         for match in matches:
 
@@ -339,10 +337,10 @@ def mark_pattern (pattern, results, language, xml):
             else:
                 mark_re = f"{group}(?!\w?%)"
 
-            marked = re.sub(mark_re, f"§{group}%", marked, 1)
+            marked = sub(mark_re, f"§{group}%", marked, 1)
 
-        marked = re.sub("%", f"</{tags[1]}>", marked)
-        marked = re.sub("§", f"<{tags[0]}>", marked)
+        marked = sub("%", f"</{tags[1]}>", marked)
+        marked = sub("§", f"<{tags[0]}>", marked)
         marked = f"<{tags[2]}>{marked}</{tags[3]}>"
         
         if xml is False:
@@ -409,7 +407,7 @@ def syllabificate_armenian(results):
 
     syllab_results = []
     for word in results:
-        word  = re.sub("ու", "u", word)
+        word  = sub("ու", "u", word)
         syllab = []
         #print("syllab", syllab)
         i = 0
@@ -544,7 +542,7 @@ def syllabificate_armenian(results):
                 syllab.append(word_syl[1])
 
         syllab_str = "".join(reversed(syllab))
-        syllab_str  = re.sub("u", "ու", syllab_str)
+        syllab_str  = sub("u", "ու", syllab_str)
         syllab_results.append(syllab_str.removesuffix("."))
 
     return syllab_results
@@ -571,15 +569,15 @@ def syllabificate_greek(results):
     for lemma in results:
         numCount += 1
 
-        lemma = re.sub(("ου"), "u", lemma)
-        lemma = re.sub(("όυ"), "ú", lemma)
-        lemma = re.sub(("ού"), "ù", lemma)
-        lemma = re.sub(("οῦ"), "o", lemma)
-        lemma = re.sub(("οὐ"), "ó", lemma)
-        lemma = re.sub(("οὑ"), "ò", lemma)
-        lemma = re.sub(("οὖ"), "ü", lemma)
-        lemma = re.sub(("οὗ"), "q", lemma)
-        lemma = re.sub(("ού"), "w", lemma)
+        lemma = sub(("ου"), "u", lemma)
+        lemma = sub(("όυ"), "ú", lemma)
+        lemma = sub(("ού"), "ù", lemma)
+        lemma = sub(("οῦ"), "o", lemma)
+        lemma = sub(("οὐ"), "ó", lemma)
+        lemma = sub(("οὑ"), "ò", lemma)
+        lemma = sub(("οὖ"), "ü", lemma)
+        lemma = sub(("οὗ"), "q", lemma)
+        lemma = sub(("ού"), "w", lemma)
         index = 0
         point = False
         syllables = ""
@@ -625,15 +623,15 @@ def syllabificate_greek(results):
 
             index += 1
 
-        syllables = re.sub(("u"), "ου", syllables)
-        syllables = re.sub(("ú"), "όυ", syllables)
-        syllables = re.sub(("ù"), "ού", syllables)
-        syllables = re.sub(("o"), "οῦ", syllables)
-        syllables = re.sub(("ó"), "οὐ", syllables)
-        syllables = re.sub(("ò"), "οὑ", syllables)
-        syllables = re.sub(("ü"), "οὖ", syllables)
-        syllables = re.sub(("q"), "οὗ", syllables)
-        syllables = re.sub(("w"), "ού", syllables)
+        syllables = sub(("u"), "ου", syllables)
+        syllables = sub(("ú"), "όυ", syllables)
+        syllables = sub(("ù"), "ού", syllables)
+        syllables = sub(("o"), "οῦ", syllables)
+        syllables = sub(("ó"), "οὐ", syllables)
+        syllables = sub(("ò"), "οὑ", syllables)
+        syllables = sub(("ü"), "οὖ", syllables)
+        syllables = sub(("q"), "οὗ", syllables)
+        syllables = sub(("w"), "ού", syllables)
 
         syllable_lem.append(syllables)
         
@@ -676,7 +674,7 @@ def download(pattern, user_pattern, language, kind):
     search_command = \
     f"SELECT lemma FROM {language} WHERE {extract} REGEXP '{pattern}' "
     
-    connection = sqlite3.connect(os.path.join("database", "PhonemeSearch.db"))    
+    connection = connect(path.join("database", "PhonemeSearch.db"))    
     cursor = connection.cursor()
     connection.create_function("REGEXP", 2, regexp)
     

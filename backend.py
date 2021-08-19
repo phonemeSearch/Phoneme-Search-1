@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request, Response, session
-import secrets
+from secrets import token_urlsafe
 import main_functions_search as mf
 import help_functions as hf
-import os
+from os import environ
 from math import ceil
 
 
 app = Flask(__name__)
 
 
-app.secret_key = secrets.token_urlsafe(16)
+app.secret_key = token_urlsafe(16)
 
 
 limit = 25
@@ -228,4 +228,4 @@ def result_page():
 
 
 if __name__ == '__main__':
-    app.run(host=os.environ.get("HOST", '127.0.0.1'), port=int(os.environ.get("PORT", 1337)), debug=True, threaded=True)
+    app.run(host=environ.get("HOST", '127.0.0.1'), port=int(environ.get("PORT", 1337)), debug=True, threaded=True)

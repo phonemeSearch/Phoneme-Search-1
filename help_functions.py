@@ -685,7 +685,11 @@ def download(pattern, user_pattern, language, kind):
 
     # format string
     num_str = str(len(results))
-    if kind == "txt":
+    if num_str == "0":
+        response_str = "no results"
+        mimetype = "text/plain"
+        filename = f"{language}_{user_pattern}_{str(len(results))}.txt"
+    elif kind == "txt":
         response_str = "\nnumber of results: " + num_str
         response_str += "\nsearch pattern: " + results[3] + "\n\n"
         response_str += "\n".join(results)
